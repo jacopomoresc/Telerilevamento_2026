@@ -1,6 +1,5 @@
 # Telerilevamento_2026 🛰️
-![Sentinel-1](https://github.com/user-attachments/assets/89349074-ad2c-4108-801c-380cae2d228b)
-<img src="Sentinel-1.jpg" width="600">
+![sentinel-2](https://github.com/user-attachments/assets/b7423fed-331f-4481-8f70-fb7efee91d2b)
 
 ## Cosa è? 📖
 Il repo contiene il codice del corso di telerilevamento Geo-Ecologico presso UNIBO: 
