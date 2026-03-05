@@ -36,4 +36,10 @@ plot(b4, col=clr)
 cln <- colorRampPalette(c("goldenrod3", "goldenrod2", "goldenrod"))(100)
 plot(b8, col=cln)
 
+sentinel = c(b2, b3, b4, b8)
+plot(sentinel, col = inferno(100))
+
+# layer1=b2, layer2=b3, layer3=b4, layer4=b8
+plot(sent$sentinel.dolomites.b8)
+plot(sentinel[[4]])
 
