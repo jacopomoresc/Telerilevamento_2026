@@ -33,3 +33,5 @@ Le doline e le valli carsiche possono mantenere più a lungo vegetazione densa e
 (Theilen-Willige et al., 2014)
 
 3. Theilen-Willige, B. (2018). Detection of karst features in the Black Hills area in South Dakota/Wyoming, USA, based on evaluations of remote sensing data. Geosciences, 8(6), 192. https://doi.org/10.3390/geosciences8060192
+
+4. https://www.wtwco.com/en-my/insights/2024/04/from-rainfall-to-resilience-slovenias-2023-record-breaking-floods
