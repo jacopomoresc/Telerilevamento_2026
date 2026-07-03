@@ -7,7 +7,8 @@ L’articolo dice che durante la stagione umida piccole doline, anche sotto i 20
 3. La vegetazione può essere più vigorosa nelle depressioni.
 Le doline e le valli carsiche possono mantenere più a lungo vegetazione densa e con maggiore vitalità fotosintetica, perché trattengono più umidità rispetto all’ambiente circostante.
 (Theilen-Willige, 2018)
-
+4. immagini di vegetation index e water index aiutano a identificare aree con maggiore input di acqua superficiale, dove i processi di carsificazione possono essere più intensi (Theilen-Willige et al., 2014)
+5. 
 
 ## Bibliografia
 Ali, H., Elbaşı, E., & Bayrakdar, C. (2026). Comparative assessment of spectral indices for long-term flood monitoring in poljes using Sentinel-2 data: A case study from Muğla, Türkiye. Turkish Journal of Remote Sensing, 8, 1770170. https://doi.org/10.51489/tuzal.1770170
