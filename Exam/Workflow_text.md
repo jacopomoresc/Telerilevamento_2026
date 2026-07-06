@@ -38,9 +38,6 @@ Il tracciamento dei ghiacciai neri necessita di flussi di lavoro eterogenei, i c
 ### ANDSI
 Sviluppato dal team di Mohammadi et al. (2023) con esplicito focus sui dati multispettrali Sentinel-2, costituisce attualmente uno degli strumenti più raffinati per mappare la topologia dei ghiacciai in zone ad alta densità idrologica. 
 
-### AGEI
-Se l'ANDSI risolve la sovrapposizione idrica su Sentinel-2, l'Automated Glacier Extraction Index (AGEI), introdotto da Zhang et al. (2019), fornisce una risposta ottimizzata alle sfide imposte dall'orografia accidentata e dai pixel di transizione (mixed edge pixels) nell'elaborazione di dati Landsat e Sentinel.
-
 ### NDSII/SII
 
 ### NDGI
@@ -48,6 +45,14 @@ Per smascherare il ghiaccio sepolto si opera una classificazione multi-criterio.
 
 
 The Normalized Difference Snow Index (NDSI) has been used previously for discrimination of snow/ice‐bearing zones versus debris. Two new indices, the Normalized Difference Glacier Index (NDGI) and the Normalized Difference Snow Ice Index (NDSII), are presented. The combination of all three indices allows discrimination of snow, ice and IMD in a systematic manner.
+
+## Workflow
+1. NDWI e maschera = (B3 - B8) / (B3 + B8)
+2. NDVI per vegetazione = (B8 - B4) / (B8 + B4)
+3. NDSI - Classificazione principale = (B3 - B11) / (B3 + B11)
+4. ANDSI = (CSI x NDSI) / (CSI + NDSI) = [B8 × (B3 + B11) − B12 × (B3 − B11)] / [B8 × (B3 + B11) + B12 × (B3 − B11)]
+            CSI = (B8 + B3 - B11) (B8 - B3 - B11)
+? 5. NDSII ghiaccio-roccia e superfici miste = (B4 - B11) / (B4 + B11) ? 
 
 # 2. Materiali e Metodi
 
@@ -60,6 +65,6 @@ The Normalized Difference Snow Index (NDSI) has been used previously for discrim
 # 5. Fonti
 1. Hall, D.K., Riggs, G.A. (2011). Normalized-Difference Snow Index (NDSI). In: Singh, V.P., Singh, P., Haritashya, U.K. (eds) Encyclopedia of Snow, Ice and Glaciers. Encyclopedia of Earth Sciences Series. Springer, Dordrecht. https://doi.org/10.1007/978-90-481-2642-2_376
 2. Mohammadi, B., Pilesjö, P., & Duan, Z. (2023). The superiority of the Adjusted Normalized Difference Snow Index (ANDSI) for mapping glaciers using Sentinel-2 multispectral satellite imagery. GIScience & Remote Sensing, 60(1). https://doi.org/10.1080/15481603.2023.2257978
-3. Zhang, M., Wang, X., Shi, C., & Yan, D. (2019). Automated Glacier Extraction Index by Optimization of Red/SWIR and NIR /SWIR Ratio Index for Glacier Mapping Using Landsat Imagery. Water, 11(6), 1223. https://doi.org/10.3390/w11061223
-4. Keshri, A., Shukla, A., & Gupta, R. P. (2009). ASTER ratio indices for supraglacial terrain mapping. International Journal of Remote Sensing, 30(2), 519–524. https://doi.org/10.1080/01431160802385459
+3. Keshri, A., Shukla, A., & Gupta, R. P. (2009). ASTER ratio indices for supraglacial terrain mapping. International Journal of Remote Sensing, 30(2), 519–524. https://doi.org/10.1080/01431160802385459
+4. McFEETERS, S. K. (1996). The use of the Normalized Difference Water Index (NDWI) in the delineation of open water features. International Journal of Remote Sensing, 17(7), 1425–1432. https://doi.org/10.1080/01431169608948714
 5. 
