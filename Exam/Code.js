@@ -18,7 +18,7 @@ Map.centerObject(aoi, 10);
 // ------------------------------------------------------
 var s2_2016 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(aoi)
-  .filterDate('2016-07-01', '2016-08-31')
+  .filterDate('2016-08-01', '2016-08-31')
   .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 10));
 
 print('Conteggio immagini estate 2016:', s2_2016.size());
@@ -29,7 +29,7 @@ var img_2016 = s2_2016.median()
   
 Map.addLayer(
   img_2016,
-  {bands: ['B4', 'B3', 'B2'], min: 0, max: 8000},
+  {bands: ['B4', 'B3', 'B2'], min: 0, max: 6000},
   'RGB_2016_summer'
 );
 
@@ -50,7 +50,7 @@ Export.image.toDrive({
 
 var s2_2020 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(aoi)
-  .filterDate('2020-07-01', '2020-08-31')
+  .filterDate('2020-08-01', '2020-08-31')
   .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 10));
 
 print('Conteggio immagini estate 2020:', s2_2020.size());
@@ -61,7 +61,7 @@ var img_2020 = s2_2020.median()
   
 Map.addLayer(
   img_2020,
-  {bands: ['B4', 'B3', 'B2'], min: 0, max: 8000},
+  {bands: ['B4', 'B3', 'B2'], min: 0, max: 6000},
   'RGB_2020_summer'
 );
 
@@ -81,7 +81,7 @@ Export.image.toDrive({
 // ------------------------------------------------------
 var s2_2024 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(aoi)
-  .filterDate('2024-07-01', '2024-08-31')
+  .filterDate('2024-08-01', '2024-08-31')
   .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 10));
 
 print('Conteggio immagini estate 2024:', s2_2024.size());
@@ -92,7 +92,7 @@ var img_2024 = s2_2024.median()
   
 Map.addLayer(
   img_2024,
-  {bands: ['B4', 'B3', 'B2'], min: 0, max: 8000},
+  {bands: ['B4', 'B3', 'B2'], min: 0, max: 6000},
   'RGB_2024_summer'
 );
 
