@@ -66,7 +66,17 @@ perchè sentinel 2 e dove sono stati presi i dati e con quali impostazioni:
 > 
 > Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file Code.js
 
+> **Commento**
+> 
+> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file Code.js
+
+**breve cenno di workflow**
+
+### 2.2 Procedimento - Rstudio
+
 # 3. Risultati e Discussione
+
+
 
 # 4. Conclusioni
 
