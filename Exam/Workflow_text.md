@@ -1,8 +1,15 @@
-# Titolo Provvisorio
+# Titolo Provvisorio 
 
+TUTTO QUESTO E' DA RISCRIVERE 
 # Abstract
 
 # 1. Introduzione
+
+## Area di studio
+_L'area di studio è situata nella porzione occidentale dell'isola di Spitsbergen, nell'arcipelago delle Svalbard (Norvegia), all'interno del settore del Recherchefjorden, un ramo del fiordo Bellsund, approssimativamente compreso tra 77.43–77.58° N e 14.08–14.57° E.
+L'analisi è focalizzata su tre ghiacciai costieri: Renardbreen, Scottbreen e Blomlibreen, scelti perché appartenenti allo stesso contesto climatico e geomorfologico, ma caratterizzati da dimensioni differenti e da una diversa risposta alle recenti variazioni climatiche._
+
+**Perchè ho scelto quest'area?**
 
 ## Obiettivo
 | Analizzare la variazione recente dell’area glaciale di Renardbreen, Scottbreen e Blomlibreen tra 2016, 2020 e 2024, usando immagini Sentinel-2 estive e indici spettrali per distinguere ghiaccio/neve, roccia, acqua e superfici non glaciali. 
@@ -48,7 +55,16 @@ Sviluppato dal team di Mohammadi et al. (2023) con esplicito focus sui dati mult
 
 # 2. Materiali e Metodi
 
+## 2.1 Dati utilizzati - Spiegazione codice Js
+perchè sentinel 2 e dove sono stati presi i dati e con quali impostazioni: 
+- copertura nuvolosa 10%,
+- GEE cosa permette di fare,
+- quali anni (2016-2024) perchè fine estate (problema di neve sciolta): _Sono state selezionate immagini acquisite durante la stagione estiva (luglio–agosto) degli anni 2016, 2020 e 2024, corrispondenti a un intervallo temporale di circa otto anni. La scelta del periodo estivo è motivata dal fatto che rappresenta la fase di massima ablazione glaciale, durante la quale la copertura nevosa stagionale è generalmente ridotta e risulta quindi più semplice distinguere il ghiaccio permanente dalle superfici circostanti._,
+- bande scaricate e in che indici le uso (fare una tabella per semplificare la visione)
 
+> [!Note]
+> 
+> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file Code.js
 
 # 3. Risultati e Discussione
 
