@@ -38,14 +38,6 @@ Il tracciamento dei ghiacciai neri necessita di flussi di lavoro eterogenei, i c
 ### ANDSI
 Sviluppato dal team di Mohammadi et al. (2023) con esplicito focus sui dati multispettrali Sentinel-2, costituisce attualmente uno degli strumenti più raffinati per mappare la topologia dei ghiacciai in zone ad alta densità idrologica. 
 
-### NDSII/SII
-
-### NDGI
-Per smascherare il ghiaccio sepolto si opera una classificazione multi-criterio. Lo step iniziale prevede di differenziare la neve fresca dai ghiacci misti a sedimento (Ice-Mixed Debris, IMD). Per questa fase si ricorre all'impiego del Normalized Difference Glacier Index (NDGI), calcolato sulle bande Verde e Rossa o NIR. Il suo utilizzo evidenzia i gradienti intermedi dove lo spessore del detrito è modesto e la radianza risente ancora del ghiaccio retrostante. 
-
-
-The Normalized Difference Snow Index (NDSI) has been used previously for discrimination of snow/ice‐bearing zones versus debris. Two new indices, the Normalized Difference Glacier Index (NDGI) and the Normalized Difference Snow Ice Index (NDSII), are presented. The combination of all three indices allows discrimination of snow, ice and IMD in a systematic manner.
-
 ## Workflow
 1. NDWI e maschera = (B3 - B8) / (B3 + B8)
 2. NDVI per vegetazione = (B8 - B4) / (B8 + B4)
