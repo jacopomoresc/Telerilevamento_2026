@@ -5,7 +5,8 @@
 // Le immagini sono state prese da: https://earthengine.google.com/
 // Di seguito il codice in JavaScript per scaricare le immagini di Sentinel-2
 
-// Area of Interest: 
+// Area di studio: settore Renardbreen, Scottbreen e Blomlibreen, Bellsund/Recherchefjorden
+// Dati: Sentinel-2 Surface Reflectance Harmonized scaricati da Google Earth Engine
 var aoi = ee.Geometry.Polygon(
         [[[14.075348963955573, 77.57823316518508],
           [14.075348963955573, 77.42532931273963],
@@ -17,6 +18,8 @@ Map.centerObject(aoi, 10);
 // ------------------------------------------------------
 // Estate 2016 
 // ------------------------------------------------------
+
+// Seleziona le immagini Sentinel-2 Surface Reflectance per l'estate 2016
 var s2_2016 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED') //Sentinel-2 Level-2A
   .filterBounds(aoi)
   .filterDate('2016-08-01', '2016-08-31')
@@ -24,11 +27,12 @@ var s2_2016 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED') //Sentinel-2 Lev
 
 print('Conteggio immagini estate 2016:', s2_2016.size());
 
-// Crea il composito mediano e seleziona le bande necessarie
+// Crea il composito mediano per ridurre rumore e differenze tra singole acquisizioni
 var img_2016 = s2_2016.median()
   .select(['B2', 'B3', 'B4', 'B8', 'B11', 'B12'])
   .clip(aoi);
-  
+
+// Visualizzazione composito 2016 RGB
 Map.addLayer(
   img_2016,
   {bands: ['B4', 'B3', 'B2'], min: 0, max: 6000},
@@ -50,6 +54,7 @@ Export.image.toDrive({
 // Estate 2020 
 // ------------------------------------------------------
 
+// Seleziona le immagini Sentinel-2 Surface Reflectance per l'estate 2020
 var s2_2020 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(aoi)
   .filterDate('2020-08-01', '2020-08-31')
@@ -57,11 +62,12 @@ var s2_2020 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
 
 print('Conteggio immagini estate 2020:', s2_2020.size());
 
-// Crea il composito mediano e seleziona le bande necessarie
+// Crea il composito mediano per ridurre rumore e differenze tra singole acquisizioni
 var img_2020 = s2_2020.median()
   .select(['B2', 'B3', 'B4', 'B8', 'B11', 'B12'])
   .clip(aoi);
-  
+
+// Visualizzazione composito 2020 RGB
 Map.addLayer(
   img_2020,
   {bands: ['B4', 'B3', 'B2'], min: 0, max: 6000},
@@ -82,6 +88,8 @@ Export.image.toDrive({
 // ------------------------------------------------------
 // Estate 2024 
 // ------------------------------------------------------
+
+// Seleziona le immagini Sentinel-2 Surface Reflectance per l'estate 2024
 var s2_2024 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(aoi)
   .filterDate('2024-08-01', '2024-08-31')
@@ -89,11 +97,12 @@ var s2_2024 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
 
 print('Conteggio immagini estate 2024:', s2_2024.size());
 
-// Crea il composito mediano e seleziona le bande necessarie
+// Crea il composito mediano per ridurre rumore e differenze tra singole acquisizioni
 var img_2024 = s2_2024.median()
   .select(['B2', 'B3', 'B4', 'B8', 'B11', 'B12'])
   .clip(aoi);
-  
+
+// Visualizzazione composito 2024 RGB
 Map.addLayer(
   img_2024,
   {bands: ['B4', 'B3', 'B2'], min: 0, max: 6000},
