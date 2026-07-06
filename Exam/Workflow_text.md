@@ -4,10 +4,12 @@
 
 # 1. Introduzione
 
+## Obiettivo
 | Analizzare la variazione recente dell’area glaciale di Renardbreen, Scottbreen e Blomlibreen tra 2016, 2020 e 2024, usando immagini Sentinel-2 estive e indici spettrali per distinguere ghiaccio/neve, roccia, acqua e superfici non glaciali. 
 
 | I tre ghiacciai mostrano una riduzione dell’area glaciale tra 2016 e 2024, e questa riduzione è simile o diversa tra ghiacciai di dimensione diversa?
 
+## Teoria di Base - Da rielaborare
 Nel dominio del visibile (VIS, lunghezze d'onda tra $0.4\ \mu\text{m}$ e $0.7\ \mu\text{m}$), e in particolare nelle bande del blu e del verde, la neve fresca e il ghiaccio pulito (clean ice) esibiscono una riflettanza eccezionalmente elevata, spesso superiore all'80-90% della radiazione solare incidente. Questa caratteristica conferisce ai ghiacciai la loro tipica luminosità abbagliante. L'alto grado di riflessione nel visibile è primariamente dominato dallo scattering multiplo all'interno della matrice dei cristalli di ghiaccio, dove l'assorbimento è minimo.
 Nel vicino infrarosso (NIR, $\sim0.8 - 1.1\ \mu\text{m}$), la riflettanza inizia a decrescere progressivamente, influenzata principalmente dalla dimensione equivalente dei grani di neve. 
 
