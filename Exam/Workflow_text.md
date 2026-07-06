@@ -87,4 +87,6 @@ perchè sentinel 2 e dove sono stati presi i dati e con quali impostazioni:
 2. Mohammadi, B., Pilesjö, P., & Duan, Z. (2023). The superiority of the Adjusted Normalized Difference Snow Index (ANDSI) for mapping glaciers using Sentinel-2 multispectral satellite imagery. GIScience & Remote Sensing, 60(1). https://doi.org/10.1080/15481603.2023.2257978
 3. Keshri, A., Shukla, A., & Gupta, R. P. (2009). ASTER ratio indices for supraglacial terrain mapping. International Journal of Remote Sensing, 30(2), 519–524. https://doi.org/10.1080/01431160802385459
 4. McFEETERS, S. K. (1996). The use of the Normalized Difference Water Index (NDWI) in the delineation of open water features. International Journal of Remote Sensing, 17(7), 1425–1432. https://doi.org/10.1080/01431169608948714
-5. 
+5. Lith, A., G. Moholdt & J. Kohler. 2021. Svalbard glacier inventory based on Sentinel-2 imagery from summer 2020 [Data set]. Norwegian Polar Institute. https://data.npolar.no/dataset/1b8631bf-7710-449a-a56f-0da1a4fef608
+6. König, M., Kohler, J., & Nuth, C. (2013). Glacier Area Outlines - Svalbard 1936-2010 [Dataset]. Norwegian Polar Institute. https://doi.org/10.21334/NPOLAR.2013.89F430F8
+
