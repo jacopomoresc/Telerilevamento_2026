@@ -6,7 +6,7 @@ TUTTO QUESTO E' DA RISCRIVERE
 # 1. Introduzione
 
 ## Area di studio
-_L'area di studio è situata nella porzione occidentale dell'isola di Spitsbergen, nell'arcipelago delle Svalbard (Norvegia), all'interno del settore del Recherchefjorden nella wedel jarlsberg, un ramo del fiordo Bellsund, approssimativamente compreso tra 77.43–77.58° N e 14.08–14.57° E.
+_L'area di studio è situata nella porzione occidentale dell'isola di Spitsbergen, nell'arcipelago delle Svalbard (Norvegia), all'interno del settore nord-occidentale del Recherchefjorden nella wedel jarlsberg, un ramo del fiordo Bellsund, approssimativamente compreso tra 77.43–77.58° N e 14.08–14.57° E. 
 L'analisi è focalizzata su tre ghiacciai costieri: Renardbreen, Scottbreen e Blomlibreen, scelti perché appartenenti allo stesso contesto climatico e geomorfologico, ma caratterizzati da dimensioni differenti e da una diversa risposta alle recenti variazioni climatiche._
 
 **Perchè ho scelto quest'area?**
