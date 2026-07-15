@@ -3,22 +3,89 @@
 TUTTO QUESTO E' DA RISCRIVERE 
 # Abstract
 
-# 1. Introduzione
+# 1. Introduzione 📌
+Le Svalbard rappresentano una delle regioni artiche più sensibili al riscaldamento climatico in atto, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti basati su fonti storiche e geomorfologiche documentano, per questi e altri ghiacciai, un arretramento marcato - alternato solo da fasi di avanzata legate a eventi di *surge* - e di una consistente perdita di massa.(Zagorski et al.). Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura di neve e ghiaccio stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
 
-## Area di studio
-_L'area di studio è situata nella porzione sud occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del settore nord-occidentale del Recherchefjorden e della costa meridionale di Bellsund. Più precisamente, l’area compresa tra 77.43–77.58° N e 14.08–14.57° E rientra nella regione Wedel Jarlsberg Land all'interno del Sør-Spitsbergen National Park. 
-L'analisi è focalizzata su tre ghiacciai costieri: Renardbreen, Scottbreen e Blomlibreen, scelti perché appartenenti allo stesso contesto climatico e geomorfologico, ma caratterizzati da dimensioni differenti e da una diversa risposta alle recenti variazioni climatiche._
+## Area di studio 🛰️
+L’area di studio è situata nella porzione sud-occidentale dell’isola di Spitsbergen, nell’arcipelago norvegese delle Svalbard, all’interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N e 14°E). Nel ritaglio considerato sono presenti Renardbreen - un ghiacciaio vallivo che in passato terminava in mare - Scottbreen, Blomlibreen e alcune superfici glaciali minori. 
 
-L’area di studio è situata nella porzione sud-occidentale dell’isola di Spitsbergen, nell’arcipelago norvegese delle Svalbard, all’interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N e 14°E). Vi è un sistema glaciale articolato in cui spiccano Renardbreen, un ghiacciaio vallivo che in passato terminava in mare, Scottbreen, Blomlibreen e alcune superfici glaciali minori nel quale ghiacciai di dimensioni e caratteristiche differenti rispondono alle medesime condizioni ambientali regionali: clima artico influenzato dalla corrente nord-atlantica e dal ghiaccio marino artico.  
+<p align="center">
+  <img src="Images/Svalard_AOI_print.png" width="850">
+</p>
 
-Sono presenti Renardbreen, un ghiacciaio vallivo che in passato terminava in mare, Scottbreen, Blomlibreen e alcune superfici glaciali minori. Il clima è artico influenzato dalla corrente nord-atlantica e dal ghiaccio marino artico. 
+> Figura 1. Localizzazione dell’area di studio nel settore sud-occidentale di Spitsbergen, Svalbard.</em>
 
-Nel ritaglio considerato sono presenti Renardbreen, il ghiacciaio di maggiore estensione all’interno dell’area analizzata, Scottbreen, Blomlibreen e alcune superfici glaciali minori. Renardbreen è un ghiacciaio vallivo che in passato terminava in mare, mentre Scottbreen è classificato come ghiacciaio vallivo. L’area è quindi caratterizzata da un sistema glaciale articolato, nel quale ghiacciai di dimensioni e caratteristiche differenti rispondono alle medesime condizioni ambientali regionali: clima artico influenzato dalla corrente nord-atlantica e dal ghiaccio marino artico. 
+## Obiettivo 🎯
+L'obiettivo del progetto è stimare la variazione della copertura di neve/ghiaccio nell'area di studio tra il 2016 e il 2024, utilizzando immagini Sentinel-2 attraverso il calcolo di indici spettrali e un'analisi multitemporale. L'ipotesi di partenza è che tale estensione si riduca per effetto del riscaldamento climatico..
 
-## Obiettivo
-| Analizzare la variazione recente dell’area glaciale di Renardbreen, Scottbreen e Blomlibreen tra 2016, 2020 e 2024, usando immagini Sentinel-2 estive e indici spettrali per distinguere ghiaccio/neve, roccia, acqua e superfici non glaciali. 
+# 2. Materiali e Metodi 📌
 
-| I tre ghiacciai mostrano una riduzione dell’area glaciale tra 2016 e 2024, e questa riduzione è simile o diversa tra ghiacciai di dimensione diversa?
+## Raccolta delle immagini📂 
+Le immagini satellitari sono state scaricate da [**Google Earth Engine**](https://earthengine.google.com/) (GEE) selezionando l'area di studio nelle date indicate.
+
+> [!NOTE]
+> Il codice completo JavaScript utilizzato è quello fornito durante il corso ed è disponibile nel file Code.js
+
+
+# 4. Materiali e Metodi 
+
+## 4.1 Dati utilizzati 🧪
+
+Le immagini satellitari sono state ottenute tramite [**Google Earth Engine**](https://earthengine.google.com/) (GEE), una piattaforma cloud che permette di accedere e processare direttamente l'archivio satellitare pubblico (tra cui Sentinel-2), senza doverlo scaricare localmente: è possibile filtrare le scene per area, intervallo di date e copertura nuvolosa, e ottenere ed esportare l'immagine risultante già ritagliata sull'area di interesse.
+
+Sono state selezionate immagini **Sentinel-2**, filtrate impostando una copertura nuvolosa massima del 10% (`CLOUDY_PIXEL_PERCENTAGE < 10`), per minimizzare l'interferenza delle nuvole sulla classificazione degli indici spettrali.
+
+Sono state selezionate immagini acquisite durante la stagione estiva (luglio–agosto) degli anni 2016, 2020 e 2024, corrispondenti a un intervallo temporale di circa otto anni. La scelta del periodo estivo è motivata dal fatto che rappresenta la fase di massima ablazione glaciale, durante la quale la copertura nevosa stagionale è generalmente ridotta e risulta quindi più semplice distinguere il ghiaccio permanente dalle superfici circostanti.
+
+Per ciascun anno sono state scaricate le bande Sentinel-2 riportate in tabella, utilizzate poi per il calcolo degli indici spettrali:
+
+| Banda | Nome | Risoluzione | Indice/uso |
+|---|---|---|---|
+| B2 | Blue | 10 m | Composizione RGB |
+| B3 | Green | 10 m | NDSI, NDWI |
+| B4 | Red | 10 m | NDVI, composizione RGB |
+| B8 | NIR | 10 m | NDWI, NDVI, filtro NIR |
+| B11 | SWIR1 | 20 m | NDSI |
+
+> [!NOTE]
+> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file `Code.js`.
+
+
+
+## Importazione e visualizzazione delle immagini 💻 
+Una volta ottenute le immagini satellitari le carichiamo su R impostando una working directory:
+
+````r
+setwd("~/Desktop/TELERILEVAMENTO_R")
+````
+
+## 2.1 Dati utilizzati - Spiegazione codice Js
+Per l'analisi sono state utilizzate tre immagini Sentinel-2 dell'area, 
+acquisite a fine estate (late summer) negli anni 2016, 2020 e 2024: la 
+finestra temporale di fine stagione riduce l'interferenza della neve 
+fresca stagionale, concentrando l'analisi sulla componente di ghiaccio 
+più stabile. Per il 2020 sono inoltre disponibili gli outlines glaciali 
+ufficiali del Norwegian Polar Institute (NPI), utilizzati come 
+riferimento indipendente per la validazione della classificazione.
+
+perchè sentinel 2 e dove sono stati presi i dati e con quali impostazioni: 
+- copertura nuvolosa 10%,
+- GEE cosa permette di fare,
+- quali anni (2016-2024) perchè fine estate (problema di neve sciolta): _Sono state selezionate immagini acquisite durante la stagione estiva (luglio–agosto) degli anni 2016, 2020 e 2024, corrispondenti a un intervallo temporale di circa otto anni. La scelta del periodo estivo è motivata dal fatto che rappresenta la fase di massima ablazione glaciale, durante la quale la copertura nevosa stagionale è generalmente ridotta e risulta quindi più semplice distinguere il ghiaccio permanente dalle superfici circostanti._,
+- bande scaricate e in che indici le uso (fare una tabella per semplificare la visione)
+
+> [!Note]
+> 
+> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file Code.js
+
+> **Commento**
+> 
+> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file Code.js
+
+
+### 2.2 Procedimento - Rstudio
+
+
 
 ## Teoria di Base - Da rielaborare
 Nel dominio del visibile (VIS, lunghezze d'onda tra $0.4\ \mu\text{m}$ e $0.7\ \mu\text{m}$), e in particolare nelle bande del blu e del verde, la neve fresca e il ghiaccio pulito (clean ice) esibiscono una riflettanza eccezionalmente elevata, spesso superiore all'80-90% della radiazione solare incidente. Questa caratteristica conferisce ai ghiacciai la loro tipica luminosità abbagliante. L'alto grado di riflessione nel visibile è primariamente dominato dallo scattering multiplo all'interno della matrice dei cristalli di ghiaccio, dove l'assorbimento è minimo.
@@ -46,37 +113,6 @@ Per trasformare l'indcie da gradiente continuo a una mappa di classificazione bi
 Il tracciamento dei ghiacciai neri necessita di flussi di lavoro eterogenei, i cui due assi portanti sono il telerilevamento termico e i sensori attivi. 
 
 
-### ANDSI
-Sviluppato dal team di Mohammadi et al. (2023) con esplicito focus sui dati multispettrali Sentinel-2, costituisce attualmente uno degli strumenti più raffinati per mappare la topologia dei ghiacciai in zone ad alta densità idrologica. 
-
-## Workflow
-1. NDWI e maschera = (B3 - B8) / (B3 + B8)
-2. NDVI per vegetazione = (B8 - B4) / (B8 + B4)
-3. NDSI - Classificazione principale = (B3 - B11) / (B3 + B11)
-4. ANDSI = (CSI x NDSI) / (CSI + NDSI) = [B8 × (B3 + B11) − B12 × (B3 − B11)] / [B8 × (B3 + B11) + B12 × (B3 − B11)]
-            CSI = (B8 + B3 - B11) (B8 - B3 - B11)
-? 5. NDSII ghiaccio-roccia e superfici miste = (B4 - B11) / (B4 + B11) ? 
-
-# 2. Materiali e Metodi
-
-## 2.1 Dati utilizzati - Spiegazione codice Js
-perchè sentinel 2 e dove sono stati presi i dati e con quali impostazioni: 
-- copertura nuvolosa 10%,
-- GEE cosa permette di fare,
-- quali anni (2016-2024) perchè fine estate (problema di neve sciolta): _Sono state selezionate immagini acquisite durante la stagione estiva (luglio–agosto) degli anni 2016, 2020 e 2024, corrispondenti a un intervallo temporale di circa otto anni. La scelta del periodo estivo è motivata dal fatto che rappresenta la fase di massima ablazione glaciale, durante la quale la copertura nevosa stagionale è generalmente ridotta e risulta quindi più semplice distinguere il ghiaccio permanente dalle superfici circostanti._,
-- bande scaricate e in che indici le uso (fare una tabella per semplificare la visione)
-
-> [!Note]
-> 
-> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file Code.js
-
-> **Commento**
-> 
-> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file Code.js
-
-**breve cenno di workflow**
-
-### 2.2 Procedimento - Rstudio
 
 # 3. Risultati e Discussione
 
