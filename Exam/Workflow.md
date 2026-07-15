@@ -268,7 +268,8 @@ dev.off()
 
 > **Commento**
 >
-> Le aree a NDWI più elevato corrispondono chiaramente al mare aperto del Bellsund/Recherchefjorden, nettamente separate dai corpi glaciali che restano su valori negativi o prossimi allo zero. Il pannello ΔNDWI evidenzia le variazioni più marcate in corrispondenza della linea di costa e delle aree proglaciali, coerentemente con l'ipotesi che i cambiamenti più significativi in questo indice riguardino l'interfaccia terra-mare piuttosto che l'interno dei ghiacciai.
+> La mappa NDWI separa nettamente il mare aperto del Bellsund/Recherchefjorden (valori elevati) dai corpi glaciali, che restano su valori negativi o prossimi allo zero: questa netta distinzione conferma che l'indice è **efficace nel discriminare l'acqua dal ghiaccio**, ed è proprio ciò che lo rende utile come filtro nella classificazione del capitolo 4. Il pannello ΔNDWI mostra le variazioni più marcate lungo la linea di costa e nelle aree proglaciali, mentre l'interno dei ghiacciai resta più stabile: un segnale che rafforza l'idea che l'NDWI stia isolando correttamente la componente acquosa, senza "sporcare" la lettura del ghiaccio vero e proprio.
+
 
 ## NDVI - Normalized Difference Vegetation Index
 
@@ -297,9 +298,10 @@ dev.off()
 
 > Figura 8. NDVI nei tre anni e relativa differenza (ΔNDVI, 2024-2016).
 
+
 > **Commento**
 >
-> I valori di NDVI restano contenuti su gran parte dell'area, coerentemente con un ambiente artico a vegetazione scarsa: la maggior parte della superficie si colloca vicino allo zero o su valori leggermente negativi, con isolate zone a NDVI più alto concentrate nelle aree libere dal ghiaccio (morene, terreni costieri). Il pannello ΔNDVI 2024-2016 non mostra variazioni sistematiche di grande entità sui corpi glaciali, confermando che questo indice ha in questo progetto soprattutto una funzione di **filtro** nella classificazione (capitolo 4), più che di indicatore centrale del cambiamento.
+> I valori di NDVI restano contenuti su gran parte dell'area, coerentemente con un ambiente artico a vegetazione scarsa: la maggior parte della superficie si colloca vicino allo zero o su valori leggermente negativi, con isolate zone a NDVI più alto concentrate nelle aree libere dal ghiaccio (morene, terreni costieri). Il pannello ΔNDVI 2024-2016 non mostra variazioni sistematiche di grande entità, un risultato in linea con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), più che per un ruolo attivo nella classificazione del ghiaccio, dove i valori così contenuti e poco variabili non offrono un potere discriminante utile.
 
 ## Confronto delle variazioni multitemporali
 
@@ -322,7 +324,7 @@ dev.off()
 
 > **Commento**
 >
-> Il confronto affiancato delle tre differenze mostra chiaramente come i segnali di cambiamento più forti (ΔNDWI, in corrispondenza della costa) e più deboli/diffusi (ΔNDVI) si collochino in porzioni diverse dell'area di studio rispetto al ΔNDSI, che si concentra sui margini glaciali. Questo conferma che i tre indici stanno leggendo fenomeni spazialmente distinti — mare, vegetazione/terreno esposto, neve/ghiaccio — e giustifica il loro uso combinato nella classificazione successiva, dove NDWI e NDVI servono a **ripulire** l'NDSI dai falsi positivi originati da queste stesse superfici.
+> Il confronto affiancato delle tre differenze mostra come i segnali di cambiamento più marcati si distribuiscano in porzioni diverse dell'area di studio: il ΔNDWI si concentra lungo la costa e le aree proglaciali, il ΔNDSI ai margini dei ghiacciai, mentre il ΔNDVI resta diffuso e di **bassa intensità** su tutta l'area. Questo conferma che NDSI e NDWI stanno leggendo fenomeni spazialmente distinti ma complementari — rispettivamente ghiaccio e acqua — il che giustifica il loro uso combinato nella classificazione del capitolo 4. L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, non presenta variazioni sufficientemente marcate da fornire un contributo discriminante analogo nella classificazione, e nel progetto resta quindi un indicatore **complementare** di monitoraggio ambientale piuttosto che un filtro operativo.
 
 ## Ridgeline plot
 
