@@ -492,6 +492,8 @@ calculate_confusion_matrix <- function(classified_raster, method, output_file) {
 }
 ```
 
+# DOMANI SI CONTINUA DA QUA
+
 ### Metodo 1 — Solo NDSI 1️⃣
 
 ```r
