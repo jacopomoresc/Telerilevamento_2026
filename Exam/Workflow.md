@@ -44,7 +44,7 @@ Per ciascun anno sono state scaricate le bande Sentinel-2 riportate in tabella, 
 |---|---|---|
 | B2 | Blue | Composizione RGB |
 | B3 | Green | Composizione RGB, NDSI, NDWI |
-| B4 | Red | NDVI, Composizione RGB |
+| B4 | Red | Composizione RGB, NDVI |
 | B8 | NIR | NDWI, NDVI, filtro NIR |
 | B11 | SWIR1 | NDSI |
 
@@ -137,9 +137,9 @@ dev.off()
 
 > Figura 2. Composizione RGB (bande 4-3-2) a confronto tra 2016, 2020 e 2024.
 
-Sono state poi visualizzate singolarmente le cinque bande disponibili per ciascun anno, per verificare la qualità radiometrica delle immagini e la corrispondenza tra bande e superfici osservabili (neve, roccia, acqua, ombre) prima di calcolare gli indici.
-
 ### Le cinque bande del 2020
+
+Sono state poi visualizzate singolarmente le cinque bande disponibili per ciascun anno (è stata inserita solo l'immagine del 2020 per non appesantire troppo il documento), per verificare la qualità radiometrica delle immagini e la corrispondenza tra bande e superfici osservabili (neve, roccia, acqua, ombre) prima di calcolare gli indici.
 ```r
 png("output/bands_2020.png", width = 2200, height = 1400, res = 200)
 im.multiframe(2,3)
@@ -157,10 +157,9 @@ dev.off()
 
 > Figura 3. Le cinque bande Sentinel-2 disponibili per il 2020.
 
-
+### Bande del visibile: confronto dei tre anni
 Prima di calcolare gli indici spettrali, le bande del visibile e le bande NIR/SWIR1 sono state confrontate  tra i tre anni: le prime sono propedeutiche a NDVI e alla composizione RGB, le seconde a NDSI e NDWI.
 
-### Bande del visibile: confronto dei tre anni
 ```r
 png("output/visible_bands.png", width = 2600, height = 2200, res = 200)
 im.multiframe(3, 3)
