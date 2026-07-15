@@ -25,7 +25,7 @@ Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzam
 
 L'obiettivo del progetto è stimare la variazione della copertura di neve/ghiaccio nell'area di studio tra il 2016 e il 2024, utilizzando immagini Sentinel-2 attraverso il calcolo di indici spettrali e un'analisi multitemporale, nell'ipotesi che tale estensione si riduca per effetto del riscaldamento climatico in atto alle Svalbard.
 
-# 2. Materiali e Metodi 📌
+# 2. Materiali e Metodi 🧪
 
 ## 2.1 Raccolta delle immagini 📂
 
@@ -114,11 +114,11 @@ study_glaciers_2020 <- crop(glacier_outlines_2020_proj, image_2020)
 writeVector(study_glaciers_2020, "data_processed/study_glaciers_2020.gpkg", overwrite = TRUE)
 ```
 
-## Visualizzazione RGB e bande 🎨
+## Visualizzazione RGB e bande 🌈
 
 Una prima composizione a colori naturali (bande 4-3-2) è stata prodotta per i tre anni, utile per farsi un'idea generale della copertura del terreno e della qualità delle immagini prima di procedere al calcolo degli indici.
 
-### Visualizzazione RGB
+### Visualizzazione RGB 🎨
 ```r
 png("output/rgb_multitemporal_glaciers.png", width = 2150, height = 1150, res = 200)
 im.multiframe(1,3)
@@ -137,7 +137,7 @@ dev.off()
 
 > Figura 2. Composizione RGB (bande 4-3-2) a confronto tra 2016, 2020 e 2024.
 
-### Le cinque bande del 2020
+### Le cinque bande del 2020 🔎
 
 Sono state poi visualizzate singolarmente le cinque bande disponibili per ciascun anno (è stata inserita solo l'immagine del 2020 per non appesantire troppo il documento), per verificare la qualità radiometrica delle immagini e la corrispondenza tra bande e superfici osservabili (neve, roccia, acqua, ombre) prima di calcolare gli indici.
 ```r
@@ -157,7 +157,7 @@ dev.off()
 
 > Figura 3. Le cinque bande Sentinel-2 disponibili per il 2020.
 
-### Bande del visibile: confronto dei tre anni
+### Bande del visibile: confronto dei tre anni 👁️
 Prima di calcolare gli indici spettrali, le bande del visibile e le bande NIR/SWIR1 sono state confrontate  tra i tre anni: le prime sono propedeutiche a NDVI e alla composizione RGB, le seconde a NDSI e NDWI.
 
 ```r
@@ -181,7 +181,7 @@ dev.off()
 
 > Figura 4. Bande del visibile (B2, B3, B4) a confronto tra 2016, 2020 e 2024.
 
-### Bande NIR e SWIR: confronto dei tre anni
+### Bande NIR e SWIR: confronto dei tre anni 📡
 
 ```r
 png("output/nir_swir_bands.png", width = 1600, height = 2200, res = 200)
@@ -205,7 +205,7 @@ dev.off()
 
 Per caratterizzare la copertura di neve/ghiaccio, l'acqua e la vegetazione sono stati calcolati tre indici spettrali normalizzati: **NDSI**, **NDWI** e **NDVI**. Ciascun indice è stato calcolato per i tre anni, e la relativa variazione temporale è stata ottenuta come differenza tra il 2024 e il 2016 (*Δindice = indice_2024 - indice_2016*): valori **positivi** indicano un aumento dell'indice nel 2024, valori **negativi** una diminuzione.
 
-## NDSI - Normalized Difference Snow Index
+## NDSI - Normalized Difference Snow Index ❄️
 
 $$ NDSI = \frac{Green - SWIR1}{Green + SWIR1} $$
 
@@ -238,7 +238,7 @@ Nei tre anni la mappa NDSI mostra un pattern spaziale coerente: i valori più **
 
 Nel pannello ΔNDSI la maggior parte dell'area glaciale interna appare in colori intermedi (variazione contenuta, vicina allo zero), mentre le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
 
-## NDWI - Normalized Difference Water Index
+## NDWI - Normalized Difference Water Index 🌊
 
 $$ NDWI = \frac{Green - NIR}{Green + NIR} $$
 
@@ -270,7 +270,7 @@ La mappa NDWI separa nettamente il mare aperto del Bellsund/Recherchefjorden (va
 Il pannello ΔNDWI mostra le variazioni più marcate lungo la linea di costa e nelle aree proglaciali, mentre l'interno dei ghiacciai resta più stabile: un segnale che rafforza l'idea che l'NDWI stia isolando correttamente la componente acquosa, senza "sporcare" la lettura del ghiaccio vero e proprio.
 
 
-## NDVI - Normalized Difference Vegetation Index
+## NDVI - Normalized Difference Vegetation Index 🌿
 
 $$ NDVI = \frac{NIR - Red}{NIR + Red} $$
 
@@ -301,7 +301,7 @@ I valori di NDVI restano contenuti su gran parte dell'area, coerentemente con un
 
 Il pannello ΔNDVI 2024-2016 non mostra variazioni sistematiche di grande entità, un risultato in linea con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), più che per un ruolo attivo nella classificazione del ghiaccio, dove i valori così contenuti e poco variabili non offrono un potere discriminante utile.
 
-## Confronto delle variazioni multitemporali
+## Confronto delle variazioni multitemporali 🔀
 
 Le tre differenze (ΔNDSI, ΔNDWI, ΔNDVI) sono state confrontate **fianco a fianco** per avere un quadro sintetico di come le tre componenti spettrali si siano modificate tra il 2016 e il 2024 nella stessa area.
 
@@ -324,6 +324,358 @@ Il confronto affiancato delle tre differenze mostra come i segnali di cambiament
 
 L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, non presenta variazioni sufficientemente marcate da fornire un contributo discriminante analogo nella classificazione, e nel progetto resta quindi un indicatore **complementare** di monitoraggio ambientale piuttosto che un filtro operativo.
 
+## 2.4 Classificazione della copertura neve/ghiaccio 🧊
+
+La classificazione binaria (neve/ghiaccio vs. non neve/ghiaccio) è stata validata sul 2020, l'unico anno per cui sono disponibili gli outlines glaciali ufficiali del Norwegian Polar Institute. La stessa soglia viene poi applicata anche al 2016 e al 2024, per garantire la confrontabilità tra le tre epoche.
+
+La confusion matrix spaziale è costruita combinando aritmeticamente il raster classificato con il raster di riferimento (`classificato + 2 × riferimento`), ottenendo quattro classi:
+
+| Codice | Significato |
+|---|---|
+| 0 (TN) | classificato NON neve/ghiaccio, esterno agli outlines |
+| 1 (FP) | classificato neve/ghiaccio, ma esterno agli outlines |
+| 2 (FN) | classificato NON neve/ghiaccio, ma interno agli outlines |
+| 3 (TP) | classificato neve/ghiaccio, interno agli outlines |
+
+```r
+# Rasterizzazione degli outlines ufficiali sulla griglia del raster classificato
+# 1 = area interna agli outlines glaciali; 0 = area esterna agli outlines
+reference_ice <- rasterize(study_glaciers_2020, ice_2020_ndsi, field = 1, background = 0)
+```
+
+Da questi conteggi vengono calcolate tre metriche standard di validazione:
+
+1. **Accuracy**
+
+$$ Accuracy = \frac{TP + TN}{TP + TN + FP + FN} $$
+
+Misura la percentuale di pixel classificati correttamente, **su entrambe le classi** (neve/ghiaccio e non). È la metrica più intuitiva, ma può essere fuorviante quando le due classi sono molto sbilanciate: nell'area di studio i pixel esterni agli outlines sono molto più numerosi di quelli glaciali, quindi un'Accuracy alta può in parte riflettere semplicemente la facilità di riconoscere correttamente il "non ghiaccio", più che la reale qualità della classificazione del ghiaccio.
+
+2. **Recall (sensibilità)**
+
+  $$ Recall = \frac{TP}{TP + FN} $$
+  
+Risponde alla domanda: *della superficie realmente glaciale (secondo gli outlines ufficiali), quanta ne viene effettivamente riconosciuta dalla classificazione?* Una Recall bassa indica **omissione**: il metodo lascia fuori porzioni di ghiaccio vero, classificandole erroneamente come non ghiaccio (falsi negativi).
+
+3. **Precision**
+
+  $$ Precision = \frac{TP}{TP + FP} $$
+  
+Risponde alla domanda opposta: *di tutta l'area classificata come neve/ghiaccio, quanta ricade davvero dentro gli outlines ufficiali?* Una Precision bassa indica **sovrastima**: il metodo include aree che non sono realmente ghiaccio (falsi positivi), come acqua, ombre o roccia chiara.
+
+> [!NOTE]
+> Recall e Precision colgono due tipi di errore opposti e complementari: la prima penalizza chi "lascia fuori" ghiaccio vero, la seconda penalizza chi "include" superfici che non lo sono. Un buon metodo di classificazione cerca il miglior compromesso tra le due, non la massimizzazione di una sola.
+
+Il calcolo e la visualizzazione di questi risultati sono affidati a tre funzioni scritte appositamente per il progetto, richiamate identicamente per ciascuno dei quattro metodi testati:
+
+> [!NOTE]
+> **Le tre funzioni del workflow di classificazione**
+>
+> - **`plot_ice_classified()`** — affianca le mappe classificate (neve/ghiaccio vs. non neve/ghiaccio) dei tre anni (2016, 2020, 2024) in un'unica figura, con legenda comune.
+> - **`plot_ice_outlines()`** — sovrappone outlines ufficiali del NPI alla classificazione del 2020 per un controllo visivo diretto di quanto la classe "neve/ghiaccio" combaci con il riferimento.
+> - **`calculate_confusion_matrix()`** — è la funzione centrale: combina il raster classificato con il raster di riferimento (`classificato + 2 × riferimento`), conta i pixel in ciascuna delle quattro classi (TN, FP, FN, TP), calcola Accuracy, Recall e Precision, produce la mappa spaziale della confusion matrix e restituisce tutti i risultati (tabelle e raster) in un'unica lista, riutilizzabile nel confronto finale tra metodi.
+
+#### plot_ice_classified()
+```r
+plot_ice_classified <- function(raster_2016, raster_2020, raster_2024, method, output_file) {
+  # raster_2016     raster classificato relativo al 2016
+  # raster_2020     raster classificato relativo al 2020
+  # raster_2024     raster classificato relativo al 2024
+  # method          nome del metodo di classificazione usato nei titoli
+  # output_file     percorso e nome del file PNG finale
+
+  rasters <- c(raster_2016, raster_2020, raster_2024)   # unisce i tre raster in un unico oggetto multilayer
+  years <- c(2016, 2020, 2024)                          # vettore con gli anni associati ai tre raster    
+  
+  png(output_file, width = 2100, height = 800, res = 200)  
+  im.multiframe(1, 3)   
+
+  # Ripete lo stesso plot per ciascun anno, con legenda identica
+  for (i in 1:3) { plot(rasters[[i]], col = c("black", "lightcyan"), type = "classes", legend = FALSE,
+         main = paste("Classificazione", method, "-", years[i]))
+    legend("bottomleft", inset = c(0.12, 0.02), xpd = NA, legend = c("Neve/ghiaccio", "Non neve/ghiaccio"),
+    fill = c("lightcyan", "black"), border = "black", cex = 0.8, bg = "white", bty = "o")
+  }
+  dev.off()
+}
+```
+
+#### plot_ice_outlines()
+```r
+plot_ice_outlines <- function(raster, method, output_file) {
+  # raster          raster classificato relativo al 2020
+  # method          nome del metodo di classificazione usato nel titolo
+  # output_file     percorso e nome del file PNG finale
+  
+  png(output_file, width = 1200, height = 1300, res = 200)
+
+  # Plotta il raster con titolo e colori standard
+ plot(raster, col = c("black", "lightcyan"), type = "classes", legend = FALSE,
+       main = paste("Classificazione", method, "e outlines - 2020"))
+  plot(study_glaciers_2020, add = TRUE, border = "red", lwd = 2)
+
+  legend("bottomleft", inset = c(0.13, 0.02), xpd = NA,
+         legend = c("Neve/ghiaccio", "Non neve/ghiaccio", "Outlines glaciali NPI"),
+         fill = c("lightcyan", "black", NA),
+         border = c("black", "black", "red"),
+         cex = 0.8, bg = "white", bty = "o")
+  dev.off()
+}
+```
+
+
+#### calculate_confusion_matrix()
+```r
+calculate_confusion_matrix <- function(classified_raster, method, output_file) {
+
+  # classified_raster     raster binario da confrontare con gli outlines ufficiali
+  # method                nome del metodo riportato nelle tabelle e nel titolo
+  # output_file           percorso e nome del file PNG della confusion matrix spaziale
+
+# Somma pesata: ogni combinazione classificato/riferimento produce un codice univoco
+  # 0 = TN, 1 = FP, 2 = FN, 3 = TP (vedi tabella in relazione)
+  comparison <- classified_raster + 2 * reference_ice
+  cm <- freq(comparison) # Conta il numero di pixel appartenenti alle quattro classi 
+  
+  counts <- setNames(rep(0, 4), 0:3)
+  counts[as.character(cm$value)] <- cm$count
+  
+  TN <- counts["0"]; FP <- counts["1"]; FN <- counts["2"]; TP <- counts["3"]
+  
+  accuracy <- (TP + TN) / (TP + TN + FP + FN) * 100
+  recall <- TP / (TP + FN) * 100
+  precision <- TP / (TP + FP) * 100
+  
+  confusion_table <- data.frame(
+    Classificazione = c("NEVE/GHIACCIO", "NON NEVE/GHIACCIO"),
+    Reference_ICE = c(TP, FN),
+    Reference_NOT_ICE = c(FP, TN)
+  )
+  
+  metrics_table <- data.frame(
+    Metodo = method,
+    TN = as.numeric(TN), FP = as.numeric(FP), FN = as.numeric(FN), TP = as.numeric(TP),
+    Accuracy = round(as.numeric(accuracy), 2),
+    Recall = round(as.numeric(recall), 2),
+    Precision = round(as.numeric(precision), 2)
+  )
+  
+  png(output_file, width = 1200, height = 1300, res = 200)
+  plot(comparison, col = c("grey80", "orange", "red", "darkgreen"),
+       main = paste("Distribuzione spaziale della classificazione -", method),
+       type = "classes", legend = FALSE)
+  legend("bottomleft", inset = c(0.13, 0.02), xpd = NA,
+         legend = c("TN - True Negative", "FP - False Positive",
+                    "FN - False Negative", "TP - True Positive"),
+         fill = c("grey80", "orange", "red", "darkgreen"),
+         cex = 0.8, bg = "white", bty = "o")
+  dev.off()
+  
+  print(confusion_table)
+  print(metrics_table)
+  
+  return(list(comparison = comparison, frequencies = cm,
+              confusion_table = confusion_table, metrics = metrics_table))
+}
+```
+
+### Metodo 1 — Solo NDSI 1️⃣
+
+```r
+png("output/hist_ndsi_2020.png", width = 1500, height = 1300, res = 200)
+hist(ndsi_2020, breaks = 100, main = "Distribuzione NDSI - 2020")
+dev.off() 
+
+# Soglia iniziale verificata tramite confronto con gli outlines ufficiali
+soglia_ndsi <- 0.4
+
+# Matrice di riclassificazione: NDSI < 0.4 = 0, NON NEVE/GHIACCIO; NDSI >= 0.4 = 1, NEVE/GHIACCIO
+ndsi_matrix <- matrix(c(-Inf, soglia_ndsi, 0, soglia_ndsi, Inf, 1), 
+                      ncol = 3, byrow = TRUE)
+
+ice_2016_ndsi <- classify(ndsi_2016, ndsi_matrix)
+ice_2020_ndsi <- classify(ndsi_2020, ndsi_matrix)
+ice_2024_ndsi <- classify(ndsi_2024, ndsi_matrix)
+```
+
+<p align="center">
+  <img src="Images/hist_ndsi_2020.png" width="500">
+</p>
+
+> Figura 13. Distribuzione dei valori di NDSI nel 2020, con la soglia 0.4 scelta al netto separatore tra la componente principale a valori negativi/moderati e il picco a valori prossimi a +1.
+
+```r
+plot_ice_classified(ice_2016_ndsi, ice_2020_ndsi, ice_2024_ndsi,
+                    "NDSI", "output/ice_classification_ndsi.png")
+plot_ice_outlines(ice_2020_ndsi,"NDSI", "output/ndsi_ice_mask_2020.png")
+results_ndsi <- calculate_confusion_matrix(classified_raster = ice_2020_ndsi, 
+                                           method = "NDSI", output_file = "output/confusion_matrix_ndsi.png")
+```
+
+<p align="center">
+  <img src="Images/ndsi_ice_mask_2020.png" width="500">
+</p>
+
+> Figura 14. Classificazione NDSI (soglia 0.4) sovrapposta agli outlines ufficiali NPI, 2020.
+
+<p align="center">
+  <img src="Images/confusion_matrix_ndsi.png" width="500">
+</p>
+
+> Figura 15. Distribuzione spaziale della confusion matrix, metodo NDSI.
+
+Il solo NDSI riproduce correttamente la forma generale dei ghiacciai (ampia area verde di True Positive coincidente con gli outlines), ma mostra una quantità considerevole di **falsi positivi** (arancione) distribuiti soprattutto lungo il margine costiero e nelle aree esterne agli outlines, riconducibili al mare aperto e ad altre superfici con firma spettrale simile alla neve. I falsi negativi (rosso) sono invece limitati e concentrati ai bordi di alcune propaggini glaciali minori. Accuracy = [XX.XX]%, Recall = [XX.XX]%, Precision = [XX.XX]%.
+
+### Metodo 2 — NDSI + NDWI 2️⃣
+
+```r
+png("output/hist_ndwi_2020.png", width = 1500, height = 1300, res = 200)
+hist(ndwi_2020, breaks = 100, main = "Distribuzione NDWI - 2020")
+dev.off() 
+
+# Soglia NDWI i pixel con NDWI >= 0.7 vengono considerati acqua
+soglia_ndwi <- 0.7 # soglia sperimentale verificata con outlines e metriche
+
+# Crea una maschera binaria: NDWI < 0.7 = 1, NON ACQUA; NDWI >= 0.7 = 0, ACQUA
+ndwi_matrix <- matrix(c(-Inf, soglia_ndwi, 1, soglia_ndwi, Inf, 0), ncol = 3, byrow = TRUE)
+
+not_water_2016 <- classify(ndwi_2016, ndwi_matrix)
+not_water_2020 <- classify(ndwi_2020, ndwi_matrix)
+not_water_2024 <- classify(ndwi_2024, ndwi_matrix)
+
+# Mantiene solo i pixel classificati come neve/ghiaccio e contemporaneamente non acqua
+# NDSI >= 0.4 AND NDWI < 0.7
+ice_2016_ndsi_ndwi <- ice_2016_ndsi * not_water_2016
+ice_2020_ndsi_ndwi <- ice_2020_ndsi * not_water_2020
+ice_2024_ndsi_ndwi <- ice_2024_ndsi * not_water_2024
+```
+
+```r
+plot_ice_classified(ice_2016_ndsi_ndwi, ice_2020_ndsi_ndwi, ice_2024_ndsi_ndwi,
+                    "NDSI + NDWI", "output/ice_classification_ndsi_ndwi.png")
+plot_ice_outlines(ice_2020_ndsi_ndwi, "NDSI + NDWI", "output/ndsi_ndwi_ice_mask_2020.png")
+results_ndsi_ndwi <- calculate_confusion_matrix(classified_raster = ice_2020_ndsi_ndwi,
+                                                method = "NDSI + NDWI", output_file = "output/confusion_matrix_ndsi_ndwi.png")
+```
+
+<p align="center">
+  <img src="Images/ndsi_ndwi_ice_mask_2020.png" width="500">
+</p>
+
+> Figura 16. Classificazione NDSI + NDWI sovrapposta agli outlines ufficiali NPI, 2020.
+
+<p align="center">
+  <img src="Images/confusion_matrix_ndsi_ndwi.png" width="500">
+</p>
+
+> Figura 17. Distribuzione spaziale della confusion matrix, metodo NDSI + NDWI.
+
+Rispetto al solo NDSI, l'aggiunta del filtro NDWI **riduce visibilmente i falsi positivi** lungo il margine costiero e in mare aperto, senza intaccare in modo apprezzabile l'area di True Positive: il filtro rimuove correttamente l'acqua senza "mangiare" ghiaccio reale. Accuracy = [XX.XX]%, Recall = [XX.XX]%, Precision = [XX.XX]%.
+
+### Metodo 3 — NDSI + NIR 3️⃣
+
+```r
+png("output/hist_B8_2020.png", width = 1500, height = 1300, res = 200)
+hist(image_2020[["B8"]], breaks = 100, main = "Distribuzione B8 - 2020")
+dev.off()
+
+# Soglia NIR per escludere i pixel con riflettanza troppo bassa
+soglia_nir <- 400 # soglia sperimentale verificata con outlines e metriche
+
+# Matrice di riclassificazione: # NIR < 400 = 0; # NIR >= 400 = 1
+nir_matrix <- matrix(c(-Inf, soglia_nir, 0, soglia_nir, Inf, 1), ncol = 3, byrow = TRUE)
+
+nir_mask_2016 <- classify(image_2016[["B8"]], nir_matrix)
+nir_mask_2020 <- classify(image_2020[["B8"]], nir_matrix)
+nir_mask_2024 <- classify(image_2024[["B8"]], nir_matrix)
+
+# Combinazione delle due condizioni:
+# neve/ghiaccio = NDSI >= 0.4 AND NIR >= 400
+ice_2016_ndsi_nir <- ice_2016_ndsi * nir_mask_2016
+ice_2020_ndsi_nir <- ice_2020_ndsi * nir_mask_2020
+ice_2024_ndsi_nir <- ice_2024_ndsi * nir_mask_2024
+```
+
+```r
+plot_ice_classified(ice_2016_ndsi_nir, ice_2020_ndsi_nir, ice_2024_ndsi_nir,
+                    "NDSI + NIR", "output/ice_classification_ndsi_nir.png")
+plot_ice_outlines(ice_2020_ndsi_nir, "NDSI + NIR", "output/ndsi_nir_ice_mask_2020.png")
+results_ndsi_nir <- calculate_confusion_matrix(classified_raster = ice_2020_ndsi_nir,
+                                               method = "NDSI + NIR", output_file = "output/confusion_matrix_ndsi_nir.png")
+```
+
+<p align="center">
+  <img src="Images/ndsi_nir_ice_mask_2020.png" width="500">
+</p>
+
+> Figura 18. Classificazione NDSI + NIR sovrapposta agli outlines ufficiali NPI, 2020.
+
+<p align="center">
+  <img src="Images/confusion_matrix_ndsi_nir.png" width="500">
+</p>
+
+> Figura 19. Distribuzione spaziale della confusion matrix, metodo NDSI + NIR.
+
+Il filtro NIR riduce i falsi positivi in modo simile al filtro NDWI, ma introduce un blocco compatto di **falsi negativi** (rosso) in una zona a sud-est del corpo glaciale principale, dove pixel realmente interni agli outlines vengono esclusi perché la loro riflettanza NIR scende sotto la soglia di 400 — verosimilmente per la presenza di ombra o ghiaccio ricoperto da detrito superficiale, meno riflettente nel NIR. Accuracy = [XX.XX]%, Recall = [XX.XX]%, Precision = [XX.XX]%.
+
+### Metodo 4 — NDSI + NDVI 4️⃣
+
+```r
+png("output/hist_ndvi_2020.png", width = 1500, height = 1300, res = 200)
+hist(ndvi_2020, breaks = 100, main = "Distribuzione NDVI - 2020")
+dev.off() 
+
+# Soglia NDVI per distinguere vegetazione e non vegetazione
+soglia_ndvi <- 0.3
+
+# Matrice di riclassificazione:
+# NDVI < 0.3 = 1, NON VEGETAZIONE
+# NDVI >= 0.3 = 0, VEGETAZIONE
+ndvi_matrix <- matrix(c(-Inf, soglia_ndvi, 1, soglia_ndvi, Inf, 0), ncol = 3, byrow = TRUE)
+
+not_vegetation_2016 <- classify(ndvi_2016, ndvi_matrix)
+not_vegetation_2020 <- classify(ndvi_2020, ndvi_matrix)
+not_vegetation_2024 <- classify(ndvi_2024, ndvi_matrix)
+
+# Combinazione delle due condizioni:
+# neve/ghiaccio = NDSI >= 0.4 AND NDVI < 0.3
+ice_2016_ndsi_ndvi <- ice_2016_ndsi * not_vegetation_2016
+ice_2020_ndsi_ndvi <- ice_2020_ndsi * not_vegetation_2020
+ice_2024_ndsi_ndvi <- ice_2024_ndsi * not_vegetation_2024
+```
+
+```r
+plot_ice_classified(ice_2016_ndsi_ndvi, ice_2020_ndsi_ndvi, ice_2024_ndsi_ndvi,
+                    "NDSI + NDVI", "output/ice_classification_ndsi_ndvi.png")
+plot_ice_outlines(ice_2020_ndsi_ndvi, "NDSI + NDVI", "output/ndsi_ndvi_ice_mask_2020.png")
+results_ndsi_ndvi <- calculate_confusion_matrix(classified_raster = ice_2020_ndsi_ndvi,
+                                                method = "NDSI + NDVI", output_file = "output/confusion_matrix_ndsi_ndvi.png")
+```
+
+<p align="center">
+  <img src="Images/ndsi_ndvi_ice_mask_2020.png" width="500">
+</p>
+
+> Figura 20. Classificazione NDSI + NDVI sovrapposta agli outlines ufficiali NPI, 2020.
+
+<p align="center">
+  <img src="Images/confusion_matrix_ndsi_ndvi.png" width="500">
+</p>
+
+> Figura 21. Distribuzione spaziale della confusion matrix, metodo NDSI + NDVI.
+
+Coerentemente con quanto osservato nella sezione sugli indici, il filtro NDVI **non modifica in modo sostanziale** la classificazione ottenuta dal solo NDSI: la vegetazione è talmente scarsa nell'area di studio che la maschera "non vegetazione" lascia quasi inalterati sia i falsi positivi sia i falsi negativi. Accuracy = [XX.XX]%, Recall = [XX.XX]%, Precision = [XX.XX]%.
+
+### Confronto tra i metodi ⚖️
+
+```r
+classification_summary <- rbind(results_ndsi$metrics, results_ndsi_ndwi$metrics, results_ndsi_nir$metrics)
+print(classification_summary) 
+```
+
+[qui la tabella `classification_summary` con i valori reali]
+
+Sulla base del confronto, il metodo scelto per l'analisi multitemporale (capitolo 3) è **NDSI + NDWI**: riduce i falsi positivi rispetto al solo NDSI senza introdurre i falsi negativi concentrati osservati con il filtro NIR, e senza la ridondanza del filtro NDVI, che nell'area di studio non discrimina alcuna superficie aggiuntiva.
 
 
 
@@ -347,18 +699,16 @@ L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, no
 
 
 
-
-
-# 4. Risultati e Discussione
-
-
-
-# 5. Conclusioni
+# 4. Risultati e Discussione 📊
 
 
 
-# 6. Fonti
-1. Hall, D.K., Riggs, G.A. (2011). Normalized-Difference Snow Index (NDSI). In: Singh, V.P., Singh, P., Haritashya, U.K. (eds) Encyclopedia of Snow, Ice and Glaciers. Encyclopedia of Earth Sciences Series. Springer, Dordrecht. https://doi.org/10.1007/978-90-481-2642-2_376
+# 5. Conclusioni 📝
+
+
+
+# 6. Fonti 📚
+1. Hall, D.K., Riggs, G.A. (2011). Normalized-Difference Snow Index (NDSI). In: Singh, V.P., Singh, P., Haritashya, U.K. (eds) Encyclopedia of Snow, Ice and Glaciers. Encyclopedia of Earth Sciences Series. Springer, Dordrecht. https://doi.org/10.1007/978-90-481-2642-2_376 QUESTO è IN FORSE
 IN FORSE 2. Keshri, A., Shukla, A., & Gupta, R. P. (2009). ASTER ratio indices for supraglacial terrain mapping. International Journal of Remote Sensing, 30(2), 519–524. https://doi.org/10.1080/01431160802385459
 3. McFEETERS, S. K. (1996). The use of the Normalized Difference Water Index (NDWI) in the delineation of open water features. International Journal of Remote Sensing, 17(7), 1425–1432. https://doi.org/10.1080/01431169608948714
 4. Lu, Y., James, T., Schillaci, C., & Lipani, A. (2022). Snow detection in alpine regions with Convolutional Neural Networks: discriminating snow from cold clouds and water body. GIScience & Remote Sensing, 59(1), 1321–1343. https://doi.org/10.1080/15481603.2022.2112391
