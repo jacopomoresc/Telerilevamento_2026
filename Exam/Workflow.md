@@ -410,7 +410,7 @@ plot_ice_outlines <- function(raster, method, output_file) {
   png(output_file, width = 1200, height = 1300, res = 200)
 
   # Plotta il raster con titolo e colori standard
- plot(raster, col = c("black", "lightcyan"), type = "classes", legend = FALSE,
+  plot(raster, col = c("black", "lightcyan"), type = "classes", legend = FALSE,
        main = paste("Classificazione", method, "e outlines - 2020"))
   plot(study_glaciers_2020, add = TRUE, border = "red", lwd = 2)
 
@@ -433,33 +433,41 @@ calculate_confusion_matrix <- function(classified_raster, method, output_file) {
   # output_file           percorso e nome del file PNG della confusion matrix spaziale
 
 # Somma pesata: ogni combinazione classificato/riferimento produce un codice univoco
-  # 0 = TN, 1 = FP, 2 = FN, 3 = TP (vedi tabella in relazione)
+  # 0 = TN, 1 = FP, 2 = FN, 3 = TP 
   comparison <- classified_raster + 2 * reference_ice
   cm <- freq(comparison) # Conta il numero di pixel appartenenti alle quattro classi 
   
+  # freq() restituisce solo le classi effettivamente presenti: costruisco un vettore completo a 4 posizioni (0,0,0,0)     e sovrascrivo solo quelle trovate, per evitare errori se una classe (es. FN) fosse assente
   counts <- setNames(rep(0, 4), 0:3)
   counts[as.character(cm$value)] <- cm$count
   
-  TN <- counts["0"]; FP <- counts["1"]; FN <- counts["2"]; TP <- counts["3"]
-  
+  # Estraggo i quattro conteggi con cui calcolare le metriche
+  TN <- counts["0"]  # pixel esterni agli outlines correttamente classificati come NON neve/ghiaccio
+  FP <- counts["1"]  # pixel classificati come neve/ghiaccio ma esterni agli outlines 
+  FN <- counts["2"]  # pixel interni agli outlines non riconosciuti come neve/ghiaccio
+  TP <- counts["3"]  # pixel interni agli outlines correttamente classificati come neve/ghiaccio
+
+  # Le tre metriche di validazione
   accuracy <- (TP + TN) / (TP + TN + FP + FN) * 100
   recall <- TP / (TP + FN) * 100
   precision <- TP / (TP + FP) * 100
-  
+
+  # Tabella di sintesi in formato "classico" (righe = classificato, colonne = riferimento)
   confusion_table <- data.frame(
     Classificazione = c("NEVE/GHIACCIO", "NON NEVE/GHIACCIO"),
     Reference_ICE = c(TP, FN),
     Reference_NOT_ICE = c(FP, TN)
   )
   
+ # Tabella con conteggi e metriche, usata poi nel confronto finale tra metodi
   metrics_table <- data.frame(
-    Metodo = method,
-    TN = as.numeric(TN), FP = as.numeric(FP), FN = as.numeric(FN), TP = as.numeric(TP),
+    Metodo = method, TN = as.numeric(TN), FP = as.numeric(FP), FN = as.numeric(FN), TP = as.numeric(TP),
     Accuracy = round(as.numeric(accuracy), 2),
     Recall = round(as.numeric(recall), 2),
     Precision = round(as.numeric(precision), 2)
   )
   
+  # Mappa spaziale della confusion matrix: mostra DOVE si concentrano gli errori, non solo quanti sono
   png(output_file, width = 1200, height = 1300, res = 200)
   plot(comparison, col = c("grey80", "orange", "red", "darkgreen"),
        main = paste("Distribuzione spaziale della classificazione -", method),
@@ -474,8 +482,13 @@ calculate_confusion_matrix <- function(classified_raster, method, output_file) {
   print(confusion_table)
   print(metrics_table)
   
-  return(list(comparison = comparison, frequencies = cm,
-              confusion_table = confusion_table, metrics = metrics_table))
+  # Restituisce tutto in un'unica lista, riutilizzata nel confronto tra metodi
+  return(list(
+    comparison = comparison,
+    frequencies = cm,
+    confusion_table = confusion_table,
+    metrics = metrics_table
+  ))
 }
 ```
 
