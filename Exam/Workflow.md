@@ -9,7 +9,7 @@
 
 Le Svalbard rappresentano una delle regioni artiche più sensibili al riscaldamento climatico in atto, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti basati su fonti storiche e geomorfologiche documentano, per questi e altri ghiacciai, una consistente perdita di massa e un arretramento marcato alternato solo da fasi di avanzata legate a eventi di *surge* (Zagorski et al. 2023)[7]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura di neve e ghiaccio stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
 
-## Area di studio 🛰️
+## 1.1 Area di studio 🛰️
 
 L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N, 14°E). Nel ritaglio considerato sono presenti Renardbreen — un ghiacciaio vallivo che in passato terminava in mare — Scottbreen, Blomlibreen e alcune superfici glaciali minori.
 
@@ -21,13 +21,13 @@ Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzam
 
 > Figura 1. Localizzazione dell'area di studio nel settore sud-occidentale di Spitsbergen, Svalbard.
 
-## Obiettivo 🎯
+## 1.2 Obiettivo 🎯
 
 L'obiettivo del progetto è stimare la variazione della copertura di neve/ghiaccio nell'area di studio tra il 2016 e il 2024, utilizzando immagini Sentinel-2 attraverso il calcolo di indici spettrali e un'analisi multitemporale, nell'ipotesi che tale estensione si riduca per effetto del riscaldamento climatico in atto alle Svalbard.
 
 # 2. Materiali e Metodi 📌
 
-## Raccolta delle immagini 📂
+## 2.1 Raccolta delle immagini 📂
 
 Le immagini satellitari sono state ottenute tramite [**Google Earth Engine**](https://earthengine.google.com/) (GEE), una piattaforma cloud che consente di accedere direttamente all'archivio satellitare pubblico, tra cui le collezioni Sentinel-2, e di elaborarlo senza doverlo scaricare in locale: è possibile filtrare le scene disponibili per area geografica, intervallo temporale e percentuale di copertura nuvolosa, per poi esportare l'immagine risultante già ritagliata sull'area di interesse. Per questo progetto sono state selezionate immagini con una copertura nuvolosa massima del 10% (`CLOUDY_PIXEL_PERCENTAGE < 10`), soglia scelta per ridurre il più possibile l'interferenza delle nuvole nel calcolo degli indici spettrali.
 
@@ -48,7 +48,7 @@ Per ciascun anno sono state scaricate le bande Sentinel-2 riportate in tabella, 
 | B8 | NIR | NDWI, NDVI, filtro NIR |
 | B11 | SWIR1 | NDSI |
 
-# 3. Procedimento R-Studio 🧪
+## 2.2 Importazione e visualizzazione in R 💻
 
 Una volta scaricate, le tre immagini sono state importate in RStudio dopo aver impostato una working directory.
 
@@ -68,7 +68,7 @@ library(ggridges)   # Distribuzioni degli indici
 library(reshape2)   # Riorganizzazione tabelle per ggplot
 ```
 
-## Importazione e visualizzazione delle immagini 💻
+### Immagini
 
 I tre raster Sentinel-2 sono stati importati con la funzione `rast()` di `terra`, che legge direttamente il file multibanda in formato `.tif` mantenendo la struttura originale delle cinque bande selezionate in fase di esportazione da GEE.
 
@@ -89,7 +89,7 @@ plot(image_2024)
 dev.off()
 ```
 
-## Importazione degli outlines glaciali di riferimento 🗺️
+## Outlines glaciali di riferimento 🗺️
 
 Oltre alle tre immagini Sentinel-2, è stato importato lo shapefile con gli outlines glaciali ufficiali del Norwegian Polar Institute (NPI), disponibile per l'anno 2020. Questo dato vettoriale costituisce l'unico riferimento indipendente disponibile nel progetto e viene utilizzato più avanti per validare la classificazione neve/ghiaccio ottenuta dagli indici spettrali.
 
@@ -201,7 +201,7 @@ dev.off()
 
 > Figura 5. Bande B8 (NIR) e B11 (SWIR1) a confronto tra 2016, 2020 e 2024.
 
-## Indici spettrali 📐
+## 2.3 Indici spettrali 📐
 
 Per caratterizzare la copertura di neve/ghiaccio, l'acqua e la vegetazione sono stati calcolati tre indici spettrali normalizzati: **NDSI**, **NDWI** e **NDVI**. Ciascun indice è stato calcolato per i tre anni, e la relativa variazione temporale è stata ottenuta come differenza tra il 2024 e il 2016 (*Δindice = indice_2024 - indice_2016*): valori **positivi** indicano un aumento dell'indice nel 2024, valori **negativi** una diminuzione.
 
@@ -265,7 +265,7 @@ dev.off()
 
 > Figura 7. NDWI nei tre anni e relativa differenza (ΔNDWI, 2024-2016).
 
-La mappa NDWI separa nettamente il mare aperto del Bellsund/Recherchefjorden (valori elevati) dai corpi glaciali, che restano su valori negativi o prossimi allo zero: questa netta distinzione conferma che l'indice è **efficace nel discriminare l'acqua dal ghiaccio**, ed è proprio ciò che lo rende utile come filtro nella classificazione del capitolo 4. 
+La mappa NDWI separa nettamente il mare aperto del Bellsund/Recherchefjorden (valori elevati) dai corpi glaciali, che restano su valori negativi o prossimi allo zero: questa netta distinzione conferma che l'indice è **efficace nel discriminare l'acqua dal ghiaccio**, ed è proprio ciò che lo rende utile come filtro nella classificazione. 
 
 Il pannello ΔNDWI mostra le variazioni più marcate lungo la linea di costa e nelle aree proglaciali, mentre l'interno dei ghiacciai resta più stabile: un segnale che rafforza l'idea che l'NDWI stia isolando correttamente la componente acquosa, senza "sporcare" la lettura del ghiaccio vero e proprio.
 
