@@ -6,10 +6,14 @@ TUTTO QUESTO E' DA RISCRIVERE
 # 1. Introduzione
 
 ## Area di studio
-_L'area di studio è situata nella porzione occidentale dell'isola di Spitsbergen, nell'arcipelago delle Svalbard (Norvegia), all'interno del settore nord-occidentale del Recherchefjorden nella wedel jarlsberg, un ramo del fiordo Bellsund, approssimativamente compreso tra 77.43–77.58° N e 14.08–14.57° E. 
+_L'area di studio è situata nella porzione sud occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del settore nord-occidentale del Recherchefjorden e della costa meridionale di Bellsund. Più precisamente, l’area compresa tra 77.43–77.58° N e 14.08–14.57° E rientra nella regione Wedel Jarlsberg Land all'interno del Sør-Spitsbergen National Park. 
 L'analisi è focalizzata su tre ghiacciai costieri: Renardbreen, Scottbreen e Blomlibreen, scelti perché appartenenti allo stesso contesto climatico e geomorfologico, ma caratterizzati da dimensioni differenti e da una diversa risposta alle recenti variazioni climatiche._
 
-**Perchè ho scelto quest'area?**
+L’area di studio è situata nella porzione sud-occidentale dell’isola di Spitsbergen, nell’arcipelago norvegese delle Svalbard, all’interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N e 14°E). Vi è un sistema glaciale articolato in cui spiccano Renardbreen, un ghiacciaio vallivo che in passato terminava in mare, Scottbreen, Blomlibreen e alcune superfici glaciali minori nel quale ghiacciai di dimensioni e caratteristiche differenti rispondono alle medesime condizioni ambientali regionali: clima artico influenzato dalla corrente nord-atlantica e dal ghiaccio marino artico.  
+
+Sono presenti Renardbreen, un ghiacciaio vallivo che in passato terminava in mare, Scottbreen, Blomlibreen e alcune superfici glaciali minori. Il clima è artico influenzato dalla corrente nord-atlantica e dal ghiaccio marino artico. 
+
+Nel ritaglio considerato sono presenti Renardbreen, il ghiacciaio di maggiore estensione all’interno dell’area analizzata, Scottbreen, Blomlibreen e alcune superfici glaciali minori. Renardbreen è un ghiacciaio vallivo che in passato terminava in mare, mentre Scottbreen è classificato come ghiacciaio vallivo. L’area è quindi caratterizzata da un sistema glaciale articolato, nel quale ghiacciai di dimensioni e caratteristiche differenti rispondono alle medesime condizioni ambientali regionali: clima artico influenzato dalla corrente nord-atlantica e dal ghiaccio marino artico. 
 
 ## Obiettivo
 | Analizzare la variazione recente dell’area glaciale di Renardbreen, Scottbreen e Blomlibreen tra 2016, 2020 e 2024, usando immagini Sentinel-2 estive e indici spettrali per distinguere ghiaccio/neve, roccia, acqua e superfici non glaciali. 
