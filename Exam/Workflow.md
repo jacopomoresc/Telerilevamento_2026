@@ -234,9 +234,9 @@ dev.off()
 
 > Figura 6. NDSI nei tre anni e relativa differenza (ΔNDSI, 2024-2016).
 
-> **Commento**
->
-> Nei tre anni la mappa NDSI mostra un pattern spaziale coerente: i valori più **alti** (verso il giallo) si concentrano stabilmente sui corpi glaciali, mentre il mare aperto e le superfici rocciose esposte restano su valori **bassi o negativi** (viola/blu scuro), come atteso dalla formula dell'indice. Nel pannello ΔNDSI la maggior parte dell'area glaciale interna appare in colori intermedi (variazione contenuta, vicina allo zero), mentre le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
+Nei tre anni la mappa NDSI mostra un pattern spaziale coerente: i valori più **alti** (verso il giallo) si concentrano stabilmente sui corpi glaciali, mentre il mare aperto e le superfici rocciose esposte restano su valori **bassi o negativi** (viola/blu scuro), come atteso dalla formula dell'indice. 
+
+Nel pannello ΔNDSI la maggior parte dell'area glaciale interna appare in colori intermedi (variazione contenuta, vicina allo zero), mentre le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
 
 ## NDWI - Normalized Difference Water Index
 
@@ -265,9 +265,9 @@ dev.off()
 
 > Figura 7. NDWI nei tre anni e relativa differenza (ΔNDWI, 2024-2016).
 
-> **Commento**
->
-> La mappa NDWI separa nettamente il mare aperto del Bellsund/Recherchefjorden (valori elevati) dai corpi glaciali, che restano su valori negativi o prossimi allo zero: questa netta distinzione conferma che l'indice è **efficace nel discriminare l'acqua dal ghiaccio**, ed è proprio ciò che lo rende utile come filtro nella classificazione del capitolo 4. Il pannello ΔNDWI mostra le variazioni più marcate lungo la linea di costa e nelle aree proglaciali, mentre l'interno dei ghiacciai resta più stabile: un segnale che rafforza l'idea che l'NDWI stia isolando correttamente la componente acquosa, senza "sporcare" la lettura del ghiaccio vero e proprio.
+La mappa NDWI separa nettamente il mare aperto del Bellsund/Recherchefjorden (valori elevati) dai corpi glaciali, che restano su valori negativi o prossimi allo zero: questa netta distinzione conferma che l'indice è **efficace nel discriminare l'acqua dal ghiaccio**, ed è proprio ciò che lo rende utile come filtro nella classificazione del capitolo 4. 
+
+Il pannello ΔNDWI mostra le variazioni più marcate lungo la linea di costa e nelle aree proglaciali, mentre l'interno dei ghiacciai resta più stabile: un segnale che rafforza l'idea che l'NDWI stia isolando correttamente la componente acquosa, senza "sporcare" la lettura del ghiaccio vero e proprio.
 
 
 ## NDVI - Normalized Difference Vegetation Index
@@ -297,10 +297,9 @@ dev.off()
 
 > Figura 8. NDVI nei tre anni e relativa differenza (ΔNDVI, 2024-2016).
 
+I valori di NDVI restano contenuti su gran parte dell'area, coerentemente con un ambiente artico a vegetazione scarsa: la maggior parte della superficie si colloca vicino allo zero o su valori leggermente negativi, con isolate zone a NDVI più alto concentrate nelle aree libere dal ghiaccio (morene, terreni costieri). 
 
-> **Commento**
->
-> I valori di NDVI restano contenuti su gran parte dell'area, coerentemente con un ambiente artico a vegetazione scarsa: la maggior parte della superficie si colloca vicino allo zero o su valori leggermente negativi, con isolate zone a NDVI più alto concentrate nelle aree libere dal ghiaccio (morene, terreni costieri). Il pannello ΔNDVI 2024-2016 non mostra variazioni sistematiche di grande entità, un risultato in linea con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), più che per un ruolo attivo nella classificazione del ghiaccio, dove i valori così contenuti e poco variabili non offrono un potere discriminante utile.
+Il pannello ΔNDVI 2024-2016 non mostra variazioni sistematiche di grande entità, un risultato in linea con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), più che per un ruolo attivo nella classificazione del ghiaccio, dove i valori così contenuti e poco variabili non offrono un potere discriminante utile.
 
 ## Confronto delle variazioni multitemporali
 
@@ -321,82 +320,9 @@ dev.off()
 
 > Figura 9. Confronto tra le variazioni 2024-2016 di NDSI, NDWI e NDVI.
 
-> **Commento**
->
-> Il confronto affiancato delle tre differenze mostra come i segnali di cambiamento più marcati si distribuiscano in porzioni diverse dell'area di studio: il ΔNDWI si concentra lungo la costa e le aree proglaciali, il ΔNDSI ai margini dei ghiacciai, mentre il ΔNDVI resta diffuso e di **bassa intensità** su tutta l'area. Questo conferma che NDSI e NDWI stanno leggendo fenomeni spazialmente distinti ma complementari — rispettivamente ghiaccio e acqua — il che giustifica il loro uso combinato nella classificazione del capitolo 4. L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, non presenta variazioni sufficientemente marcate da fornire un contributo discriminante analogo nella classificazione, e nel progetto resta quindi un indicatore **complementare** di monitoraggio ambientale piuttosto che un filtro operativo.
+Il confronto affiancato delle tre differenze mostra come i segnali di cambiamento più marcati si distribuiscano in porzioni diverse dell'area di studio: il ΔNDWI si concentra lungo la costa e le aree proglaciali, il ΔNDSI ai margini dei ghiacciai, mentre il ΔNDVI resta diffuso e di **bassa intensità** su tutta l'area. Questo conferma che NDSI e NDWI stanno leggendo fenomeni spazialmente distinti ma complementari — rispettivamente ghiaccio e acqua — il che giustifica il loro uso combinato nella classificazione del capitolo 4.
 
-## Ridgeline plot
-
-Per confrontare visivamente le distribuzioni dei tre indici nei tre anni, *senza ricorrere a un test statistico*, sono stati prodotti dei ridgeline plot: uno spostamento della curva verso destra indica un aumento generalizzato dei valori dell'indice, una curva più larga indica una maggiore eterogeneità spaziale, più picchi indicano una distribuzione multimodale.
-
-```r
-# Stack multitemporali dei tre indici
-ndsi_ridge <- c(ndsi_2016, ndsi_2020, ndsi_2024)
-ndwi_ridge <- c(ndwi_2016, ndwi_2020, ndwi_2024)
-ndvi_ridge <- c(ndvi_2016, ndvi_2020, ndvi_2024)
-
-# Nomi degli anni
-names(ndsi_ridge) <- c("2016", "2020", "2024")
-names(ndwi_ridge) <- c("2016", "2020", "2024")
-names(ndvi_ridge) <- c("2016", "2020", "2024")
-```
-
-#### NDSI
-
-```r
-png("output/ridgeline_ndsi.png", width = 1500, height = 1000, res = 200) # NDSI
-im.ridgeline(ndsi_ridge, scale = 2, palette = "viridis")
-dev.off()
-```
-
-<p align="center">
-  <img src="Images/ridgeline_ndsi.png" width="600">
-</p>
-
-> Figura 10. Distribuzione dei valori di NDSI nei tre anni.
-
-> **Commento**
->
-> In tutti e tre gli anni la distribuzione presenta un **picco netto vicino a +1**, corrispondente ai pixel di neve/ghiaccio, affiancato da una componente più ampia e appiattita centrata intorno a **-0.4/-0.3**, riconducibile alle superfici non innevate. Il picco vicino a +1 risulta **più alto nel 2024** rispetto al 2020 e al 2016, un andamento che a prima vista sembrerebbe indicare *più* pixel ad alto NDSI nell'anno più recente — un risultato da verificare con attenzione nella mappa di classificazione, perché potrebbe riflettere anche differenze nella copertura nevosa stagionale residua piuttosto che una reale variazione del ghiaccio permanente.
-
-#### NDWI
-
-```r
-png("output/ridgeline_ndwi.png", width = 1500, height = 1000, res = 200) # NDWI
-im.ridgeline(ndwi_ridge, scale = 2, palette = "viridis")
-dev.off()
-```
-
-<p align="center">
-  <img src="Images/ridgeline_ndwi.png" width="600">
-</p>
-
-> Figura 11. Distribuzione dei valori di NDWI nei tre anni.
-
-> **Commento**
->
-> Nel 2016 e nel 2020 la distribuzione è dominata da un **picco stretto e molto alto vicino a +1**, mentre nel 2024 lo stesso picco si abbassa e si allarga in una **collinetta più ampia tra 0.3 e 0.7**. Trattandosi di NDWI, i valori più alti corrispondono a superfici d'acqua: la differenza di forma tra il 2024 e gli anni precedenti suggerisce una minore concentrazione di pixel con riflettanza tipicamente "acquosa" pura, da incrociare con la mappa ΔNDWI e con eventuali differenze di copertura nuvolosa/mare aperto tra le tre acquisizioni.
-
-#### NDVI
-
-```r
-png("output/ridgeline_ndvi.png", width = 1500, height = 1000, res = 200) # NDVI
-im.ridgeline(ndvi_ridge, scale = 2, palette = "viridis")
-dev.off()
-```
-
-<p align="center">
-  <img src="Images/ridgeline_ndvi.png" width="600">
-</p>
-
-> Figura 12. Distribuzione dei valori di NDVI nei tre anni.
-
-> **Commento**
->
-> Il 2016 mostra un netto **accumulo di pixel a NDVI = -1**, assente o molto ridotto nel 2020 e nel 2024: valori così estremi e concentrati in un unico punto sono tipici di pixel mascherati o di denominatore vicino a zero, più che di una reale caratteristica della superficie, e andrebbero verificati con un controllo dei NoData su quell'anno. Per il resto, tutti e tre gli anni mostrano una distribuzione **multimodale**, con il picco principale centrato vicino allo zero (coerente con un ambiente artico privo di vegetazione diffusa) e una componente secondaria più ampia tra 0.3 e 0.6, probabilmente legata a tundra o suolo esposto.
-
-
-
+L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, non presenta variazioni sufficientemente marcate da fornire un contributo discriminante analogo nella classificazione, e nel progetto resta quindi un indicatore **complementare** di monitoraggio ambientale piuttosto che un filtro operativo.
 
 
 
