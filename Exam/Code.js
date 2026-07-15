@@ -1,5 +1,5 @@
-// P - 
-// Telerilevamento Geo-ecologico in R
+// Monitoraggio multitemporale della copertura di neve/ghiaccio alle Svalbard (2016-2020-2024)
+// Progetto d'esame - Telerilevamento Geo-ecologico in R - 2026
 // Jacopo Moresco
 
 // Le immagini sono state prese da: https://earthengine.google.com/
