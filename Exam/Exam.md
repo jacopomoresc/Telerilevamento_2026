@@ -1,4 +1,4 @@
-# Monitoraggio multitemporale della copertura nevosa alle Svalbard (2016-2020-2024)
+# Monitoraggio multitemporale della copertura nevosa alle Svalbard (2016-2024)
 
 > #### Progetto d'esame - Telerilevamento Geo-Ecologico in R - 2026
 >> ##### Jacopo Moresco, matricola n.1237448
@@ -23,6 +23,11 @@
 - [5. Fonti 📚](#5-fonti-)
 
 # Abstract 📄
+
+Questo progetto stima la variazione della copertura nevosa in un settore di ghiacciai delle Svalbard (Recherchefjorden, Bellsund) tra il 2016 e il 2024, tramite immagini Sentinel-2 e indici spettrali NDSI, NDWI, NDVI. La classificazione binaria neve/non neve, basata su NDSI con soglia 0.4, è stata combinata prima con la banda NIR, poi con l'indice NDWI - per ridurre i falsi positivi dovuti ad acqua e ombre - e successivamente filtrata sugli outlines glaciali del Norwegian Polar Institute relativi al 2020. Il metodo NDSI+NDWI si è rivelato il migliore compromesso tra Accuracy, Recall e Precision.
+
+Applicata all'intera scena, la classificazione mostra un aumento apparente della copertura nevosa pari al 2.13% riconducibile a superfici esterne ai ghiacciai erroneamente incluse nella classe neve. Restringendo l'analisi agli outlines ufficiali emerge una diminuzione della copertura del 4.35%, concentrata sopratutto ai margini dei corpi glaciali. Il trend osservato è coerente
+con il quadro di arretramento glaciale e perdita di massa documentato in letteratura per le Svalbard, in un contesto di rapido riscaldamento climatico. Il confronto mostra che un riferimento geomorfologico indipendente è fondamentale per interpretare correttamente gli indici spettrali e distinguere il segnale glaciale dagli errori di classificazione delle superfici circostanti.
 
 # 1. Introduzione 📌
 
