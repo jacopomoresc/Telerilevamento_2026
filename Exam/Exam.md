@@ -377,25 +377,40 @@ reference_snow <- rasterize(study_glaciers_2020, snow_2020_ndsi, field = 1, back
 
 #### plot_snow_outlines()
 ```r
-plot_snow_outlines <- function(raster, method, output_file) {
-  # raster      raster classificato relativo al 2020
-  # method      nome del metodo di classificazione usato nel titolo
-  # output_file percorso e nome del file PNG finale
+plot_snow_classified <- function(raster_2016, raster_2020, raster_2024, method, output_file) {
   
-  png(output_file, width = 1200, height = 1300, res = 200)
+  # raster_2016   raster classificato relativo al 2016
+  # raster_2020   raster classificato relativo al 2020
+  # raster_2024   raster classificato relativo al 2024
+  # method        nome del metodo di classificazione usato nei titoli
+  # output_file   percorso e nome del file PNG finale
   
-  # Plotta il raster con titolo e colori standard
-  plot(raster, col = c("black", "lightcyan"), type = "classes", legend = FALSE,
-       main = paste("Classificazione", method, "e outlines - 2020"))
+  rasters <- c(raster_2016, raster_2020, raster_2024)                   # Unisce i tre raster in un oggetto multilayer
+  years <- c(2016, 2020, 2024)                                         # Associa gli anni ai tre raster
   
-  plot(study_glaciers_2020, add = TRUE, border = "red", lwd = 2) # plotta gli outlines
+  png(output_file, width = 2100, height = 800, res = 200)               # Apre il dispositivo PNG
+  im.multiframe(1, 3)                                                   # Imposta una griglia con una riga e tre colonne
   
-  legend("bottomleft", inset = c(0.13, 0.02), xpd = NA,
-         legend = c("Neve", "Non neve", "Outlines glaciali NPI"),
-         fill = c("lightcyan", "black", NA),
-         border = c("black", "black", "red"),
-         cex = 0.8, bg = "white", bty = "o")
-  dev.off()
+  for (i in 1:3) {                                                      # Ripete il grafico per ciascun anno
+    
+    plot(rasters[[i]],                                                  # Seleziona il raster corrispondente all'anno
+         col = c("black", "lightcyan"),                                 # Assegna i colori alle due classi
+         type = "classes",                                              # Tratta i valori come classi discrete
+         legend = FALSE,                                                # Disattiva la legenda automatica
+         main = paste("Classificazione", method, "-", years[i]))        # Crea il titolo con metodo e anno
+    
+    legend("bottomleft",                                                # Posiziona la legenda in basso a sinistra
+           inset = c(0.12, 0.02),                                       # Sposta leggermente la legenda
+           xpd = NA,                                                    # Permette di disegnare fuori dall'area del grafico
+           legend = c("Neve", "Non neve"),                              # Etichette delle classi
+           fill = c("lightcyan", "black"),                              # Colori associati alle classi
+           border = "black",                                            # Bordo dei simboli della legenda
+           cex = 0.8,                                                   # Dimensione del testo
+           bg = "white",                                                # Sfondo bianco
+           bty = "o")                                                   # Disegna il bordo della legenda
+  }
+  
+  dev.off()                                                             # Chiude e salva il file PNG
 }
 ```
 
@@ -403,39 +418,32 @@ plot_snow_outlines <- function(raster, method, output_file) {
 ```r
 calculate_confusion_matrix <- function(classified_raster, method, output_file) {
   
-  # classified_raster raster binario da confrontare con gli outlines ufficiali
-  # method            nome del metodo riportato nelle tabelle e nel titolo
-  # output_file       percorso e nome del file PNG della confusion matrix spaziale
+  # classified_raster   raster binario da confrontare con gli outlines ufficiali
+  # method              nome del metodo riportato nel titolo e nelle tabelle
+  # output_file         percorso e nome del file PNG finale
   
-  # Combina classificazione e riferimento: 0 = TN, 1 = FP, 2 = FN, 3 = TP
-  comparison <- classified_raster + 2 * reference_snow
+  comparison <- classified_raster + 2 * reference_snow                          # Combina classificazione e riferimento in quattro classi
+  cm <- freq(comparison)                                                        # Conta i pixel appartenenti a TN, FP, FN e TP
   
-  cm <- freq(comparison) # Conta il numero di pixel appartenenti alle quattro classi
+  counts <- setNames(rep(0, 4), 0:3)                                            # Crea un vettore completo delle quattro classi
+  counts[as.character(cm$value)] <- cm$count                                    # Inserisce i conteggi osservati
   
-  # Crea un conteggio completo delle quattro classi, anche se una non è presente
-  counts <- setNames(rep(0, 4), 0:3) # crea vettore c(0,0,0,0) con nomi "0","1","2","3"
-  counts[as.character(cm$value)] <- cm$count # sovrascrive solo le classi presenti
+  TN <- counts["0"]                                                             # Non neve classificata correttamente fuori dagli outlines
+  FP <- counts["1"]                                                             # Neve classificata erroneamente fuori dagli outlines
+  FN <- counts["2"]                                                             # Neve di riferimento non riconosciuta
+  TP <- counts["3"]                                                             # Neve classificata correttamente dentro gli outlines
   
-  # Estrae i quattro conteggi della confusion matrix
-  TN <- counts["0"]  # pixel esterni agli outlines correttamente classificati come NON neve
-  FP <- counts["1"]  # pixel classificati come neve ma esterni agli outlines 
-  FN <- counts["2"]  # pixel interni agli outlines riconosciuti come NON neve
-  TP <- counts["3"]  # pixel interni agli outlines correttamente classificati come neve
+  accuracy <- (TP + TN) / (TP + TN + FP + FN) * 100                             # Percentuale totale di pixel corretti
+  recall <- TP / (TP + FN) * 100                                                # Percentuale della neve di riferimento riconosciuta
+  precision <- TP / (TP + FP) * 100                                             # Percentuale della neve classificata che ricade negli outlines
   
-  # Calcola le metriche
-  accuracy <- (TP + TN) / (TP + TN + FP + FN) * 100
-  recall <- TP / (TP + FN) * 100
-  precision <- TP / (TP + FP) * 100
-  
-  # Crea la tabella della confusion matrix (righe = classificato, colonne = reference)
-  confusion_table <- data.frame(
+  confusion_table <- data.frame(                                                # Crea la tabella della confusion matrix
     Classificazione = c("NEVE", "NON NEVE"),
     Reference_SNOW = c(TP, FN),
     Reference_NOT_SNOW = c(FP, TN)
   )
   
-  # Crea la tabella dei conteggi e delle metriche
-  metrics_table <- data.frame(
+  metrics_table <- data.frame(                                                  # Crea la tabella delle metriche finali
     Metodo = method,
     TN = as.numeric(TN),
     FP = as.numeric(FP),
@@ -446,24 +454,30 @@ calculate_confusion_matrix <- function(classified_raster, method, output_file) {
     Precision = round(as.numeric(precision), 2)
   )
   
-  # Salva la mappa spaziale della confusion matrix come PNG
-  png(output_file, width = 1200, height = 1300, res = 200)
+  png(output_file, width = 1200, height = 1300, res = 200)                      # Apre il dispositivo PNG
   
-  plot(comparison, col = c("grey80", "orange", "red", "darkgreen"),
+  plot(comparison,                                                              # Visualizza la distribuzione spaziale degli errori
+       col = c("grey80", "orange", "red", "darkgreen"),                         # Colori di TN, FP, FN e TP
        main = paste("Distribuzione spaziale della classificazione -", method),
-       type = "classes", legend = FALSE)
+       type = "classes",                                                        # Tratta i valori come classi discrete
+       legend = FALSE)                                                          # Disattiva la legenda automatica
   
-  legend("bottomleft", inset = c(0.13, 0.02), xpd = NA,
+  legend("bottomleft",                                                          # Aggiunge la legenda
+         inset = c(0.13, 0.02),
+         xpd = NA,
          legend = c("TN - True Negative", "FP - False Positive",
                     "FN - False Negative", "TP - True Positive"),
          fill = c("grey80", "orange", "red", "darkgreen"),
-         cex = 0.8, bg = "white", bty = "o")
-  dev.off()
+         cex = 0.8,
+         bg = "white",
+         bty = "o")
   
-  print(confusion_table)
-  print(metrics_table)
+  dev.off()                                                                     # Chiude e salva il file PNG
+      
+  print(confusion_table)                                                        # Stampa la confusion matrix
+  print(metrics_table)                                                          # Stampa accuracy, recall e precision
   
-  return(list(
+  return(list(                                                                  # Restituisce gli oggetti prodotti
     comparison = comparison,
     frequencies = cm,
     confusion_table = confusion_table,
