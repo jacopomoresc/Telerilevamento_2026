@@ -823,9 +823,7 @@ plot_snow_percentages(snow_inside_table, "Area negli outlines", "output/snow_ins
 | Non neve | 1.15% | 3.51% | 5.50% |
 | Neve | 98.85% | 96.49% | 94.50% |
 
-Dentro gli outlines il segnale si ribalta: la copertura scende in modo **monotono** da 98.85% a 94.50%, quasi 4.4 punti percentuali in otto anni, senza inversioni. È l'opposto del +2 punti visto sull'intera scena. Questo è il risultato centrale del progetto: **il segnale di aumento visto sulla scena intera è un artefatto** dovuto a superfici esterne ai ghiacciai; solo ristringendo l'analisi a un riferimento verificato (gli outlines NPI) emerge il calo coerente con il riscaldamento climatico ipotizzato in apertura.
-
-
+Dentro gli outlines il segnale si ribalta rispetto alla Figura 22: la copertura scende da 98.85% a 94.50%, quasi 4.4 punti percentuali in otto anni, senza inversioni — coerente con l'ipotesi di partenza di una diminuzione legato al riscaldamento climatico. Il confronto tra Figura 22 e Figura 23 convalida la scelta metodologica di tutto il capitolo 2.4: filtrare la classificazione con un riferimento glaciologico ufficiale non è un passaggio accessorio, ma la condizione che permette di leggere correttamente il segnale di cambiamento. Applicato all'intera scena, NDSI+NDWI resta soggetto a rumore esterno ai ghiacciai (Figura 22); applicato dentro gli outlines, restituisce un trend pulito e nella direzione attesa.
 
 ## 3.2 Mappa delle transizioni 2016-2024
 
