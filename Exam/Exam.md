@@ -7,11 +7,11 @@
 
 # 1. Introduzione 📌
 
-Le Svalbard rappresentano una delle regioni artiche più sensibili al riscaldamento climatico in atto, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti documentano una consistente perdita di massa e un arretramento marcato alternato solo da fasi di avanzata legate a eventi di *surge* (Zagorski et al. 2023)[7]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura di neve stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
+Le Svalbard rappresentano una delle regioni artiche più sensibili al riscaldamento climatico in atto, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti documentano una consistente perdita di massa e un arretramento marcato alternato solo da fasi di avanzata legate a eventi di *surge* (Zagorski et al. 2023)[]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura di neve stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
 
 ## 1.1 Area di studio 🛰️
 
-L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N, 14°E). Nel ritaglio considerato sono presenti Renardbreen — un ghiacciaio vallivo che in passato terminava in mare — Scottbreen, Blomlibreen e alcune superfici glaciali minori.
+L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N, 14°E). Nel ritaglio considerato sono presenti Renardbreen - un ghiacciaio vallivo che in passato terminava in mare - Scottbreen, Blomlibreen e alcune superfici glaciali minori.
 
 Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzamenti pulsanti seguiti da lunghe fasi di quiescenza; tuttavia, la tendenza dominante osservata negli ultimi decenni in questa regione, fortemente influenzata dal rapido riscaldamento artico, è quella di un arretramento marcato e di una consistente perdita di massa.
 
@@ -998,17 +998,27 @@ Il pannello di sinistra spiega da dove viene il segnale fuorviante della Figura 
 
 Nel pannello di destra questo blocco sparisce del tutto. Quello che resta è un **bordo rosso sottile e continuo** intorno al perimetro del corpo glaciale principale, in particolare sul lato nord-est: pixel che nel 2016 erano neve e nel 2024 non lo sono più. Il blu (neve solo nel 2024) è quasi assente. Questo pattern — perdita concentrata ai margini, non a chiazze sparse nell'interno — è coerente con un arretramento reale del fronte glaciale piuttosto che con rumore di classificazione, e conferma numericamente il calo già visto in Figura 25: qui "neve solo nel 2016" (4.67%) è quindici volte più estesa di "neve solo nel 2024" (0.31%).
 
-
-
-
-
-
-
-
-
-
 # 4. Conclusioni 📝
 
+L'obiettivo del progetto era stimare la variazione della copertura di neve nell'area di studio tra il 2016 e il 2024. Per farlo abbiamo usato la classificazione NDSI+NDWI - la migliore fra i tre metodi proposti in termini di accuracy, precision e recall. C'è però da distinguere chiaramente dove viene applicata questa classificazione: 
++ sull'intera area di studio si ottiene un risultato controintuivo: un aumento della copertura dal 2016 al 2024 del 2.13%(26.49% → 28.62%)
++ analizzando solo l'area racchiusa dagli outlines uccifiali del NPI la stessa classificazione mostra invece una diminuzione della copertura del 4.35% (98.85% → 94.50%).
+
+I due risultati sono opposti perché la scena intera include mare, roccia e versanti esterni ai ghiacciai, dove NDSI+NDWI produce ancora falsi positivi (visibili come il tanto blu presente in Figura 26) - un limite che il solo confronto con un riferimento glaciologico indipendente permette di isolare.
+
+La mappa delle transizioni conferma che la perdita, dentro gli outlines, è concentrata ai **margini** del corpo glaciale (bordo rosso continuo in Figura 26, destra) e non distribuita a chiazze sull'interno: un pattern coerente con un arretramento del fronte, non con rumore di classificazione casuale.
+
+Il calo osservato è coerente, nella **direzione**, con il quadro di riscaldamento e perdita di massa documentato per le Svalbard in letteratura (Zagórski et al. 2023 [7]). Non è un confronto quantitativo con quei dati: la loro misura è il tasso di arretramento del fronte su transetti, la nostra è la variazione percentuale di superficie classificata come neve/ghiaccio — due metriche diverse, non direttamente comparabili.
+
+**Sul confronto tra metodi di classificazione**: NDSI da solo sovrastima per confusione con acqua e ombre; NDWI corregge il problema dell'acqua senza intaccare la neve vera (Recall quasi invariata); il filtro NIR è più aggressivo ma toglie anche neve reale (Recall -7 punti); NDVI non ha effetto perché risolve un problema — la vegetazione — che nell'area di studio non esiste. NDSI+NDWI resta il compromesso migliore tra i quattro.
+
+## Limiti
+
+- Le soglie (NDSI ≥ 0.4, NDWI < 0.7) sono fisse e validate solo sul 2020: applicarle a 2016 e 2024 assume condizioni di illuminazione e acquisizione comparabili.
+- Gli outlines NPI sono fissi al 2020: il confronto misura la variazione della copertura *dentro un perimetro fisso*, non l'eventuale variazione del perimetro stesso.
+- NDSI+NDWI non rileva il ghiaccio coperto da detrito superficiale, che restituisce la firma spettrale della roccia.
+- La validazione quantitativa (Accuracy/Recall/Precision) è disponibile solo per il 2020; per 2016 e 2024 la qualità della classificazione è assunta, non verificata direttamente.
+- Il confronto usa tre epoche puntuali (composti mediani di agosto), non una serie continua: non si possono escludere anomalie specifiche di quegli anni (nuvolosità residua, condizioni di innevamento non rappresentative).
 
 
 # 5. Fonti 📚
