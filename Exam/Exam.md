@@ -369,10 +369,10 @@ La matrice di confusione spaziale è costruita combinando aritmeticamente il ras
 
 | Codice | Significato |
 |---|---|
-| 0 (TN) | pixel classificato correttamente come NON NEVE |
-| 1 (FP) | pixel classificato come NEVE, ma esterno agli outlines (falso positivo) |
-| 2 (FN) | pixel classificato come NON NEVE, ma interno agli outlines (falso negativo) |
-| 3 (TP) | pixel classificato correttamente come NEVE e interno agli outlines |
+| 0 (True Negative) | pixel classificato correttamente come NON NEVE |
+| 1 (False Positive) | pixel classificato come NEVE, ma esterno agli outlines (sovrastima) |
+| 2 (False Negative) | pixel classificato come NON NEVE, ma interno agli outlines (omissione)|
+| 3 (True Positive) | pixel classificato correttamente come NEVE e interno agli outlines |
 
 Da questi conteggi vengono calcolate tre metriche standard di validazione:
 
@@ -386,7 +386,7 @@ Misura la percentuale di pixel classificati correttamente, **su entrambe le clas
 
 $$ Recall = \frac{TP}{TP + FN} $$
 
-Risponde alla domanda: *della superficie realmente glaciale (secondo gli outlines ufficiali), quanta ne viene effettivamente riconosciuta dalla classificazione?* Una Recall bassa indica **omissione**: il metodo lascia fuori superfici realmente coperte, classificandole erroneamente come non neve (falsi negativi).
+Risponde alla domanda: *della superficie realmente nevosa (secondo gli outlines ufficiali), quanta ne viene effettivamente riconosciuta dalla classificazione?* Una Recall bassa indica **omissione**: il metodo lascia fuori superfici realmente coperte, classificandole erroneamente come non neve (falsi negativi).
 
 3. **Precision**
 
@@ -394,10 +394,9 @@ $$ Precision = \frac{TP}{TP + FP} $$
 
 Risponde alla domanda opposta: *di tutta l'area classificata come neve, quanta ricade davvero all'interno degli outlines ufficiali?* Una Precision bassa indica **sovrastima**: il metodo include aree che non sono realmente glaciali (falsi positivi), come acqua, ombre o roccia chiara.
 
-> [!NOTE]
-> Recall e Precision colgono due tipi di errore opposti e complementari: la prima penalizza chi "lascia fuori" superfici vere, la seconda penalizza chi "include" superfici che non lo sono. Un buon metodo di classificazione cerca il miglior compromesso tra le due, non la massimizzazione di una sola.
+Recall e Precision colgono due tipi di errore opposti e complementari: la prima penalizza chi "lascia fuori" superfici vere, la seconda penalizza chi "include" superfici che non lo sono. Un buon metodo di classificazione cerca il miglior compromesso tra le due, non la massimizzazione di una sola.
 
-Il calcolo e la visualizzazione di questi risultati sono affidati a tre funzioni scritte appositamente per il progetto, richiamate identicamente per ciascuno dei metodi testati:
+Il calcolo e la visualizzazione di questi risultati sono affidati a due funzioni  richiamate identicamente per ciascuno dei metodi testati:
 
 > [!NOTE]
 > **Le due funzioni del workflow di classificazione**
@@ -422,7 +421,7 @@ plot_snow_classified <- function(raster_2016, raster_2020, raster_2024, method, 
   # output_file   percorso e nome del file PNG finale
   
   rasters <- c(raster_2016, raster_2020, raster_2024)                   # Unisce i tre raster in un oggetto multilayer
-  years <- c(2016, 2020, 2024)                                         # Associa gli anni ai tre raster
+  years <- c(2016, 2020, 2024)                                          # Associa gli anni ai tre raster
   
   png(output_file, width = 2100, height = 800, res = 200)               # Apre il dispositivo grafico PNG
   im.multiframe(1, 3)                                                   # Imposta una griglia con una riga e tre colonne
@@ -538,16 +537,13 @@ dev.off()
 
 > Figura 13. Distribuzione dei valori di NDSI nel 2020.
 
-Il calcolo dell'NDSI sfrutta l'esclusiva firma spettrale della neve, caratterizzata da un'elevata riflettanza nel visibile (banda verde) e da un forte assorbimento nell'infrarosso a onde corte (SWIR). La distribuzione dell'indice mostra due gruppi: uno largo tra -0.7 e 0.2 (superfici non innevate) e uno stretto vicino a 1 (superfici innevate). Ho scelto la soglia NDSI = 0.4 per distinguere efficacemente la copertura nevosa dal resto del paesaggio: i valori inferiori a 0.4 indicano quindi generalmente terreno nudo, vegetazione o zone in ombra, mentre valori pari o superiori a 0.4 corrispondono a neve.
+L'NDSI sfrutta la firma spettrale tipica della neve: alta riflettanza nel verde, forte assorbimento nello SWIR. La distribuzione mostra due gruppi: uno largo tra -0.7 e 0.2 (superfici non innevate) e uno stretto vicino a 1 (superfici innevate). Ho scelto la soglia 0.4, sia da letteratura che verificata sperimentalmente: valori inferiori indicano terreno, vegetazione o ombra, valori superiori indicano neve.
 
 ```r
-# Soglia consigliata in letteratura e verificata sperimentalmente tramite confronto 
-# con gli outlines ufficiali e con il calcolo delle metriche
 soglia_ndsi <- 0.4 
 
 # Matrice di riclassificazione: NDSI < 0.4 = 0, NON NEVE; NDSI >= 0.4 = 1, NEVE
-ndsi_matrix <- matrix(c(-Inf, soglia_ndsi, 0, soglia_ndsi, Inf, 1), 
-                      ncol = 3, byrow = TRUE)
+ndsi_matrix <- matrix(c(-Inf, soglia_ndsi, 0, soglia_ndsi, Inf, 1), ncol = 3, byrow = TRUE)
 
 # Applicazione della classificazione ai tre anni
 snow_2016_ndsi <- classify(ndsi_2016, ndsi_matrix)
@@ -558,33 +554,27 @@ snow_2024_ndsi <- classify(ndsi_2024, ndsi_matrix)
 Verifica della classificazione con le funzioni definite in 2.4 e calcolo della matrice di confusione contro gli outlines NPI.
 
 ```r
-# Visualizzazione della classificazione NDSI nei tre anni 
-plot_snow_classified(snow_2016_ndsi, snow_2020_ndsi, snow_2024_ndsi,
-                     "NDSI", "output/snow_classification_ndsi.png")
-
 # Visualizzazione del confronto classificazione NDSI con gli outlines
 plot_snow_outlines(snow_2020_ndsi,"NDSI", "output/ndsi_snow_mask_2020.png")
 
-# Risultati della matrice di confusione 
-results_ndsi <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi, 
-                                           method = "NDSI", output_file = "output/confusion_matrix_ndsi.png")
-```
+
 
 <p align="center">
   <img src="Images/ndsi_snow_mask_2020.png" width="500">
 </p>
 
 > Figura 14. Classificazione NDSI (soglia 0.4) sovrapposta agli outlines ufficiali NPI, 2020.
+>
+> La classe neve copre correttamente l'intero corpo glaciale. Al di fuori del contorno rosso, ampie porzioni di territorio — soprattutto la fascia settentrionale in alto e l'area a est del ghiacciaio principale — vengono comunque classificate come neve.
 
-La classe neve copre l'intero corpo glaciale e va oltre il contorno rosso in diversi punti, soprattutto lungo la costa.
+
 
 <p align="center">
   <img src="Images/confusion_matrix_ndsi.png" width="500">
 </p>
 
 > Figura 15. Distribuzione spaziale della matrice di confusione, metodo NDSI.
-
-L'arancione (falsi positivi) è concentrato sul mare aperto e lungo la costa: è il segnale del mare letto come neve dall'NDSI. Il rosso (falsi negativi) è marginale, solo su alcuni bordi di ghiacciai minori.
+> L'arancione (falsi positivi) domina l'intera fascia superiore e l'angolo a est della mappa: sono il mare aperto e altre superfici esterne agli outlines lette come neve dall'NDSI. Il rosso (falsi negativi) è marginale e sottile, concentrato solo lungo alcuni bordi interni al perimetro — dove la classificazione manca porzioni di ghiaccio vero, ma in modo circoscritto rispetto all'estensione totale dei falsi positivi.
 
 | Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
 |---|---|---|---|---|---|---|---|
@@ -610,11 +600,9 @@ dev.off()
 
 > Figura 16. Distribuzione dei valori della banda B8 (NIR) nel 2020.
 
-In questo caso non si usa un indice normalizzato ma la riflettanza della banda NIR: valori bassi indicano superfici scure o in ombra, che l'NDSI da solo può comunque classificare come neve se il rapporto verde/SWIR1 resta comunque alto. La distribuzione mostra un picco altissimo vicino a 0 (ombre, acqua scura, superfici molto assorbenti) e un secondo picco più basso e largo tra 1500 e 2000 (neve, ghiaccio, terreno chiaro), con una coda lunga che si esaurisce oltre i 4000. La soglia è stata impostata a 400: al di sotto è riflettanza troppo bassa per essere neve pulita, al di sopra sì.
+La combinazione NDSI + NIR usa la riflettanza grezza della banda B8 per cercare di rimuovere l'acqua residua dalla classificazione: valori bassi indicano superfici scure o in ombra, che l'NDSI da solo classificherebbe comunque come neve se il rapporto verde/SWIR1 resta alto. La distribuzione mostra un picco altissimo vicino a 0 (ombre, acqua scura) e un secondo picco più basso tra 1500 e 2000 (neve, ghiaccio, terreno chiaro). Ho impostato la soglia a 400: al di sotto è riflettanza troppo bassa per essere neve pulita, al di sopra sì.
 
 ```r
-# Soglia NIR per escludere i pixel con riflettanza troppo bassa
-# soglia verificata sperimentalmente tramite il confronto con gli outlines ufficiali e con il calcolo delle metriche
 soglia_nir <- 400 
 
 # Matrice di riclassificazione: # NIR < 400 = 0; # NIR >= 400 = 1
@@ -634,15 +622,13 @@ snow_2024_ndsi_nir <- snow_2024_ndsi * nir_mask_2024
 
 ```r
 # Visualizzazione della classificazione NDSI + filtro NIR nei tre anni
-plot_snow_classified(snow_2016_ndsi_nir, snow_2020_ndsi_nir, snow_2024_ndsi_nir,
-                     "NDSI + NIR", "output/snow_classification_ndsi_nir.png")
+plot_snow_classified(snow_2016_ndsi_nir, snow_2020_ndsi_nir, snow_2024_ndsi_nir, "NDSI + NIR", "output/snow_classification_ndsi_nir.png")
 
 # Confronto della classificazione NDSI + filtro NIR con gli outlines
 plot_snow_outlines(snow_2020_ndsi_nir, "NDSI + NIR", "output/ndsi_nir_snow_mask_2020.png")
 
 # Risultati della matrice di confusione 
-results_ndsi_nir <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi_nir,
-                                               method = "NDSI + NIR", output_file = "output/confusion_matrix_ndsi_nir.png")
+results_ndsi_nir <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi_nir, method = "NDSI + NIR", output_file = "output/confusion_matrix_ndsi_nir.png")
 ```
 
 <p align="center">
@@ -650,16 +636,14 @@ results_ndsi_nir <- calculate_confusion_matrix(classified_raster = snow_2020_nds
 </p>
 
 > Figura 17. Classificazione NDSI + NIR sovrapposta agli outlines ufficiali NPI, 2020.
-
-Il mare viene escluso dalla classe neve, ma a sud-est del corpo glaciale principale manca un blocco che invece è dentro il contorno rosso: lì la riflettanza NIR scende sotto soglia, probabilmente per ombra o detrito superficiale.
+> Il mare viene escluso dalla classe neve, ma a sud-est del corpo glaciale principale manca un blocco che invece è dentro il contorno rosso: lì la riflettanza NIR scende sotto soglia, probabilmente per ombra o detrito superficiale.
 
 <p align="center">
   <img src="Images/confusion_matrix_ndsi_nir.png" width="500">
 </p>
 
 > Figura 18. Distribuzione spaziale della matrice di confusione, metodo NDSI + NIR.
-
-Rispetto al Metodo 1, i falsi positivi costieri si riducono nettamente, ma compare anche un blocco rosso (falsi negativi) a sud-est del ghiacciaio principale, assente nel Metodo 1: il filtro NIR sta escludendo anche neve vera, non solo il mare.
+> Rispetto al Metodo 1, i falsi positivi costieri si riducono nettamente, ma compare anche un blocco rosso (falsi negativi) a sud-est del ghiacciaio principale, assente nel Metodo 1: il filtro NIR sta escludendo anche neve vera, non solo il mare.
 
 | Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
 |---|---|---|---|---|---|---|---|
@@ -688,8 +672,6 @@ dev.off()
 L'NDWI sfrutta il comportamento opposto a quello dell'NDSI per l'acqua: riflettanza ancora alta nel verde ma assorbimento marcato nel NIR, quindi l'acqua libera produce valori NDWI alti quanto quelli della neve nel Metodo 1 — è proprio questa sovrapposizione a generare i falsi positivi visti in Figura 15. La distribuzione mostra una parte ampia tra -0.6 e 0.2 (terreno, neve, ghiaccio) e un picco stretto vicino a 1 (mare aperto). Soglia a 0.7: al di sopra è acqua, al di sotto no.
 
 ```r
-# Soglia NDWI: i pixel con NDWI >= 0.7 vengono considerati acqua
-# soglia verificata sperimentalmente tramite il confronto con gli outlines ufficiali e con il calcolo delle metriche
 soglia_ndwi <- 0.7 
 
 # Crea una maschera binaria: NDWI < 0.7 = 1, NON ACQUA; NDWI >= 0.7 = 0, ACQUA
@@ -711,15 +693,13 @@ Verifica della classificazione e calcolo della matrice di confusione, stesso pro
 
 ```r
 # Visualizzazione della classificazione NDSI + NDWI nei tre anni
-plot_snow_classified(snow_2016_ndsi_ndwi, snow_2020_ndsi_ndwi, snow_2024_ndsi_ndwi,
-                     "NDSI + NDWI", "output/snow_classification_ndsi_ndwi.png")
+plot_snow_classified(snow_2016_ndsi_ndwi, snow_2020_ndsi_ndwi, snow_2024_ndsi_ndwi, "NDSI + NDWI", "output/snow_classification_ndsi_ndwi.png")
 
 # Confronto della classificazione NDSI + NDWI con gli outlines
 plot_snow_outlines(snow_2020_ndsi_ndwi, "NDSI + NDWI", "output/ndsi_ndwi_snow_mask_2020.png")
 
 # Risultati della matrice di confusione 
-results_ndsi_ndwi <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi_ndwi,
-                                                method = "NDSI + NDWI", output_file = "output/confusion_matrix_ndsi_ndwi.png")
+results_ndsi_ndwi <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi_ndwi, method = "NDSI + NDWI", output_file = "output/confusion_matrix_ndsi_ndwi.png")
 ```
 
 <p align="center">
