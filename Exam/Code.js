@@ -1,5 +1,5 @@
-// Monitoraggio multitemporale della copertura di neve/ghiaccio alle Svalbard (2016-2020-2024)
-// Progetto d'esame - Telerilevamento Geo-ecologico in R - 2026
+// Monitoraggio multitemporale della copertura nevosa alle Svalbard nel periodo 2016-2024
+// Progetto d'Esame - Telerilevamento Geo-ecologico in R - 2026
 // Jacopo Moresco
 
 // Le immagini sono state prese da: https://earthengine.google.com/
