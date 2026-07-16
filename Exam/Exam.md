@@ -13,7 +13,7 @@
   - [2.1 Raccolta delle immagini 📂](#21-raccolta-delle-immagini-)
   - [2.2 Importazione e visualizzazione in R 💻](#22-importazione-e-visualizzazione-in-r-)
   - [2.3 Indici spettrali 📐](#23-indici-spettrali-)
-  - [2.4 Classificazione della copertura nevosa 🧊](#24-classificazione-della-copertura-nevosa-)
+  - [2.4 Classificazione della copertura nevosa 🏔️](#24-classificazione-della-copertura-nevosa-)
 - [3. Risultati e Discussione 📊](#3-risultati-e-discussione-)
   - [3.1 Percentuali di copertura nevosa 📈](#31-percentuali-di-copertura-nevosa-)
   - [3.2 Mappa delle transizioni 2016-2024 🔄](#32-mappa-delle-transizioni-2016-2024-)
@@ -361,7 +361,7 @@ Il confronto affiancato mostra tre pattern ben distinti. Il ΔNDSI è vicino a 0
 
 Questo conferma che NDSI e NDWI leggono fenomeni spazialmente distinti ma complementari — rispettivamente margini glaciali e superficie del ghiacciaio — mentre l'NDVI non mostra variazioni diffuse sulla vegetazione, restando un indicatore complementare piuttosto che un filtro operativo nella classificazione.
 
-## 2.4 Classificazione della copertura nevosa 🧊
+## 2.4 Classificazione della copertura nevosa 🏔️
 
 Per mappare la copertura nevosa sono stati testati tre metodi di classificazione, calcolando per ciascuno le metriche di validazione Accuracy, Recall e Precision. La classificazione binaria (neve vs. non neve) è stata validata sul 2020, l'unico anno per cui sono disponibili gli outlines glaciali ufficiali del Norwegian Polar Institute (Lith et al. 2021) [1]. La stessa soglia viene poi applicata anche al 2016 e al 2024, per garantire la confrontabilità tra le tre epoche.
 
