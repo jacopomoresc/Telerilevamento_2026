@@ -783,9 +783,7 @@ Metodo scelto per l'analisi multitemporale: **NDSI + NDWI**. Ha la Precision pi�
 
 # 3. Risultati e Discussione 📊
 
-
 ## 3.1 Percentuali di copertura nevosa
-
 ```r
 # Frequenze delle classi: 0 = non neve; 1 = neve
 freq_2016 <- freq(snow_2016_ndsi_ndwi)
@@ -921,6 +919,84 @@ Dentro gli outlines il segnale si ribalta rispetto alla Figura 24: la copertura 
 
 ## 3.2 Mappa delle variazioni 2016-2024
 
+Creo una maschera che mantiene solamente i pixel validi in entrambi gli anni
+```r
+common_mask <- !is.na(snow_2016_ndsi_ndwi) & !is.na(snow_2024_ndsi_ndwi)
+snow_2016_common <- mask(snow_2016_ndsi_ndwi, common_mask, maskvalues = 0)
+snow_2024_common <- mask(snow_2024_ndsi_ndwi, common_mask, maskvalues = 0)
+```
+
+Codifica delle variazioni: 0 = non neve stabile; 1 = neve solo nel 2024; 2 = neve solo nel 2016; 3 = neve stabile
+
+```r
+change_2016_2024 <- snow_2024_common + 2 * snow_2016_common
+freq(change_2016_2024)
+```
+
+Confronto visivo della variazione: mappa area intera vs mappa negli outlines 2020
+
+```r
+png("output/snow_change_comparison.png", width = 2200, height = 1300, res = 200)
+im.multiframe(1, 2)
+
+# 1. Variazione neve classificato 2016-2024 sull'intera area
+plot(change_2016_2024,
+     col = c("grey80", "blue", "red", "darkgreen"),
+     type = "classes", legend = FALSE,
+     main = "Variazione neve classificato 2016-2024")
+plot(study_glaciers_2020, add = TRUE, border = "black", lwd = 1.2)
+legend("bottomleft",
+       legend = c("Non neve stabile", "Neve solo nel 2024",
+                  "Neve solo nel 2016", "Neve stabile",
+                  "Outlines glaciali 2020"),
+       fill = c("grey80", "blue", "red", "darkgreen", NA),
+       border = c("black", "black", "black", "black", NA),
+       lty = c(NA, NA, NA, NA, 1),
+       col = c(NA, NA, NA, NA, "black"),
+       lwd = c(NA, NA, NA, NA, 1.2),
+       cex = 0.8, bg = "white", inset = c(0.085, 0.009), xpd = NA, bty = "o")
+
+# 2. Variazione neve solo dentro gli outlines 2020
+# Ritaglia la mappa delle variazioni sugli outlines ufficiali
+change_inside <- mask(change_2016_2024, reference_snow, maskvalues = 0)
+plot(change_inside,
+     col = c("grey80", "blue", "red", "darkgreen"),
+     type = "classes", legend = FALSE,
+     main = "Variazione neve negli outlines 2020")
+plot(study_glaciers_2020, add = TRUE, border = "black", lwd = 1.2)
+legend("bottomleft",
+       legend = c("Non neve stabile", "Neve solo nel 2024",
+                  "Neve solo nel 2016", "Neve stabile", "Outlines glaciali 2020"),
+       fill = c("grey80", "blue", "red", "darkgreen", NA),
+       border = c("black", "black", "black", "black", NA),
+       lty = c(NA, NA, NA, NA, 1),
+       col = c(NA, NA, NA, NA, "black"),
+       lwd = c(NA, NA, NA, NA, 1.2),
+       cex = 0.8, bg = "white",  inset = c(0.085, 0.009), xpd = NA, bty = "o")
+dev.off()
+```
+
+<p align="center">
+  <img src="Images/snow_change_comparison.png" width="900">
+</p>
+
+> Figura 26. Variazione della classificazione neve tra il 2016 e il 2024: intera area di studio (sinistra) vs dentro gli outlines ufficiali NPI (destra).
+
+```r
+freq(change_2016_2024)
+freq(change_inside)
+```
+
+| Classe | Intera area (pixel) | Intera area (%) | Dentro outlines (pixel) | Dentro outlines (%) |
+|---|---|---|---|---|
+| Non neve stabile | 1.624.372 | 68.81% | 4.364 | 0.84% |
+| Neve solo nel 2024 | 111.110 | 4.71% | 1.607 | 0.31% |
+| Neve solo nel 2016 | 60.716 | 2.57% | 24.321 | 4.67% |
+| Neve stabile | 564.658 | 23.92% | 491.033 | 94.19% |
+
+Il pannello di sinistra spiega da dove viene il segnale fuorviante della Figura 24: in alto a sinistra c'è un **blocco blu compatto** sul mare — non rumore sparso, ma un'area estesa di acqua classificata come "neve solo nel 2024", che da sola gonfia gran parte del 4.71%. È lo stesso problema visto nella classificazione con solo NDSI (capitolo 2.4): fuori dagli outlines la classe neve resta contaminata da superfici che non sono ghiaccio.
+
+Nel pannello di destra questo blocco sparisce del tutto. Quello che resta è un **bordo rosso sottile e continuo** intorno al perimetro del corpo glaciale principale, in particolare sul lato nord-est: pixel che nel 2016 erano neve e nel 2024 non lo sono più. Il blu (neve solo nel 2024) è quasi assente. Questo pattern — perdita concentrata ai margini, non a chiazze sparse nell'interno — è coerente con un arretramento reale del fronte glaciale piuttosto che con rumore di classificazione, e conferma numericamente il calo già visto in Figura 25: qui "neve solo nel 2016" (4.67%) è quindici volte più estesa di "neve solo nel 2024" (0.31%).
 
 
 
