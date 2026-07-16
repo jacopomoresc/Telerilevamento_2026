@@ -264,9 +264,9 @@ dev.off()
 
 > Figura 6. NDSI nei tre anni e relativa differenza (ΔNDSI, 2024-2016).
 
-Nei tre anni la mappa NDSI mostra un pattern spaziale coerente: i valori più **alti** vicino a +1 (verso il giallo) si concentrano stabilmente sui corpi glaciali, mentre il mare aperto e le superfici rocciose esposte restano su valori **bassi o negativi** vicini a -1 (viola/blu scuro), come atteso dalla formula dell'indice.
+Si nota come nei tre periodi l'indice non riesca a distinguere l'acqua dalla neve, infatti entrambe sono di un giallo acceso. 
 
-Nel pannello ΔNDSI la maggior parte dell'area glaciale interna appare in colori intermedi (variazione contenuta, vicina allo zero), mentre le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
+Nel pannello ΔNDSI le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
 
 ## NDWI - Normalized Difference Water Index 🌊
 
@@ -297,15 +297,18 @@ dev.off()
 
 > Figura 7. NDWI nei tre anni e relativa differenza (ΔNDWI, 2024-2016).
 
-La mappa NDWI separa nettamente il mare aperto del Bellsund/Recherchefjorden (valori elevati) dai corpi glaciali, che restano su valori negativi o prossimi allo zero: questa netta distinzione conferma che l'indice è **efficace nel discriminare l'acqua dalla neve**, ed è proprio ciò che lo rende utile come filtro nella classificazione.
+L'indice separa il mare aperto del Recherchefjorden, attribuendogli valori prossimi a 1, dai corpi glaciali, che restano su valori più bassi. Nell'immagine del 2024 si nota una porzione di acqua in alto a sinistra con valori di NDWI più bassi di quelli che ci aspetteremmo. Confrontando le tre mappe per anno si osserva un progressivo schiarimento: sia il mare sia buona parte della superficie del ghiacciaio e del terreno circostante assumono valori di NDWI via via più alti dal 2016 al 2024, con il 2024 visibilmente più chiaro degli altri due anni su gran parte dell'area. 
+Il pannello ΔNDWI, tuttavia, resta quasi ovunque su valori prossimi a 0: il cambiamento diffuso osservato nelle mappe assolute risulta quindi di entità contenuta pixel per pixel, con poche eccezioni isolate — piccole macchie a valore più alto vicino al mare in alto e piccole macchie a valore negativo in basso a destra.
 
-Il pannello ΔNDWI mostra le variazioni più marcate lungo la linea di costa e nelle aree proglaciali, mentre l'interno dei ghiacciai resta più stabile: un segnale che rafforza l'idea che l'NDWI stia isolando correttamente la componente acquosa, senza "sporcare" la lettura della neve vera e propria.
+L'indice separa il mare aperto del Recherchefjorden, attribuendogli valori prossimi a 1, dai corpi glaciali, che restano su valori più bassi. Nell'immagine del 2024 si nota una porzione di acqua in alto a sinistra con valori di NDWI più bassi di quelli che ci aspetteremmo. Confrontando le tre mappe per anno si osserva un progressivo schiarimento: sia il mare sia buona parte della superficie del ghiacciaio e del terreno circostante assumono valori di NDWI via via più alti dal 2016 al 2024. 
+
+Il pannello ΔNDWI resta però quasi ovunque su valori prossimi a 0, con una zona leggermente più chiara concentrata proprio sopra il corpo glaciale: il cambiamento osservato nelle mappe assolute è quindi diffuso ma di entità contenuta, e localizzato più sul ghiacciaio che sul mare.
 
 ## NDVI - Normalized Difference Vegetation Index 🌿
 
 $$ NDVI = \frac{NIR - Red}{NIR + Red} $$
 
-L'indice valuta la presenza e lo stato di salute della vegetazione, sfruttando il contrasto tra l'assorbimento della luce rossa da parte della clorofilla e l'elevata riflettanza nel NIR dovuta alla struttura cellulare delle foglie. Anche l'NDVI varia, dal punto di vista matematico, tra **-1 e +1**: valori vicini a +1 indicano vegetazione densa e sana, valori negativi corrispondono tipicamente ad acqua o neve/ghiaccio, mentre valori intorno a 0 indicano suolo nudo o roccia esposta. Nel contesto artico i valori restano generalmente contenuti rispetto ad ambienti temperati, coerentemente con la scarsità di vegetazione.
+L'indice valuta la presenza e lo stato di salute della vegetazione, sfruttando il contrasto tra l'assorbimento della luce rossa da parte della clorofilla e l'elevata riflettanza nel NIR dovuta alla struttura cellulare delle foglie. Anche l'NDVI varia, dal punto di vista matematico, tra **-1 e +1**: valori vicini a +1 indicano vegetazione densa e sana, valori negativi corrispondono tipicamente ad acqua o neve, mentre valori intorno a 0 indicano suolo nudo o roccia esposta. Nel contesto artico i valori restano generalmente contenuti rispetto ad ambienti temperati, coerentemente con la scarsità di vegetazione.
 
 ```r
 # NDVI (Normalized Difference Vegetation Index) = (NIR - Red) / (NIR + Red)
@@ -330,9 +333,9 @@ dev.off()
 
 > Figura 8. NDVI nei tre anni e relativa differenza (ΔNDVI, 2024-2016).
 
-I valori di NDVI restano contenuti su gran parte dell'area, coerentemente con un ambiente artico a vegetazione scarsa: la maggior parte della superficie si colloca vicino allo zero o su valori leggermente negativi, con isolate zone a NDVI più alto concentrate nelle aree libere dal ghiaccio (morene, terreni costieri).
+I valori di NDVI più alti, vicini a 1, si concentrano nelle aree lontane dai ghiacciai, coerentemente con la presenza di vegetazione/tundra in quelle porzioni di terreno esposto.
 
-Il pannello ΔNDVI 2024-2016 non mostra variazioni sistematiche di grande entità, un risultato in linea con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), più che per un ruolo attivo nella classificazione, dove i valori così contenuti e poco variabili non offrono un potere discriminante utile.
+Il pannello ΔNDVI 2024-2016 non mostra variazioni apprezzabili sulla maggior parte dell'area: i cambiamenti più marcati si concentrano quasi esclusivamente nell'acqua e in una piccola porzione in basso a destra. Per il resto, la vegetazione presente cambia molto poco tra gli otto anni, un risultato coerente con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), ma nell'area di studio non emerge un segnale di questo tipo, né un ruolo attivo nella classificazione.
 
 ## Confronto delle variazioni multitemporali 🔀
 
@@ -354,9 +357,9 @@ dev.off()
 
 > Figura 9. Confronto tra le variazioni 2024-2016 di NDSI, NDWI e NDVI.
 
-Il confronto affiancato delle tre differenze mostra come i segnali di cambiamento più marcati si distribuiscano in porzioni diverse dell'area di studio: il ΔNDWI si concentra lungo la costa e le aree proglaciali, il ΔNDSI ai margini dei ghiacciai, mentre il ΔNDVI resta diffuso e di **bassa intensità** su tutta l'area. Questo conferma che NDSI e NDWI stanno leggendo fenomeni spazialmente distinti ma complementari - rispettivamente neve e acqua - il che giustifica il loro uso combinato nella classificazione del capitolo successivo.
+Il confronto affiancato mostra tre pattern ben distinti. Il ΔNDSI è vicino a 0 su gran parte dell'area, con valori negativi marcati (viola scuro) concentrati lungo il perimetro del corpo glaciale: la perdita di neve/ghiaccio si concentra ai margini, non è diffusa. Il ΔNDWI è anch'esso vicino a 0 quasi ovunque, con una zona leggermente più chiara (valori moderatamente positivi) proprio sopra il corpo glaciale: un cambiamento diffuso ma contenuto. Il ΔNDVI resta piatto su quasi tutta l'area, con variazioni marcate solo in due punti: una fascia gialla in alto (valori vicini a 1, coincidente con il mare) e una piccola macchia gialla in basso a destra.
 
-L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, non presenta variazioni sufficientemente marcate da fornire un contributo discriminante analogo, e nel progetto resta quindi un indicatore **complementare** di monitoraggio ambientale piuttosto che un filtro operativo.
+Questo conferma che NDSI e NDWI leggono fenomeni spazialmente distinti ma complementari — rispettivamente margini glaciali e superficie del ghiacciaio — mentre l'NDVI non mostra variazioni diffuse sulla vegetazione, restando un indicatore complementare piuttosto che un filtro operativo nella classificazione.
 
 ## 2.4 Classificazione della copertura nevosa 🧊
 
