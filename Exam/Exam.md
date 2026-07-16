@@ -1041,6 +1041,12 @@ Dopo i limiti vorrei concludere con una frase o qualcosa d'effetto, magari con u
 - NDSI+NDWI non rileva il ghiaccio coperto da detrito superficiale, che restituisce la firma spettrale della roccia.
 - La validazione quantitativa (Accuracy/Recall/Precision) è disponibile solo per il 2020; per il 2016 e il 2024 la qualità della classificazione è assunta, non verificata direttamente.
 - Il confronto usa tre epoche puntuali (composti mediani di agosto), non una serie continua: non è possibile garantire condizioni meteorologiche omogenee tra le diverse annate.
+
+## Sviluppi futuri
+Il passo naturale per proseguire questo lavoro è infittire la serie temporale: passare da tre epoche puntuali (2016, 2020, 2024) a un'analisi anno per anno permetterebbe di distinguere un trend di arretramento continuo dalle oscillazioni stagionali  e di verificare se il pattern di perdita marginale osservato in questo progetto si mantiene costante nel tempo o accelera. 
+
+Un secondo sviluppo utile sarebbe l'acquisizione di outlines glaciali aggiornati al 2024, per verificare quanto il perimetro fisso assunto in questa analisi (limite più rilevante tra quelli elencati) si sia effettivamente spostato nello stesso periodo.
+
 # 5. Fonti 📚
 1. Hall, D.K., Riggs, G.A. (2011). Normalized-Difference Snow Index (NDSI). In: Singh, V.P., Singh, P., Haritashya, U.K. (eds) Encyclopedia of Snow, Ice and Glaciers. Encyclopedia of Earth Sciences Series. Springer, Dordrecht. https://doi.org/10.1007/978-90-481-2642-2_376
 IN FORSE 2. Keshri, A., Shukla, A., & Gupta, R. P. (2009). ASTER ratio indices for supraglacial terrain mapping. International Journal of Remote Sensing, 30(2), 519–524. https://doi.org/10.1080/01431160802385459
