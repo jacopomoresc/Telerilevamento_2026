@@ -7,13 +7,13 @@
 
 # 1. Introduzione 📌
 
-Le Svalbard rappresentano una delle regioni artiche più sensibili al riscaldamento climatico in atto, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti documentano una consistente perdita di massa e un arretramento marcato alternato solo da fasi di avanzata legate a eventi di *surge* (Zagórski et al. 2023) [7]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura nevosa stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
+Le Svalbard rappresentano una delle regioni artiche più sensibili al **riscaldamento climatico in atto**, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti documentano una **consistente perdita di massa** e un **arretramento marcato** alternato solo da fasi di avanzamento legate a eventi di *surge* ossia rapidi trasferimenti di enormi volumi di ghiaccio verso valle (Zagórski et al. 2023) [1]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura nevosa stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
 
 ## 1.1 Area di studio 🛰️
 
-L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N, 14°E). Nel ritaglio considerato sono presenti Renardbreen — un ghiacciaio vallivo che in passato terminava in mare — Scottbreen, Blomlibreen e alcune superfici glaciali minori.
+L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N, 14°E). Nel ritaglio considerato sono presenti Renardbreen - un ghiacciaio vallivo che in passato terminava in mare - Scottbreen, Blomlibreen e alcune superfici glaciali minori.
 
-Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzamenti pulsanti seguiti da lunghe fasi di quiescenza; tuttavia, la tendenza dominante osservata negli ultimi decenni in questa regione, fortemente influenzata dal rapido riscaldamento artico, è quella di un arretramento marcato e di una consistente perdita di massa.
+Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzamenti pulsanti seguiti da lunghe fasi di quiescenza; tuttavia, la tendenza dominante osservata negli ultimi decenni in questa regione, fortemente influenzata dal rapido riscaldamento artico, è quella di un arretramento marcato e di una consistente perdita di massa (Zagórski et al. 2023) [3].
 
 <p align="center">
   <img src="Images/Svalbard_AOI_print.png" width="850">
@@ -91,7 +91,7 @@ dev.off()
 
 ## Outlines glaciali di riferimento 🗺️
 
-Oltre alle tre immagini Sentinel-2, è stato importato lo shapefile con gli outlines glaciali ufficiali del Norwegian Polar Institute (NPI), disponibile per l'anno 2020. Questo dato vettoriale costituisce l'unico riferimento indipendente disponibile nel progetto e viene utilizzato più avanti per validare la classificazione della copertura nevosa ottenuta dagli indici spettrali.
+Oltre alle tre immagini Sentinel-2, è stato importato lo shapefile con gli outlines glaciali ufficiali del Norwegian Polar Institute (NPI), basato su immagini Sentinel-2 dell'estate 2020 (Lith et al. 2021) [1]. Questo dato vettoriale costituisce l'unico riferimento indipendente disponibile nel progetto e viene utilizzato più avanti per validare la classificazione della copertura nevosa ottenuta dagli indici spettrali.
 
 ```r
 # Cerco tutti i file .shp nella cartella Shapefile_2020
@@ -202,28 +202,22 @@ dev.off()
 
 ## 2.3 Indici spettrali 📐
 
-Per caratterizzare la copertura nevosa, l'acqua e la vegetazione sono stati calcolati tre indici spettrali normalizzati: **NDSI**, **NDWI** e **NDVI**. Ciascun indice è stato calcolato per i tre anni, e la relativa variazione temporale è stata ottenuta come differenza tra il 2024 e il 2016 (*Δindice = indice_2024 - indice_2016*): valori **positivi** indicano un aumento dell'indice nel 2024, valori **negativi** una diminuzione.
+Per caratterizzare la copertura nevosa, l'acqua e la vegetazione sono stati calcolati tre indici spettrali normalizzati: **NDSI**, **NDWI** e **NDVI**. Ognuno di questi è stato calcolato per i tre anni e la relativa variazione temporale è stata ottenuta come differenza tra il 2024 e il 2016 (*Δindice = indice_2024 - indice_2016*): valori **positivi** indicano un aumento dell'indice nel 2024, valori **negativi** una diminuzione.
 
 ## NDSI - Normalized Difference Snow Index ❄️
 
 $$ NDSI = \frac{Green - SWIR1}{Green + SWIR1} $$
 
-L'NDSI, formulato da **Hall e Riggs (2011) [1]** per la mappatura standardizzata della criosfera, sfrutta il comportamento spettrale tipico della neve e del ghiaccio, che riflettono *intensamente* nel verde e assorbono *fortemente* nello SWIR1: le superfici innevate o ghiacciate assumono quindi valori di NDSI **elevati**, generalmente superiori a 0.4, mentre roccia, vegetazione e acqua restano su valori più bassi. È l'indice **centrale** del progetto, su cui si basa l'intera classificazione del capitolo successivo.
+L'NDSI sfrutta il comportamento spettrale tipico della neve e del ghiaccio, che riflettono *intensamente* nel verde e assorbono *fortemente* nello SWIR1: le superfici innevate assumono quindi valori di NDSI **elevati**, generalmente superiori a 0.4, mentre roccia, vegetazione e acqua restano su valori più bassi. È l'indice **centrale** del progetto, su cui si basa l'intera classificazione.
 
-> [!NOTE]
-> Chiamo "neve" la classe individuata dall'NDSI: neve stagionale e ghiaccio glaciale hanno la stessa firma spettrale (verde alto, SWIR1 basso) e l'indice non li distingue.
-
-Il limite principale dell'NDSI, ben noto in letteratura, è la **confusione spettrale** con superfici che condividono una firma simile a quella della neve: specchi d'acqua, laghi proglaciali e ombre topografiche possono infatti restituire valori di NDSI altrettanto elevati, portando a una *sovrastima* dell'area effettivamente coperta da neve se l'indice viene usato da solo. Questo limite motiva la scelta metodologica, illustrata più avanti, di combinare l'NDSI con altri indici e bande per isolare i falsi positivi.
+Il limite principale dell'NDSI applicato pixel per pixel, ben documentato in letteratura è la **confusione spettrale** con superfici che condividono una firma simile a quella della neve: specchi d'acqua, laghi proglaciali e ombre topografiche possono infatti restituire valori di NDSI altrettanto elevati, portando a una *sovrastima* sistematica dell'area effettivamente coperta da neve (Raghubanshi et al. 2023)[2]. Questo limite motiva la scelta metodologica, illustrata più avanti, di combinare l'NDSI con altri indici e bande per isolare i falsi positivi.
 
 ```r
 # NDSI (Normalized Difference Snow Index) = (Green - SWIR1) / (Green + SWIR1)
 # È l'indice standard per evidenziare le superfici innevate
-ndsi_2016 <- (image_2016[["B3"]] - image_2016[["B11"]]) / 
-  (image_2016[["B3"]] + image_2016[["B11"]])
-ndsi_2020 <- (image_2020[["B3"]] - image_2020[["B11"]]) / 
-  (image_2020[["B3"]] + image_2020[["B11"]])
-ndsi_2024 <- (image_2024[["B3"]] - image_2024[["B11"]]) / 
-  (image_2024[["B3"]] + image_2024[["B11"]])
+ndsi_2016 <- (image_2016[["B3"]] - image_2016[["B11"]]) / (image_2016[["B3"]] + image_2016[["B11"]])
+ndsi_2020 <- (image_2020[["B3"]] - image_2020[["B11"]]) / (image_2020[["B3"]] + image_2020[["B11"]])
+ndsi_2024 <- (image_2024[["B3"]] - image_2024[["B11"]]) / (image_2024[["B3"]] + image_2024[["B11"]])
 dndsi <- ndsi_2024 - ndsi_2016
 
 png("output/ndsi_multitemporal.png", width = 2150, height = 2150, res = 200)
@@ -241,7 +235,7 @@ dev.off()
 
 > Figura 6. NDSI nei tre anni e relativa differenza (ΔNDSI, 2024-2016).
 
-Nei tre anni la mappa NDSI mostra un pattern spaziale coerente: i valori più **alti** (verso il giallo) si concentrano stabilmente sui corpi glaciali, mentre il mare aperto e le superfici rocciose esposte restano su valori **bassi o negativi** (viola/blu scuro), come atteso dalla formula dell'indice.
+Nei tre anni la mappa NDSI mostra un pattern spaziale coerente: i valori più **alti** vicino a +1 (verso il giallo) si concentrano stabilmente sui corpi glaciali, mentre il mare aperto e le superfici rocciose esposte restano su valori **bassi o negativi** vicini a -1 (viola/blu scuro), come atteso dalla formula dell'indice.
 
 Nel pannello ΔNDSI la maggior parte dell'area glaciale interna appare in colori intermedi (variazione contenuta, vicina allo zero), mentre le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
 
@@ -249,17 +243,14 @@ Nel pannello ΔNDSI la maggior parte dell'area glaciale interna appare in colori
 
 $$ NDWI = \frac{Green - NIR}{Green + NIR} $$
 
-L'NDWI, proposto da **McFeeters (1996) [3]**, evidenzia la presenza di **acqua libera** (mare, laghi proglaciali, superfici umide), che assorbe fortemente nel NIR pur mantenendo una riflettanza relativamente alta nel verde. Nel progetto questo indice viene utilizzato principalmente per *distinguere l'acqua dalla neve*, entrambe caratterizzate da riflettanza elevata nel verde e quindi facilmente confondibili dal solo NDSI.
+L'NDWI evidenzia la presenza di **acqua libera** (mare, laghi proglaciali, superfici umide), che assorbe fortemente nel NIR pur mantenendo una riflettanza relativamente alta nel verde. Nel progetto questo indice viene utilizzato principalmente per *distinguere l'acqua dalla neve*, entrambe caratterizzate da riflettanza elevata nel verde e quindi facilmente confondibili dal solo NDSI (Raghubanshi et al., 2023)[2].
 
 ```r
 # NDWI (Normalized Difference Water Index) = (Green - NIR) / (Green + NIR)
 # Evidenzia acqua marina, laghi proglaciali e superfici umide
-ndwi_2016 <- (image_2016[["B3"]] - image_2016[["B8"]]) / 
-  (image_2016[["B3"]] + image_2016[["B8"]])
-ndwi_2020 <- (image_2020[["B3"]] - image_2020[["B8"]]) / 
-  (image_2020[["B3"]] + image_2020[["B8"]])
-ndwi_2024 <- (image_2024[["B3"]] - image_2024[["B8"]]) / 
-  (image_2024[["B3"]] + image_2024[["B8"]])
+ndwi_2016 <- (image_2016[["B3"]] - image_2016[["B8"]]) / (image_2016[["B3"]] + image_2016[["B8"]])
+ndwi_2020 <- (image_2020[["B3"]] - image_2020[["B8"]]) / (image_2020[["B3"]] + image_2020[["B8"]])
+ndwi_2024 <- (image_2024[["B3"]] - image_2024[["B8"]]) / (image_2024[["B3"]] + image_2024[["B8"]])
 dndwi<- ndwi_2024 - ndwi_2016
 
 png("output/ndwi_multitemporal.png", width = 2150, height = 2150, res = 200)
@@ -340,7 +331,9 @@ L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, no
 
 ## 2.4 Classificazione della copertura nevosa 🧊
 
-La classificazione binaria (neve vs. non neve) è stata validata sul 2020, l'unico anno per cui sono disponibili gli outlines glaciali ufficiali del Norwegian Polar Institute. La stessa soglia viene poi applicata anche al 2016 e al 2024, per garantire la confrontabilità tra le tre epoche.
+La strategia di classificazione adottata in questo progetto - NDSI applicato con soglia 0.4 e poi corretto tramite combinazione con NDWI - segue l'impostazione metodologica proposta da Raghubanshi et al. (2023)[2] per ambienti montuosi complessi, dove gli autori mostrano che la combinazione NDSI+NDWI riduce drasticamente l'errore di sovrastima rispetto al solo NDSI, isolando corpi idrici e ombre dalla classe neve.
+
+La classificazione binaria (neve vs. non neve) è stata validata sul 2020, l'unico anno per cui sono disponibili gli outlines glaciali ufficiali del Norwegian Polar Institute (Lith et al. 2021)[1]. La stessa soglia viene poi applicata anche al 2016 e al 2024, per garantire la confrontabilità tra le tre epoche.
 
 La matrice di confusione spaziale è costruita combinando aritmeticamente il raster classificato con il raster di riferimento (`classificato + 2 × riferimento`), ottenendo quattro classi:
 
@@ -433,10 +426,6 @@ plot_snow_classified <- function(raster_2016, raster_2020, raster_2024, method, 
 
 #### calculate_confusion_matrix()
 ```r
-# ============================================================
-# FUNZIONE PER CALCOLARE E VISUALIZZARE LA MATRICE DI CONFUSIONE
-# ============================================================
-
 calculate_confusion_matrix <- function(classified_raster, method, output_file) {
   
   # classified_raster   raster binario da confrontare con gli outlines ufficiali
@@ -579,84 +568,7 @@ L'arancione (falsi positivi) è concentrato sul mare aperto e lungo la costa: è
 >
 > Recall alta (96.56%): quasi tutta la neve vera viene trovata. Precision bassa (66.54%): un terzo di quello che classifico come neve non lo è — coerente con quello che si vede nella mappa, il mare gonfia i falsi positivi.
 
-### Metodo 2 — NDSI + NDWI 2️⃣
-
-Istogramma per vedere la distribuzione dell'indice e scegliere la soglia di classificazione
-
-```r
-png("output/hist_ndwi_2020.png", width = 1500, height = 1300, res = 200)
-hist(ndwi_2020, breaks = 100, main = "Distribuzione NDWI - 2020")
-dev.off() 
-```
-
-<p align="center">
-  <img src="Images/hist_ndwi_2020.png" width="500">
-</p>
-
-> Figura 16. Distribuzione dei valori di NDWI nel 2020.
-
-L'NDWI sfrutta il comportamento opposto a quello dell'NDSI per l'acqua: riflettanza ancora alta nel verde ma assorbimento marcato nel NIR, quindi l'acqua libera produce valori NDWI alti quanto quelli della neve nel Metodo 1 — è proprio questa sovrapposizione a generare i falsi positivi visti in Figura 15. La distribuzione mostra una parte ampia tra -0.6 e 0.2 (terreno, neve, ghiaccio) e un picco stretto vicino a 1 (mare aperto). Soglia a 0.7: al di sopra è acqua, al di sotto no.
-
-```r
-# Soglia NDWI: i pixel con NDWI >= 0.7 vengono considerati acqua
-# soglia verificata sperimentalmente tramite il confronto con gli outlines ufficiali e con il calcolo delle metriche
-soglia_ndwi <- 0.7 
-
-# Crea una maschera binaria: NDWI < 0.7 = 1, NON ACQUA; NDWI >= 0.7 = 0, ACQUA
-ndwi_matrix <- matrix(c(-Inf, soglia_ndwi, 1, soglia_ndwi, Inf, 0), ncol = 3, byrow = TRUE)
-
-# Creazione delle maschere non-acqua per i tre anni
-not_water_2016 <- classify(ndwi_2016, ndwi_matrix)
-not_water_2020 <- classify(ndwi_2020, ndwi_matrix)
-not_water_2024 <- classify(ndwi_2024, ndwi_matrix)
-
-# Mantiene solo i pixel classificati come neve e, contemporaneamente, come non acqua
-# NDSI >= 0.4 AND NDWI < 0.7
-snow_2016_ndsi_ndwi <- snow_2016_ndsi * not_water_2016
-snow_2020_ndsi_ndwi <- snow_2020_ndsi * not_water_2020
-snow_2024_ndsi_ndwi <- snow_2024_ndsi * not_water_2024
-```
-
-Verifica della classificazione e calcolo della matrice di confusione, stesso procedimento del Metodo 1.
-
-```r
-# Visualizzazione della classificazione NDSI + NDWI nei tre anni
-plot_snow_classified(snow_2016_ndsi_ndwi, snow_2020_ndsi_ndwi, snow_2024_ndsi_ndwi,
-                     "NDSI + NDWI", "output/snow_classification_ndsi_ndwi.png")
-
-# Confronto della classificazione NDSI + NDWI con gli outlines
-plot_snow_outlines(snow_2020_ndsi_ndwi, "NDSI + NDWI", "output/ndsi_ndwi_snow_mask_2020.png")
-
-# Risultati della matrice di confusione 
-results_ndsi_ndwi <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi_ndwi,
-                                                method = "NDSI + NDWI", output_file = "output/confusion_matrix_ndsi_ndwi.png")
-```
-
-<p align="center">
-  <img src="Images/ndsi_ndwi_snow_mask_2020.png" width="500">
-</p>
-
-> Figura 17. Classificazione NDSI + NDWI sovrapposta agli outlines ufficiali NPI, 2020.
-
-Il mare non è più incluso nella classe neve: rispetto alla Figura 14, l'area fuori dal contorno rosso si è ridotta parecchio.
-
-<p align="center">
-  <img src="Images/confusion_matrix_ndsi_ndwi.png" width="500">
-</p>
-
-> Figura 18. Distribuzione spaziale della matrice di confusione, metodo NDSI + NDWI.
-
-L'arancione lungo la costa è quasi sparito rispetto al Metodo 1; il verde (True Positive) resta praticamente identico.
-
-| Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
-|---|---|---|---|---|---|---|---|
-| NDSI + NDWI | 1.751.451 | 88.116 | 18.301 | 503.024 | 95.49% | 96.49% | 85.09% |
-
-> **Commento**
->
-> Precision passa da 66.54% a 85.09%: il filtro NDWI toglie la maggior parte dei falsi positivi del mare. Recall resta praticamente uguale (96.49% vs 96.56%), quindi il filtro non sta togliendo neve vera — solo acqua. È il miglioramento più netto tra tutti i metodi testati.
-
-### Metodo 3 — NDSI + NIR 3️⃣
+### Metodo 3 — NDSI + NIR 2️⃣
 
 Istogramma della banda B8 (NIR) 2020 per scegliere la soglia.
 
@@ -731,6 +643,83 @@ Stesso miglioramento del Metodo 2 sui falsi positivi costieri, ma compare un blo
 >
 > Precision sale ancora, a 95.05%: il filtro NIR è il più aggressivo contro i falsi positivi. Ma Recall scende a 89.57% (contro il 96.49% di NDSI+NDWI): qui il filtro sta togliendo anche neve vera, non solo mare — è il blocco rosso di Figura 21. Il filtro funziona ma al prezzo di perdere una fetta di neve reale.
 
+### Metodo 3 — NDSI + NDWI 3️⃣
+
+Istogramma per vedere la distribuzione dell'indice e scegliere la soglia di classificazione
+
+```r
+png("output/hist_ndwi_2020.png", width = 1500, height = 1300, res = 200)
+hist(ndwi_2020, breaks = 100, main = "Distribuzione NDWI - 2020")
+dev.off() 
+```
+
+<p align="center">
+  <img src="Images/hist_ndwi_2020.png" width="500">
+</p>
+
+> Figura 16. Distribuzione dei valori di NDWI nel 2020.
+
+L'NDWI sfrutta il comportamento opposto a quello dell'NDSI per l'acqua: riflettanza ancora alta nel verde ma assorbimento marcato nel NIR, quindi l'acqua libera produce valori NDWI alti quanto quelli della neve nel Metodo 1 — è proprio questa sovrapposizione a generare i falsi positivi visti in Figura 15. La distribuzione mostra una parte ampia tra -0.6 e 0.2 (terreno, neve, ghiaccio) e un picco stretto vicino a 1 (mare aperto). Soglia a 0.7: al di sopra è acqua, al di sotto no.
+
+```r
+# Soglia NDWI: i pixel con NDWI >= 0.7 vengono considerati acqua
+# soglia verificata sperimentalmente tramite il confronto con gli outlines ufficiali e con il calcolo delle metriche
+soglia_ndwi <- 0.7 
+
+# Crea una maschera binaria: NDWI < 0.7 = 1, NON ACQUA; NDWI >= 0.7 = 0, ACQUA
+ndwi_matrix <- matrix(c(-Inf, soglia_ndwi, 1, soglia_ndwi, Inf, 0), ncol = 3, byrow = TRUE)
+
+# Creazione delle maschere non-acqua per i tre anni
+not_water_2016 <- classify(ndwi_2016, ndwi_matrix)
+not_water_2020 <- classify(ndwi_2020, ndwi_matrix)
+not_water_2024 <- classify(ndwi_2024, ndwi_matrix)
+
+# Mantiene solo i pixel classificati come neve e, contemporaneamente, come non acqua
+# NDSI >= 0.4 AND NDWI < 0.7
+snow_2016_ndsi_ndwi <- snow_2016_ndsi * not_water_2016
+snow_2020_ndsi_ndwi <- snow_2020_ndsi * not_water_2020
+snow_2024_ndsi_ndwi <- snow_2024_ndsi * not_water_2024
+```
+
+Verifica della classificazione e calcolo della matrice di confusione, stesso procedimento del Metodo 1.
+
+```r
+# Visualizzazione della classificazione NDSI + NDWI nei tre anni
+plot_snow_classified(snow_2016_ndsi_ndwi, snow_2020_ndsi_ndwi, snow_2024_ndsi_ndwi,
+                     "NDSI + NDWI", "output/snow_classification_ndsi_ndwi.png")
+
+# Confronto della classificazione NDSI + NDWI con gli outlines
+plot_snow_outlines(snow_2020_ndsi_ndwi, "NDSI + NDWI", "output/ndsi_ndwi_snow_mask_2020.png")
+
+# Risultati della matrice di confusione 
+results_ndsi_ndwi <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi_ndwi,
+                                                method = "NDSI + NDWI", output_file = "output/confusion_matrix_ndsi_ndwi.png")
+```
+
+<p align="center">
+  <img src="Images/ndsi_ndwi_snow_mask_2020.png" width="500">
+</p>
+
+> Figura 17. Classificazione NDSI + NDWI sovrapposta agli outlines ufficiali NPI, 2020.
+
+Il mare non è più incluso nella classe neve: rispetto alla Figura 14, l'area fuori dal contorno rosso si è ridotta parecchio.
+
+<p align="center">
+  <img src="Images/confusion_matrix_ndsi_ndwi.png" width="500">
+</p>
+
+> Figura 18. Distribuzione spaziale della matrice di confusione, metodo NDSI + NDWI.
+
+L'arancione lungo la costa è quasi sparito rispetto al Metodo 1; il verde (True Positive) resta praticamente identico.
+
+| Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
+|---|---|---|---|---|---|---|---|
+| NDSI + NDWI | 1.751.451 | 88.116 | 18.301 | 503.024 | 95.49% | 96.49% | 85.09% |
+
+> **Commento**
+>
+> Precision passa da 66.54% a 85.09%: il filtro NDWI toglie la maggior parte dei falsi positivi del mare. Recall resta praticamente uguale (96.49% vs 96.56%), quindi il filtro non sta togliendo neve vera - solo acqua. Questo metode è coerente con quanto riportato da Raghubanshi et al. (2023) [2], che documentano una riduzione dell'errore di sovrastima in un bacino himalayano con problematiche analoghe di confusione tra neve, laghi glaciali e ombre.
+
 > **[Nota]**
 >
 > L'aggiunta del filtro NDVI alla classificazione NDSI non modifica i risultati delle metriche, perché agisce sulla vegetazione, quasi assente nell'area di studio, mentre i falsi positivi dell'NDSI derivano da acqua e ombre. Per questo motivo il metodo NDSI + NDVI produce una classificazione identica al solo NDSI, e i relativi calcoli non vengono riportati.
@@ -738,9 +727,6 @@ Stesso miglioramento del Metodo 2 sui falsi positivi costieri, ma compare un blo
 ### Confronto tra i metodi ⚖️
 
 ```r
-# ------------------------------------------------------------
-# CONFRONTO VISIVO DEI TRE METODI DI CLASSIFICAZIONE - 2020
-# ------------------------------------------------------------
 classification_summary <- rbind(results_ndsi$metrics, results_ndsi_ndwi$metrics, results_ndsi_nir$metrics)
 print(classification_summary) 
 
@@ -785,8 +771,9 @@ dev.off()
 
 Il salto principale è tra il primo pannello e gli altri due: con il solo NDSI, tutta la fascia in alto (mare aperto) è classificata come neve nonostante sia ben fuori dal contorno rosso. In NDSI + NDWI quella fascia sparisce quasi del tutto. In NDSI + NIR sparisce altrettanto, ma compaiono buchi neri dentro il contorno rosso (in basso, intorno a 77.46-77.47): sono i falsi negativi già visti in Figura 19-20, dove il filtro NIR scarta neve vera.
 
+Confronto della distribuzione spaziale delle matrici di confusione del 2020:
+
 ```r
-# Confronto della distribuzione spaziale delle matrici di confusione del 2020
 png("output/confusion_matrix_methods_2020.png", width = 2100, height = 800, res = 200)
 im.multiframe(1, 3)
 
@@ -827,7 +814,7 @@ L'arancione (falsi positivi) domina l'intero bordo superiore nel pannello NDSI e
 | NDSI + NDWI | 1.751.451 | 88.116 | 18.301 | 503.024 | 95.49% | 96.49% | 85.09% |
 | NDSI + NIR | 1.815.274 | 24.293 | 54.356 | 466.969 | 96.67% | 89.57% | 95.05% |
 
-Metodo scelto per l'analisi multitemporale: **NDSI + NDWI**. Ha la Precision più alta dopo NDSI+NIR (85.09% vs 95.05%), ma mantiene la Recall quasi invariata rispetto al solo NDSI (96.49% vs 96.56%) — cosa che NDSI+NIR non fa (Recall scende a 89.57%). Tra i due filtri, NDWI toglie solo mare senza intaccare neve vera; NIR toglie il mare ma anche una fetta di neve reale, come confermano i blocchi rossi in Figura 22 e 23.
+Metodo scelto per l'analisi multitemporale: **NDSI + NDWI**. Ha la Precision più alta dopo NDSI+NIR (85.09% vs 95.05%), ma mantiene la Recall quasi invariata rispetto al solo NDSI (96.49% vs 96.56%) — cosa che NDSI+NIR non fa (Recall scende a 89.57%). Tra i due filtri, NDWI toglie solo mare senza intaccare neve vera; NIR toglie il mare ma anche una fetta di neve reale, come confermano i blocchi rossi in Figura 22 e 23. La scelta di NDSI+NDWI come metodo finale è quindi coerente sia con l'evidenza empirica raccolta su quest'area di studio, sia con la letteratura sulla mappatura della neve in ambienti complessi (Raghubanshi et al. 2023)[2].
 
 # 3. Risultati e Discussione 📊
 
