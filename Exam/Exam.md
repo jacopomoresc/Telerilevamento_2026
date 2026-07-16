@@ -919,58 +919,7 @@ plot_snow_percentages(snow_inside_table, "Area negli outlines", "output/snow_ins
 
 Dentro gli outlines il segnale si ribalta rispetto alla Figura 24: la copertura scende da 98.85% a 94.50%, quasi 4.4 punti percentuali in otto anni, senza inversioni — coerente con l'ipotesi di partenza di una diminuzione legato al riscaldamento climatico. Il confronto tra Figura 24 e Figura 25 convalida la scelta metodologica di tutto il capitolo 2.4: filtrare la classificazione con un riferimento glaciologico ufficiale non è un passaggio accessorio, ma la condizione che permette di leggere correttamente il segnale di cambiamento. Applicato all'intera scena, NDSI+NDWI resta soggetto a rumore esterno ai ghiacciai (Figura 24); applicato dentro gli outlines, restituisce un trend pulito e nella direzione attesa.
 
-## 3.2 Mappa delle transizioni 2016-2024
-
-```r
-# Mantiene solamente i pixel validi in entrambi gli anni
-common_mask <- !is.na(snow_2016_ndsi_ndwi) & !is.na(snow_2024_ndsi_ndwi)
-snow_2016_common <- mask(snow_2016_ndsi_ndwi, common_mask, maskvalues = 0)
-snow_2024_common <- mask(snow_2024_ndsi_ndwi, common_mask, maskvalues = 0)
-
-# Codifica delle variazioni:
-# 0 = non neve stabile; 1 = neve solo nel 2024; 2 = neve solo nel 2016; 3 = neve stabile
-change_2016_2024 <- snow_2024_common + 2 * snow_2016_common
-freq(change_2016_2024)
-```
-
-<p align="center">
-  <img src="Images/snow_change_2016_2024.png" width="500">
-</p>
-
-> Figura 24. Variazione della classificazione neve tra il 2016 e il 2024, intera area di studio.
-
-| Classe | Pixel | % |
-|---|---|---|
-| Non neve stabile | 1.624.372 | 68.81% |
-| Neve solo nel 2024 | 111.110 | 4.71% |
-| Neve solo nel 2016 | 60.716 | 2.57% |
-| Neve stabile | 564.658 | 23.92% |
-
-Sull'intera area, i pixel "neve solo nel 2024" (blu, 4.71%) sono quasi il doppio di "neve solo nel 2016" (rosso, 2.57%): è lo stesso segnale fuorviante di aumento già visto nella tabella percentuale.
-
-```r
-# Ritaglia la mappa delle variazioni sugli outlines ufficiali
-change_inside <- mask(change_2016_2024, reference_snow, maskvalues = 0)
-freq(change_inside)
-```
-
-<p align="center">
-  <img src="Images/snow_change_2016_2024_inside_outlines.png" width="500">
-</p>
-
-> Figura 25. Variazione della classificazione neve tra il 2016 e il 2024, dentro gli outlines ufficiali NPI.
-
-| Classe | Pixel | % |
-|---|---|---|
-| Non neve stabile | 4.364 | 0.84% |
-| Neve solo nel 2024 | 1.607 | 0.31% |
-| Neve solo nel 2016 | 24.321 | 4.67% |
-| Neve stabile | 491.033 | 94.19% |
-
-Qui il rapporto si inverte completamente: "neve solo nel 2016" (rosso, 4.67%) è quindici volte più esteso di "neve solo nel 2024" (blu, 0.31%). La perdita è quasi tutta concentrata ai margini del corpo glaciale principale (visibile come bordo rosso nella Figura 25), coerente con un arretramento perimetrale piuttosto che uno scioglimento diffuso su tutta la superficie.
-
-Il confronto tra Figura 24 e Figura 25 è il risultato più diretto del progetto: **la stessa classificazione, applicata alla stessa area, dà una lettura opposta a seconda che venga validata o meno contro un riferimento glaciologico indipendente**. Senza gli outlines NPI, NDSI + NDWI da solo non è sufficiente a mappare correttamente la neve/ghiaccio su scala di paesaggio, e avrebbe portato a concludere — erroneamente — che la copertura nevosa è aumentata.
-
+## 3.2 Mappa delle variazioni 2016-2024
 
 
 
