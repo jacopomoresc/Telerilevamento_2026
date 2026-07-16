@@ -7,7 +7,7 @@
 
 - [Abstract](#abstract-)
 - [1. Introduzione 📌](#1-introduzione-)
-  - [1.1 Area di studio](#area-di-studio)
+  - [1.1 Area di studio 🛰️](#area-di-studio)
   - [1.2 Obiettivo 🎯](#12-obiettivo-)
 - [2. Materiali e Metodi 🧪](#2-materiali-e-metodi-)
   - [2.1 Raccolta delle immagini 📂](#21-raccolta-delle-immagini-)
@@ -28,7 +28,8 @@
 
 Le Svalbard rappresentano una delle regioni artiche più sensibili al **riscaldamento climatico in atto**, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti documentano una **consistente perdita di massa** e un **arretramento marcato** alternato solo da fasi di avanzamento legate a eventi di *surge* ossia rapidi trasferimenti di enormi volumi di ghiaccio verso valle (Zagórski et al. 2023) [3]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura nevosa stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
 
-## 1.1 Area di studio
+<a name="area-di-studio"></a>
+## 1.1 Area di studio 🛰️
 
 L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N, 14°E). Nel ritaglio considerato sono presenti Renardbreen - un ghiacciaio vallivo che in passato terminava in mare - Scottbreen, Blomlibreen e alcune superfici glaciali minori.
 
