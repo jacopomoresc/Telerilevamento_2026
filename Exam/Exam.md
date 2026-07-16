@@ -323,7 +323,7 @@ Il confronto affiancato delle tre differenze mostra come i segnali di cambiament
 
 L'NDVI, pur mostrando un pattern spaziale coerente con la vegetazione artica, non presenta variazioni sufficientemente marcate da fornire un contributo discriminante analogo, e nel progetto resta quindi un indicatore **complementare** di monitoraggio ambientale piuttosto che un filtro operativo.
 
-## 2.4 Classificazione della copertura neve 🧊
+## 2.4 Classificazione della copertura nevosa 🧊
 
 La classificazione binaria (neve vs. non neve) è stata validata sul 2020, l'unico anno per cui sono disponibili gli outlines glaciali ufficiali del Norwegian Polar Institute. La stessa soglia viene poi applicata anche al 2016 e al 2024, per garantire la confrontabilità tra le tre epoche.
 
@@ -530,9 +530,9 @@ La classe neve copre l'intero corpo glaciale e va oltre il contorno rosso in div
 
 L'arancione (falsi positivi) è concentrato sul mare aperto e lungo la costa: è il segnale del mare letto come neve dall'NDSI. Il rosso (falsi negativi) è marginale, solo su alcuni bordi di ghiacciai minori.
 
-| Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
-|---|---|---|---|---|---|---|---|
-| NDSI | 1.586.384 | 253.183 | 17.922 | 503.403 | 88.52% | 96.56% | 66.54% |
+ | Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
+ |---|---|---|---|---|---|---|---|
+ | NDSI | 1.586.384 | 253.183 | 17.922 | 503.403 | 88.52% | 96.56% | 66.54% |>
 
 > **Commento**
 >
@@ -687,12 +687,206 @@ Il filtro NDVI non modifica la classificazione (metriche identiche alla sola cla
 | NDSI + NDWI | 1751451 | 88116 | 18301 | 503024 | 95.49% | 96.49% | 85.09% |
 | NDSI + NIR | 1815274 | 24293 | 54356 | 466969 | 96.67% | 89.57	% | 95.05% |
 
-
-Metodo scelto per l'analisi multitemporale: **NDSI + NDWI**. Toglie i falsi positivi del mare come NDSI+NIR, ma senza i falsi negativi che NDSI+NIR crea sulla neve in ombra.
-
-
-
 # 3. Risultati e Discussione 📊
+Il metodo scelto per l'analisi multitemporale è NDSI + NDWI (Metodo 2), il miglior compromesso tra Recall e Precision tra quelli testati. Toglie i falsi positivi del mare come NDSI+NIR, ma senza i falsi negativi che NDSI+NIR crea sulla neve in ombra.
+
+## 3.1 Percentuali di copertura nevosa
+
+```r
+# Frequenze delle classi: 0 = non neve; 1 = neve
+freq_2016 <- freq(snow_2016_ndsi_ndwi)
+freq_2020 <- freq(snow_2020_ndsi_ndwi)
+freq_2024 <- freq(snow_2024_ndsi_ndwi)
+
+# Percentuale di ogni classe rispetto al numero totale di celle
+perc_2016 <- freq_2016$count * 100 / ncell(snow_2016_ndsi_ndwi)
+perc_2020 <- freq_2020$count * 100 / ncell(snow_2020_ndsi_ndwi)
+perc_2024 <- freq_2024$count * 100 / ncell(snow_2024_ndsi_ndwi)
+```
+Creazione tabella riassuntiva
+```r
+snow_table <- data.frame(
+  Classi = c("Non neve", "Neve"),
+  a2016 = round(perc_2016, 2), a2020 = round(perc_2020, 2), a2024 = round(perc_2024, 2)
+)
+print(snow_table)
+```
+
+#### Grafico Comparativo
+Funzione per generare i tre grafici a barre affiancati (uno per anno), riutilizzata sia per l'intera area sia per l'area dentro gli outlines.
+
+```r
+# Crea e salva tre grafici percentuali affiancati
+plot_snow_percentages <- function(table, title, output_file) {
+  # table         tabella con Classi, a2016, a2020 e a2024
+  # title         parte comune del titolo dei tre grafici
+  # output_file   percorso e nome del PNG finale
+  
+  # Grafico delle percentuali per il 2016
+  p1 <- ggplot(table, aes(x = Classi, y = a2016, fill = Classi)) +      # Crea il grafico assegnando X, Y e colore
+    geom_col() +                                                        # Crea le barre usando direttamente i valori percentuali
+    geom_text(aes(label = paste0(a2016, "%")), vjust = -0.3) +          # Aggiunge i valori percentuali sopra le barre
+    scale_fill_viridis_d() +                                            # Applica la palette di colori 'viridis'
+    ylim(0, 100) +                                                      # Limita l'asse Y tra 0 e 100%
+    labs(title = paste(title, "- 2016"),                                # Imposta titolo ed etichette degli assi
+         y = "Percentuale (%)", x = NULL) +
+    theme_minimal() +                                                   # Applica un tema grafico pulito
+    theme(legend.position = "none")                                     # Rimuove la legenda perché le classi sono già indicate sull'asse X
+  
+  # Grafico delle percentuali per il 2020
+  p2 <- ggplot(table, aes(x = Classi, y = a2020, fill = Classi)) +      
+    geom_col() +                                                       
+    geom_text(aes(label = paste0(a2020, "%")), vjust = -0.3) +                        
+    scale_fill_viridis_d() +                                                           
+    ylim(0, 100) +                                                                     
+    labs(title = paste(title, "- 2020"),                                                
+         y = "Percentuale (%)", x = NULL) +
+    theme_minimal() +                                                                  
+    theme(legend.position = "none")                                                     
+  
+  # Grafico delle percentuali per il 2024
+  p3 <- ggplot(table, aes(x = Classi, y = a2024, fill = Classi)) +                    
+    geom_col() +                                                                       
+    geom_text(aes(label = paste0(a2024, "%")), vjust = -0.3) +                      
+    scale_fill_viridis_d() +                                                          
+    ylim(0, 100) +                                                                     
+    labs(title = paste(title, "- 2024"),                                                
+         y = "Percentuale (%)", x = NULL) +
+    theme_minimal() +                                                                  
+    theme(legend.position = "none")                                                    
+  
+  png(output_file, width = 2400, height = 900, res = 200)               # Apre il dispositivo PNG e definisce dimensioni e risoluzione
+  print(p1 + p2 + p3)                                                   # Affianca i tre grafici usando patchwork
+  dev.off()                                                             # Chiude il dispositivo grafico e salva il file
+}
+
+```
+#### Grafici percentuali dell'intera area di studio
+
+```r
+plot_snow_percentages(snow_table, "Copertura neve", "output/snow_percentage_comparison.png")
+```
+<p align="center">
+  <img src="Images/snow_percentage_comparison.png" width="900">
+</p>
+
+> Figura 22. Percentuale di copertura neve/non neve sull'intera area di studio, 2016-2020-2024.
+
+| Classi | 2016 | 2020 | 2024 |
+|---|---|---|---|
+| Non neve | 73.51% | 74.96% | 71.38% |
+| Neve | 26.49% | 25.04% | 28.62% |
+
+Il dato grezzo sull'intera area mostra un aumento della percentuale di neve tra il 2016 e il 2024 (26.49% → 28.62%, con un calo intermedio nel 2020). Questo numero da solo non è affidabile: la scena include mare, roccia e versanti montani esterni ai ghiacciai, dove NDSI+NDWI può classificare come neve superfici che non lo sono. Il dato viene quindi verificato nella sezione successiva usando gli outlines del NPI come riferimento.
+
+
+Crea una maschera per selezionare solo l'area dentro gli outlines:
+```r
+# Mantiene solamente i pixel interni agli outlines ufficiali del 2020
+snow_2016_inside <- mask(snow_2016_ndsi_ndwi, reference_snow, maskvalues = 0)
+snow_2020_inside <- mask(snow_2020_ndsi_ndwi, reference_snow, maskvalues = 0)
+snow_2024_inside <- mask(snow_2024_ndsi_ndwi, reference_snow, maskvalues = 0)
+```
+Calcola le percentuali:
+```r
+freq_inside_2016 <- freq(snow_2016_inside)
+freq_inside_2020 <- freq(snow_2020_inside)
+freq_inside_2024 <- freq(snow_2024_inside)
+
+# Percentuali rispetto ai soli pixel validi interni agli outlines
+perc_inside_2016 <- freq_inside_2016$count * 100 / sum(freq_inside_2016$count)
+perc_inside_2020 <- freq_inside_2020$count * 100 / sum(freq_inside_2020$count)
+perc_inside_2024 <- freq_inside_2024$count * 100 / sum(freq_inside_2024$count)
+```
+
+Crea una tabella riassuntiva:
+```r
+snow_inside_table <- data.frame(
+  Classi = c("Non neve", "Neve"),
+  a2016 = round(perc_inside_2016, 2), a2020 = round(perc_inside_2020, 2), a2024 = round(perc_inside_2024, 2)
+)
+print(snow_inside_table)
+```
+
+#### Grafici percentuali dentro gli outlines del 2020
+```r
+plot_snow_percentages(snow_inside_table, "Area negli outlines", "output/snow_inside_outlines_comparison.png")
+```
+<p align="center">
+  <img src="Images/snow_inside_outlines_comparison.png" width="900">
+</p>
+
+> Figura 23. Percentuale di copertura neve/non neve dentro gli outlines ufficiali NPI, 2016-2020-2024.
+
+| Classi | 2016 | 2020 | 2024 |
+|---|---|---|---|
+| Non neve | 1.15% | 3.51% | 5.50% |
+| Neve | 98.85% | 96.49% | 94.50% |
+
+Dentro gli outlines il segnale si ribalta: la copertura scende in modo **monotono** da 98.85% a 94.50%, quasi 4.4 punti percentuali in otto anni, senza inversioni. È l'opposto del +2 punti visto sull'intera scena. Questo è il risultato centrale del progetto: **il segnale di aumento visto sulla scena intera è un artefatto** dovuto a superfici esterne ai ghiacciai; solo ristringendo l'analisi a un riferimento verificato (gli outlines NPI) emerge il calo coerente con il riscaldamento climatico ipotizzato in apertura.
+
+
+
+## 3.2 Mappa delle transizioni 2016-2024
+
+```r
+# Mantiene solamente i pixel validi in entrambi gli anni
+common_mask <- !is.na(snow_2016_ndsi_ndwi) & !is.na(snow_2024_ndsi_ndwi)
+snow_2016_common <- mask(snow_2016_ndsi_ndwi, common_mask, maskvalues = 0)
+snow_2024_common <- mask(snow_2024_ndsi_ndwi, common_mask, maskvalues = 0)
+
+# Codifica delle variazioni:
+# 0 = non neve stabile; 1 = neve solo nel 2024; 2 = neve solo nel 2016; 3 = neve stabile
+change_2016_2024 <- snow_2024_common + 2 * snow_2016_common
+freq(change_2016_2024)
+```
+
+<p align="center">
+  <img src="Images/snow_change_2016_2024.png" width="500">
+</p>
+
+> Figura 24. Variazione della classificazione neve tra il 2016 e il 2024, intera area di studio.
+
+| Classe | Pixel | % |
+|---|---|---|
+| Non neve stabile | 1.624.372 | 68.81% |
+| Neve solo nel 2024 | 111.110 | 4.71% |
+| Neve solo nel 2016 | 60.716 | 2.57% |
+| Neve stabile | 564.658 | 23.92% |
+
+Sull'intera area, i pixel "neve solo nel 2024" (blu, 4.71%) sono quasi il doppio di "neve solo nel 2016" (rosso, 2.57%): è lo stesso segnale fuorviante di aumento già visto nella tabella percentuale.
+
+```r
+# Ritaglia la mappa delle variazioni sugli outlines ufficiali
+change_inside <- mask(change_2016_2024, reference_snow, maskvalues = 0)
+freq(change_inside)
+```
+
+<p align="center">
+  <img src="Images/snow_change_2016_2024_inside_outlines.png" width="500">
+</p>
+
+> Figura 25. Variazione della classificazione neve tra il 2016 e il 2024, dentro gli outlines ufficiali NPI.
+
+| Classe | Pixel | % |
+|---|---|---|
+| Non neve stabile | 4.364 | 0.84% |
+| Neve solo nel 2024 | 1.607 | 0.31% |
+| Neve solo nel 2016 | 24.321 | 4.67% |
+| Neve stabile | 491.033 | 94.19% |
+
+Qui il rapporto si inverte completamente: "neve solo nel 2016" (rosso, 4.67%) è quindici volte più esteso di "neve solo nel 2024" (blu, 0.31%). La perdita è quasi tutta concentrata ai margini del corpo glaciale principale (visibile come bordo rosso nella Figura 25), coerente con un arretramento perimetrale piuttosto che uno scioglimento diffuso su tutta la superficie.
+
+Il confronto tra Figura 24 e Figura 25 è il risultato più diretto del progetto: **la stessa classificazione, applicata alla stessa area, dà una lettura opposta a seconda che venga validata o meno contro un riferimento glaciologico indipendente**. Senza gli outlines NPI, NDSI + NDWI da solo non è sufficiente a mappare correttamente la neve/ghiaccio su scala di paesaggio, e avrebbe portato a concludere — erroneamente — che la copertura nevosa è aumentata.
+
+
+
+
+
+
+
+
+
 
 
 
