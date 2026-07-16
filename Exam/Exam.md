@@ -501,13 +501,22 @@ calculate_confusion_matrix <- function(classified_raster, method, output_file) {
 
 ### Metodo 1 — Solo NDSI 1️⃣
 
+Si disegna un istogramma per vedere la distribuzione dell'indice e determinare la soglia per la classificazione
 ```r
 png("output/hist_ndsi_2020.png", width = 1500, height = 1300, res = 200)
 hist(ndsi_2020, breaks = 100, main = "Distribuzione NDSI - 2020")
 dev.off() 
+```
 
-# Soglia iniziale verificata tramite confronto con gli outlines ufficiali
-soglia_ndsi <- 0.4
+<p align="center">
+  <img src="Images/hist_ndsi_2020.png" width="500">
+</p>
+
+> Figura 13. Distribuzione dei valori di NDSI nel 2020, con la soglia 0.4 scelta al netto separatore tra la componente principale a valori negativi/moderati e il picco a valori prossimi a +1.
+
+Scelta la soglia si procede alla classificazione
+```r
+soglia_ndsi <- 0.4  # Soglia verificata sperimentalmente tramite confronto con gli outlines ufficiali
 
 # Matrice di riclassificazione: NDSI < 0.4 = 0, NON NEVE; NDSI >= 0.4 = 1, NEVE
 ndsi_matrix <- matrix(c(-Inf, soglia_ndsi, 0, soglia_ndsi, Inf, 1), 
@@ -519,11 +528,7 @@ snow_2020_ndsi <- classify(ndsi_2020, ndsi_matrix)
 snow_2024_ndsi <- classify(ndsi_2024, ndsi_matrix)
 ```
 
-<p align="center">
-  <img src="Images/hist_ndsi_2020.png" width="500">
-</p>
-
-> Figura 13. Distribuzione dei valori di NDSI nel 2020, con la soglia 0.4 scelta al netto separatore tra la componente principale a valori negativi/moderati e il picco a valori prossimi a +1.
+Utilizziamo le tre funzioni create precedentemente per verificare la classificazione
 
 ```r
 plot_snow_classified(snow_2016_ndsi, snow_2020_ndsi, snow_2024_ndsi,
@@ -532,20 +537,25 @@ plot_snow_outlines(snow_2020_ndsi,"NDSI", "output/ndsi_snow_mask_2020.png")
 results_ndsi <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi, 
                                            method = "NDSI", output_file = "output/confusion_matrix_ndsi.png")
 ```
-
+VORREI AGIGUNGERE una riga di testo QUA
 <p align="center">
   <img src="Images/ndsi_snow_mask_2020.png" width="500">
 </p>
 
 > Figura 14. Classificazione NDSI (soglia 0.4) sovrapposta agli outlines ufficiali NPI, 2020.
 
+vORREI AGGIUNGERE una riga di testo QUA
 <p align="center">
   <img src="Images/confusion_matrix_ndsi.png" width="500">
 </p>
 
 > Figura 15. Distribuzione spaziale della confusion matrix, metodo NDSI.
 
-Il solo NDSI riproduce correttamente la forma generale dei ghiacciai (ampia area verde di True Positive coincidente con gli outlines), ma mostra una quantità considerevole di **falsi positivi** (arancione) distribuiti soprattutto lungo il margine costiero e nelle aree esterne agli outlines, riconducibili al mare aperto e ad altre superfici con firma spettrale simile alla neve. I falsi negativi (rosso) sono invece limitati e concentrati ai bordi di alcune propaggini glaciali minori. Accuracy = [XX.XX]%, Recall = [XX.XX]%, Precision = [XX.XX]%.
+Il solo NDSI riproduce correttamente la forma generale dei ghiacciai (ampia area verde di True Positive coincidente con gli outlines), ma mostra una troppi **falsi positivi** (arancione) distribuiti soprattutto lungo il margine costiero e nelle aree esterne agli outlines, riconducibili al mare aperto e ad altre superfici con firma spettrale simile alla neve. I falsi negativi (rosso) sono invece limitati e concentrati ai bordi di alcune propaggini glaciali minori. 
+
+| Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
+|---|---|---|---|---|---|---|---|
+| NDSI | 1586384 | 253183 | 17922 | 503403 | 88.52% | 96.56% | 66.54% |
 
 ### Metodo 2 — NDSI + NDWI 2️⃣
 
@@ -687,9 +697,15 @@ print(classification_summary)
 
 | Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
 |---|---|---|---|---|---|---|---|
-| NDSI | [—] | [—] | [—] | [—] | [XX.XX]% | [XX.XX]% | [XX.XX]% |
-| NDSI + NDWI | [—] | [—] | [—] | [—] | [XX.XX]% | [XX.XX]% | [XX.XX]% |
-| NDSI + NIR | [—] | [—] | [—] | [—] | [XX.XX]% | [XX.XX]% | [XX.XX]% |
+| NDSI | 1586384 | 253183 | 17922 | 503403 | 88.52% | 96.56% | 66.54% |
+| NDSI + NDWI | 1751451 | 88116 | 18301 | 503024 | 95.49% | 96.49% | 85.09% |
+| NDSI + NIR | 1815274 | 24293 | 54356 | 466969 | 96.67% | 89.57	% | 95.05% |
+
+
+1	NDSI		88.52	96.56	66.54
+2	NDSI + NDWI		503024	95.49	96.49	85.09
+3	NDSI + NIR	96.67	89.57	95.05
+
 
 Metodo scelto per l'analisi multitemporale: **NDSI + NDWI**. Toglie i falsi positivi del mare come NDSI+NIR, ma senza i falsi negativi che NDSI+NIR crea sulla neve in ombra.
 
