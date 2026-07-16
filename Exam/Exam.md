@@ -331,10 +331,10 @@ La confusion matrix spaziale è costruita combinando aritmeticamente il raster c
 
 | Codice | Significato |
 |---|---|
-| 0 (TN) | classificato NON neve, esterno agli outlines |
-| 1 (FP) | classificato neve, ma esterno agli outlines |
-| 2 (FN) | classificato NON neve, ma interno agli outlines |
-| 3 (TP) | classificato neve, interno agli outlines |
+| 0 (TN) | pixel esterni agli outlines correttamente classificati come NON neve |
+| 1 (FP) | pixel classificati come neve ma esterni agli outlines |
+| 2 (FN) | pixel interni agli outlines riconosciuti come NON neve |
+| 3 (TP) | pixel interni agli outlines correttamente classificati come neve |
 
 Da questi conteggi vengono calcolate tre metriche standard di validazione:
 
@@ -357,11 +357,13 @@ $$ Precision = \frac{TP}{TP + FP} $$
 Risponde alla domanda opposta: *di tutta l'area classificata come neve, quanta ricade davvero dentro gli outlines ufficiali?* Una Precision bassa indica **sovrastima**: il metodo include aree che non sono realmente glaciali (falsi positivi), come acqua, ombre o roccia chiara.
 
 > [!NOTE]
+> 
 > Recall e Precision colgono due tipi di errore opposti e complementari: la prima penalizza chi "lascia fuori" superfici vere, la seconda penalizza chi "include" superfici che non lo sono. Un buon metodo di classificazione cerca il miglior compromesso tra le due, non la massimizzazione di una sola.
 
 Il calcolo e la visualizzazione di questi risultati sono affidati a tre funzioni scritte appositamente per il progetto, richiamate identicamente per ciascuno dei metodi testati:
 
 > [!NOTE]
+> 
 > **Le due funzioni del workflow di classificazione**
 >
 > - **`plot_snow_outlines()`** — sovrappone gli outlines ufficiali del NPI alla classificazione del 2020, per un controllo visivo diretto di quanto la classe "neve" combaci con il riferimento.
@@ -416,8 +418,8 @@ calculate_confusion_matrix <- function(classified_raster, method, output_file) {
   
   # Estrae i quattro conteggi della confusion matrix
   TN <- counts["0"]  # pixel esterni agli outlines correttamente classificati come NON neve
-  FP <- counts["1"]  # pixel classificati come neve ma esterni agli outlines (falso positivo)
-  FN <- counts["2"]  # pixel interni agli outlines non riconosciuti come neve
+  FP <- counts["1"]  # pixel classificati come neve ma esterni agli outlines 
+  FN <- counts["2"]  # pixel interni agli outlines riconosciuti come NON neve
   TP <- counts["3"]  # pixel interni agli outlines correttamente classificati come neve
   
   # Calcola le metriche
@@ -472,7 +474,7 @@ calculate_confusion_matrix <- function(classified_raster, method, output_file) {
 
 ### Metodo 1 — Solo NDSI 1️⃣
 
-Istogramma per vedere la distribuzione dell'indice e scegliere la soglia di classificazione.
+Istogramma per vedere la distribuzione dell'indice e scegliere la soglia di classificazione
 
 ```r
 png("output/hist_ndsi_2020.png", width = 1500, height = 1300, res = 200)
@@ -486,8 +488,8 @@ dev.off()
 
 > Figura 13. Distribuzione dei valori di NDSI nel 2020.
 
-Il calcolo dell'NDSI sfrutta l'esclusiva firma spettrale della neve, caratterizzata da un'elevata riflettanza nel visibile (banda verde) e da un forte assorbimento nell'infrarosso a onde corte (SWIR). La distribuzione dell'indice mostra due gruppi: uno largo tra -0.7 e 0.2 (superfici non innevate) e uno stretto vicino a 1 (superfici innevate), ho scelto la soglia NDSI = 0.4 per distinguere efficaciemente la copertura nevosa dal resto del paesaggio. I valori inferiori a 0.4 indicano quindi generalmente terreno nudo, vegetazione o zone in ombra, mentre valori pari o superiori a 0.4 corrispondono a neve
-
+Il calcolo dell'NDSI sfrutta l'esclusiva firma spettrale della neve, caratterizzata da un'elevata riflettanza nel visibile (banda verde) e da un forte assorbimento 
+nell'infrarosso a onde corte (SWIR). La distribuzione dell'indice mostra due gruppi: uno largo tra -0.7 e 0.2 (superfici non innevate) e uno stretto vicino a 1 (superfici innevate), ho scelto la soglia NDSI = 0.4 per distinguere efficaciemente la copertura nevosa dal resto del paesaggio: i valori inferiori a 0.4 indicano quindi generalmente terreno nudo, vegetazione o zone in ombra, mentre valori pari o superiori a 0.4 corrispondono a neve. 
 
 
 
@@ -538,7 +540,7 @@ L'arancione (falsi positivi) è concentrato sul mare aperto e lungo la costa: è
 
 ### Metodo 2 — NDSI + NDWI 2️⃣
 
-Istogramma NDWI 2020 per scegliere la soglia che isola l'acqua.
+Istogramma per vedere la distribuzione dell'indice e scegliere la soglia di classificazione
 
 ```r
 png("output/hist_ndwi_2020.png", width = 1500, height = 1300, res = 200)
@@ -552,10 +554,10 @@ dev.off()
 
 > Figura 16. Distribuzione dei valori di NDWI nel 2020.
 
-Soglia a 0.7: sopra è acqua, sotto no. La maschera tiene solo i pixel "non acqua" e li moltiplica per la classificazione NDSI (AND logico tra le due condizioni).
+L'NDWI sfrutta il comportamento opposto a quello dell'NDSI per l'acqua: riflettanza ancora alta nel verde ma assorbimento marcato nel NIR, quindi l'acqua libera produce valori NDWI alti quanto quelli della neve nel Metodo 1 — è proprio questa sovrapposizione a generare i falsi positivi visti in Figura 15. La distribuzione mostra una parte ampia tra -0.6 e 0.2 (terreno, neve, ghiaccio) e un picco stretto vicino a 1 (mare aperto). Soglia a 0.7: sopra è acqua, sotto no.
 
 ```r
-soglia_ndwi <- 0.7 # soglia verificata sperimentalmente tramite confronto con gli outlines ufficiali e con il calcolo delle metriche
+soglia_ndwi <- 0.7 # soglia verificata sperimentalmente tramite il confronto con gli outlines ufficiali e con il calcolo delle metriche
 
 # Crea una maschera binaria: NDWI < 0.7 = 1, NON ACQUA; NDWI >= 0.7 = 0, ACQUA
 ndwi_matrix <- matrix(c(-Inf, soglia_ndwi, 1, soglia_ndwi, Inf, 0), ncol = 3, byrow = TRUE)
@@ -571,6 +573,8 @@ snow_2020_ndsi_ndwi <- snow_2020_ndsi * not_water_2020
 snow_2024_ndsi_ndwi <- snow_2024_ndsi * not_water_2024
 ```
 
+Verifica della classificazione e calcolo della confusion matrix, stesso procedimento del Metodo 1.
+
 ```r
 plot_snow_outlines(snow_2020_ndsi_ndwi, "NDSI + NDWI", "output/ndsi_ndwi_snow_mask_2020.png")
 results_ndsi_ndwi <- calculate_confusion_matrix(classified_raster = snow_2020_ndsi_ndwi,
@@ -583,7 +587,7 @@ results_ndsi_ndwi <- calculate_confusion_matrix(classified_raster = snow_2020_nd
 
 > Figura 17. Classificazione NDSI + NDWI sovrapposta agli outlines ufficiali NPI, 2020.
 
-Il mare non è più incluso nella classe neve: il filtro NDWI ha tolto quasi tutta l'area fuori dal contorno rosso che nel Metodo 1 era classificata come neve.
+Il mare non è più incluso nella classe neve: rispetto alla Figura 14, l'area fuori dal contorno rosso si è ridotta parecchio.
 
 <p align="center">
   <img src="Images/confusion_matrix_ndsi_ndwi.png" width="500">
@@ -595,9 +599,12 @@ L'arancione lungo la costa è quasi sparito rispetto al Metodo 1; il verde (True
 
 | Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
 |---|---|---|---|---|---|---|---|
-| NDSI + NDWI | 1751451 | 88116 | 18301 | 503024 | 95.49% | 96.49% | 85.09% |
+| NDSI + NDWI | 1.751.451 | 88.116 | 18.301 | 503.024 | 95.49% | 96.49% | 85.09% |
 
-[qui la lettura dei numeri, appena li mandi]
+> **Commento**
+>
+> Precision passa da 66.54% a 85.09%: il filtro NDWI toglie la maggior parte dei falsi positivi del mare. Recall resta praticamente uguale (96.49% vs 96.56%), quindi il filtro non sta togliendo neve vera — solo acqua. È il miglioramento più netto tra tutti i metodi testati.
+
 
 ### Metodo 3 — NDSI + NIR 3️⃣
 
@@ -668,6 +675,8 @@ Stesso miglioramento del Metodo 2 sui falsi positivi costieri, ma compare un blo
 classification_summary <- rbind(results_ndsi$metrics, results_ndsi_ndwi$metrics, results_ndsi_nir$metrics)
 print(classification_summary) 
 ```
+
+Il filtro NDVI non modifica la classificazione (metriche identiche alla sola classificazione NDSI): agisce su un problema — la vegetazione — che nell'area di studio è quasi assente, mentre i falsi positivi dell'NDSI derivano da acqua e ombre, non da vegetazione.
 
 | Metodo | TN | FP | FN | TP | Accuracy | Recall | Precision |
 |---|---|---|---|---|---|---|---|
