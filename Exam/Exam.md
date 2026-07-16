@@ -1,4 +1,4 @@
-# Monitoraggio multitemporale della copertura nevosa alle Svalbard (2016-2024)
+# Monitoraggio multitemporale della copertura nevosa alle Svalbard nel periodo 2016-2024
 
 > #### Progetto d'esame - Telerilevamento Geo-Ecologico in R - 2026
 >> ##### Jacopo Moresco, matricola n.1237448
@@ -24,23 +24,21 @@
 
 # Abstract 📄
 
-Questo progetto stima la variazione della copertura nevosa in un settore di ghiacciai delle Svalbard, il Recherchefjorden tra il 2016 e il 2024, tramite immagini Sentinel-2 e indici spettrali NDSI, NDWI, NDVI. La classificazione binaria neve/non neve, basata su NDSI con soglia 0.4, è stata combinata prima con la banda NIR, poi con l'indice NDWI - per ridurre i falsi positivi dovuti ad acqua e ombre - e successivamente filtrata sugli outlines glaciali del Norwegian Polar Institute relativi al 2020. Il metodo NDSI+NDWI si è rivelato il migliore compromesso tra Accuracy, Recall e Precision.
+Questo progetto stima la variazione della copertura nevosa in un settore del Recherchefjorden (isole Svalbard) tra il 2016 e il 2024, tramite immagini Sentinel-2 e indici spettrali: NDSI, NDWI, NDVI. La classificazione binaria neve/non neve, basata su NDSI con soglia 0.4, è stata combinata prima con la banda NIR e con l'indice NDWI per ridurre i falsi positivi dovuti ad acqua e ombre, successivamente è stata filtrata sugli outlines glaciali del Norwegian Polar Institute relativi al 2020. Il metodo NDSI+NDWI si è rivelato il migliore compromesso tra Accuracy, Recall e Precision.
 
 Applicata all'intera scena, la classificazione mostra un aumento apparente della copertura nevosa pari al 2.13% riconducibile a superfici esterne ai ghiacciai erroneamente incluse nella classe neve. Restringendo l'analisi agli outlines ufficiali emerge una diminuzione della copertura del 4.35%, concentrata sopratutto ai margini dei corpi glaciali. Il trend osservato è coerente
 con il quadro di arretramento glaciale e perdita di massa documentato in letteratura per le Svalbard, in un contesto di rapido riscaldamento climatico. Il confronto mostra che un riferimento geomorfologico indipendente è fondamentale per interpretare correttamente gli indici spettrali e distinguere il segnale glaciale dagli errori di classificazione delle superfici circostanti.
 
-Keywords:
+Keywords: Telerilevamento; NDSI; Sentinel-2; Svalbard, NDWI
 
 # 1. Introduzione 📌
 
-Le Svalbard rappresentano una delle regioni artiche più sensibili al **riscaldamento climatico in atto**, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti documentano una **consistente perdita di massa** e un **arretramento marcato** alternato solo da fasi di avanzamento legate a eventi di *surge* ossia rapidi trasferimenti di enormi volumi di ghiaccio verso valle (Zagórski et al. 2023) [3]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura nevosa stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
+Le Svalbard rappresentano una delle regioni artiche più sensibili al **riscaldamento climatico in atto**, con tassi di aumento della temperatura superiori alla media globale e conseguenze dirette sulla dinamica dei ghiacciai dell'arcipelago. Studi recenti documentano una **consistente perdita di massa** e un **arretramento del fronte marcato** alternato solo da fasi di avanzamento legate a eventi di *surge*, ossia rapidi trasferimenti di enormi volumi di ghiaccio verso valle (Zagórski et al. 2023)[3]. Questo quadro rende le Svalbard un caso di studio rilevante per verificare, tramite telerilevamento multitemporale, se e come la copertura nevosa stia effettivamente variando in un intervallo temporale recente e osservabile da satellite.
 
 <a name="area-di-studio"></a>
 ## 1.1 Area di studio 🛰️
 
 L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbergen, nell'arcipelago norvegese delle Svalbard, all'interno del Sør-Spitsbergen National Park. In particolare, il sito interessa la parte nord-occidentale del Recherchefjorden e la costa meridionale di Bellsund, nella regione di Wedel Jarlsberg Land (~77°N, 14°E). Nel ritaglio considerato sono presenti Renardbreen - un ghiacciaio vallivo che in passato terminava in mare - Scottbreen, Blomlibreen e alcune superfici glaciali minori.
-
-Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzamenti pulsanti seguiti da lunghe fasi di quiescenza; tuttavia, la tendenza dominante osservata negli ultimi decenni in questa regione, fortemente influenzata dal rapido riscaldamento artico, è quella di un arretramento marcato e di una consistente perdita di massa (Zagórski et al. 2023) [3].
 
 <p align="center">
   <img src="Images/Svalbard_AOI_print.png" width="850">
@@ -50,20 +48,21 @@ Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzam
 
 ## 1.2 Obiettivo 🎯
 
-L'obiettivo del progetto è stimare la variazione della copertura nevosa nell'area di studio tra il 2016 e il 2024, utilizzando immagini Sentinel-2 attraverso il calcolo di indici spettrali e un'analisi multitemporale, nell'ipotesi che tale estensione si riduca per effetto del riscaldamento climatico in atto alle Svalbard.
+L'obiettivo del progetto è stimare la variazione della copertura nevosa nell'area di studio tra il 2016 e il 2024, utilizzando immagini Sentinel-2, indici spettrali e un'analisi multitemporale, nell'ipotesi che tale estensione si riduca per effetto del riscaldamento climatico in atto alle Svalbard.
 
 # 2. Materiali e Metodi 🧪
 
 ## 2.1 Raccolta delle immagini 📂
 
-Le immagini satellitari sono state ottenute tramite [**Google Earth Engine**](https://earthengine.google.com/) (GEE), una piattaforma cloud che consente di accedere direttamente all'archivio satellitare pubblico, tra cui le collezioni Sentinel-2, e di elaborarlo senza doverlo scaricare in locale: è possibile filtrare le scene disponibili per area geografica, intervallo temporale e percentuale di copertura nuvolosa, per poi esportare l'immagine risultante già ritagliata sull'area di interesse. Per questo progetto sono state selezionate immagini con una copertura nuvolosa massima del 10% (`CLOUDY_PIXEL_PERCENTAGE < 10`), soglia scelta per ridurre il più possibile l'interferenza delle nuvole nel calcolo degli indici spettrali.
+Le immagini satellitari sono state ottenute tramite [**Google Earth Engine**](https://earthengine.google.com/) (GEE)che consente di acceder all'archivio satellitare pubblico, tra cui le collezioni Sentinel-2, e di elaborarlo senza doverlo scaricare in locale: è possibile filtrare le scene disponibili per area geografica, intervallo temporale e percentuale di copertura nuvolosa, per poi esportare l'immagine risultante già ritagliata sull'area di interesse. Per questo progetto sono state selezionate immagini con una copertura nuvolosa massima del 10% (`CLOUDY_PIXEL_PERCENTAGE < 10`) per ridurre il più possibile l'interferenza delle nuvole nel calcolo degli indici spettrali.
 
-+ Le immagini utilizzate sono composti mediani mensili: per ciascun anno, tutte le scene Sentinel-2 di agosto (2016, 2020, 2024) con copertura nuvolosa inferiore al 10% sono state combinate calcolando il valore mediano pixel per pixel, riducendo così l'effetto di rumore residuo e le differenze radiometriche tra acquisizioni singole. 
-+ Il dataset di partenza è Sentinel-2 Surface Reflectance Harmonized (Level-2A), già corretto atmosfericamente.
-+ Il periodo estivo è stato scelto perché corrisponde alla fase di massima ablazione glaciale, durante la quale la copertura nevosa stagionale è generalmente ridotta, rendendo più semplice distinguere il ghiaccio permanente dalle superfici circostanti.
+
 
 > [!NOTE]
-> Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file `Code.js`.
+> + Le immagini utilizzate sono composti mediani mensili: per ciascun anno, tutte le scene Sentinel-2 (2016, 2020, 2024) sono state combinate calcolando il valore mediano pixel per pixel, riducendo così l'effetto di rumore residuo e le differenze radiometriche tra acquisizioni singole. 
+> + Il dataset di partenza è Sentinel-2 Surface Reflectance Harmonized (Level-2A), già corretto atmosfericamente.
+> + E' stato scelto il mese di agosto come periodo perché corrisponde alla fase di massima ablazione glaciale, durante la quale la copertura nevosa stagionale è generalmente ridotta, rendendo più semplice distinguere il ghiaccio permanente dalle superfici circostanti.
+> + Il codice completo in JavaScript utilizzato per ottenere le immagini si trova nel file `Code.js`.
 
 Per ciascun anno sono state scaricate le bande Sentinel-2 riportate in tabella, esportate a una risoluzione uniforme di 20 m (nativamente B2, B3, B4 e B8 sarebbero a 10 m, ma sono state allineate alla risoluzione di B11 in fase di esportazione):
 
@@ -77,8 +76,7 @@ Per ciascun anno sono state scaricate le bande Sentinel-2 riportate in tabella, 
 
 ## 2.2 Importazione e visualizzazione in R 💻
 
-Una volta scaricate, le tre immagini sono state importate in RStudio dopo aver impostato una working directory.
-
+Il primo passaggio è impostare una working directory: 
 ```r
 setwd("C:/Users/Jacopo/OneDrive/Università/Magistrale/Telerilevamento_Rocchini/Exam")
 ```
@@ -91,13 +89,10 @@ library(imageRy)    # Visualizzazione immagini telerilevate
 library(viridis)    # Palette cromatiche per mappe
 library(ggplot2)    # Grafici finali
 library(patchwork)  # Affiancamento grafici
-library(ggridges)   # Distribuzioni degli indici
-library(reshape2)   # Riorganizzazione tabelle per ggplot
 ```
 
 ### Immagini 🖼️
-
-I tre raster Sentinel-2 sono stati importati con la funzione `rast()` di `terra`, che legge direttamente il file multibanda in formato `.tif` mantenendo la struttura originale delle cinque bande selezionate in fase di esportazione da GEE.
+Dopo aver scaricato i tre raster e averli posizionati all'interno della working directory si importanto con la funzione `rast()` di `terra`, che legge direttamente il file multibanda in formato `.tif` mantenendo la struttura originale delle cinque bande selezionate:
 
 ```r
 image_2016 <- rast("data_raw/svalbard_glaciers_2016_late_summer.tif")
