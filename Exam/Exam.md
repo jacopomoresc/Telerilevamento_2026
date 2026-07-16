@@ -16,7 +16,7 @@ L'area di studio è situata nella porzione sud-occidentale dell'isola di Spitsbe
 Si tratta di ghiacciai di tipo *surge*, soggetti a temporanei e violenti avanzamenti pulsanti seguiti da lunghe fasi di quiescenza; tuttavia, la tendenza dominante osservata negli ultimi decenni in questa regione, fortemente influenzata dal rapido riscaldamento artico, è quella di un arretramento marcato e di una consistente perdita di massa.
 
 <p align="center">
-  <img src="Images/Svalard_AOI_print.png" width="850">
+  <img src="Images/Svalbard_AOI_print.png" width="850">
 </p>
 
 > Figura 1. Localizzazione dell'area di studio nel settore sud-occidentale di Spitsbergen, Svalbard.
