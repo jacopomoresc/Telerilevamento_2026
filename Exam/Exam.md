@@ -158,8 +158,7 @@ dev.off()
 > Figura 2. Composizione RGB (bande 4-3-2) a confronto tra 2016, 2020 e 2024.
 
 ### Le cinque bande del 2020 🔎
-
-Sono state poi visualizzate singolarmente le cinque bande disponibili per ciascun anno (è stata inserita solo l'immagine del 2020 per non appesantire troppo il documento), per verificare la qualità radiometrica delle immagini e la corrispondenza tra bande e superfici osservabili (neve, roccia, acqua, ombre) prima di calcolare gli indici.
+Sono state poi visualizzate singolarmente le cinque bande disponibili (sono state calcolate per ogni anno ma qui è stata inserita solo l'immagine del 2020 per non appesantire troppo il documento):
 
 ```r
 png("output/bands_2020.png", width = 2200, height = 1400, res = 200)
@@ -178,8 +177,10 @@ dev.off()
 
 > Figura 3. Le cinque bande Sentinel-2 disponibili per il 2020.
 
+Le tre bande del visibile (B2, B3, B4) e la banda NIR mostrano lo stesso pattern spaziale: il corpo glaciale risulta nettamente più chiaro rispetto al terreno circostante in tutte e quattro. In B11 (SWIR1) il pattern si inverte completamente: il ghiacciaio diventa la zona più scura dell'immagine, mentre il terreno circostante resta su valori medio-alti. 
+
 ### Bande del visibile: confronto dei tre anni 👁️
-Prima di calcolare gli indici spettrali, le bande del visibile e le bande NIR/SWIR1 sono state confrontate tra i tre anni: le prime sono propedeutiche a NDVI e alla composizione RGB, le seconde a NDSI e NDWI.
+Per favorire il confronto immediato sono state visualizzate prima le bande del visibile fra i tre periodi:
 
 ```r
 png("output/visible_bands.png", width = 2600, height = 2200, res = 200)
@@ -202,7 +203,10 @@ dev.off()
 
 > Figura 4. Bande del visibile (B2, B3, B4) a confronto tra 2016, 2020 e 2024.
 
-### Bande NIR e SWIR: confronto dei tre anni 📡
+Il pattern spaziale resta stabile nei tre anni: il corpo glaciale è nettamente più chiaro del terreno circostante in tutte le combinazioni banda/anno.
+
+### Bande NIR e SWIR1: confronto dei tre anni 📡
+Successivamente sono state visualizzate la banda NIR e SWIR1 nelle tre annate
 
 ```r
 png("output/nir_swir_bands.png", width = 1600, height = 2200, res = 200)
@@ -222,17 +226,20 @@ dev.off()
 
 > Figura 5. Bande B8 (NIR) e B11 (SWIR1) a confronto tra 2016, 2020 e 2024.
 
+In tutti e tre gli anni la banda NIR mostra il ghiacciaio come zona chiara, con un contrasto rispetto al terreno circostante simile a quello delle bande del visibile. La banda SWIR1 mostra  il pattern opposto: il corpo glaciale è la zona più scura dell'immagine, mentre il terreno esposto attorno resta su valori medio-alti.
 ## 2.3 Indici spettrali 📐
 
-Per caratterizzare la copertura nevosa, l'acqua e la vegetazione sono stati calcolati tre indici spettrali normalizzati: **NDSI**, **NDWI** e **NDVI**. Ognuno di questi è stato calcolato per i tre anni e la relativa variazione temporale è stata ottenuta come differenza tra il 2024 e il 2016 (*Δindice = indice_2024 - indice_2016*): valori **positivi** indicano un aumento dell'indice nel 2024, valori **negativi** una diminuzione.
+Per caratterizzare la copertura nevosa, l'acqua e la vegetazione sono stati usati tre indici spettrali: **NDSI**, **NDWI** e **NDVI**. Ognuno di questi è stato calcolato per i tre anni e la relativa variazione temporale è stata ottenuta come differenza tra il 2024 e il 2016 (*Δindice = indice_2024 - indice_2016*): valori **positivi** indicano un aumento dell'indice nel 2024, valori **negativi** una diminuzione.
 
 ## NDSI - Normalized Difference Snow Index ❄️
 
 $$ NDSI = \frac{Green - SWIR1}{Green + SWIR1} $$
 
-L'indice varia tra **-1 e +1**, e sfrutta il comportamento spettrale tipico della neve che riflette *intensamente* nel verde e assorbe *fortemente* nello SWIR. In teoria, qualsiasi valore superiore a 0 indica già una componente nevosa; nella pratica, però, valori tra 0 e 0.4 restano ambigui e si confondono facilmente con suolo o roccia esposta, per cui la letteratura utilizza tipicamente una **soglia operativa di 0.4** per classificare in modo affidabile i pixel di sola neve: tutto ciò che sta sotto viene escluso dalla classe "neve". È l'indice **centrale** del progetto, su cui si basa l'intera classificazione (Raghubanshi et al. 2023) [2].
+È l'indice **centrale** del progetto su cui si basa l'intera classificazione, varia tra **-1 e +1**, e sfrutta il comportamento spettrale tipico della neve che riflette *intensamente* nel verde e assorbe *fortemente* nello SWIR. In teoria, qualsiasi valore superiore a 0 indica già una componente nevosa; nella pratica, però, valori tra 0 e 0.4 restano ambigui e si confondono facilmente con suolo o roccia esposta, per cui la letteratura utilizza tipicamente una **soglia operativa di 0.4** per classificare in modo affidabile i pixel di sola neve.
 
-Il limite principale dell'NDSI applicato pixel per pixel, ben documentato in letteratura è la **confusione spettrale** con superfici che condividono una firma simile a quella della neve: specchi d'acqua, laghi proglaciali e ombre topografiche possono infatti restituire valori di NDSI altrettanto elevati, portando a una *sovrastima* sistematica dell'area effettivamente coperta da neve (Raghubanshi et al. 2023) [2]. Questo limite motiva la scelta metodologica, illustrata più avanti, di combinare l'NDSI con altri indici e bande per isolare i falsi positivi.
+Il limite principale dell'NDSI è la **confusione spettrale** con superfici che condividono una firma simile a quella della neve: specchi d'acqua, laghi proglaciali e ombre topografiche possono infatti restituire valori di NDSI altrettanto elevati, portando a una *sovrastima* sistematica dell'area effettivamente coperta da neve (Raghubanshi et al. 2023) [2]. 
+
+Questo limite motiva la scelta metodologica, illustrata più avanti, di combinare l'NDSI con altri indici e bande per isolare i falsi positivi.
 
 ```r
 # NDSI (Normalized Difference Snow Index) = (Green - SWIR1) / (Green + SWIR1)
