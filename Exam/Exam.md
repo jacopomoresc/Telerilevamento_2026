@@ -554,7 +554,7 @@ dev.off()
 
 > Figura 16. Distribuzione dei valori di NDWI nel 2020.
 
-L'NDWI sfrutta il comportamento opposto a quello dell'NDSI per l'acqua: riflettanza ancora alta nel verde ma assorbimento marcato nel NIR, quindi l'acqua libera produce valori NDWI alti quanto quelli della neve nel Metodo 1 — è proprio questa sovrapposizione a generare i falsi positivi visti in Figura 15. La distribuzione mostra una parte ampia tra -0.6 e 0.2 (terreno, neve, ghiaccio) e un picco stretto vicino a 1 (mare aperto). Soglia a 0.7: sopra è acqua, sotto no.
+L'NDWI sfrutta il comportamento opposto a quello dell'NDSI per l'acqua: riflettanza ancora alta nel verde ma assorbimento marcato nel NIR, quindi l'acqua libera produce valori NDWI alti quanto quelli della neve nel Metodo 1 — è proprio questa sovrapposizione a generare i falsi positivi visti in Figura 15. La distribuzione mostra una parte ampia tra -0.6 e 0.2 (terreno, neve, ghiaccio) e un picco stretto vicino a 1 (mare aperto). Soglia a 0.7: al di sopra è acqua, al di sotto no.
 
 ```r
 soglia_ndwi <- 0.7 # soglia verificata sperimentalmente tramite il confronto con gli outlines ufficiali e con il calcolo delle metriche
@@ -622,10 +622,11 @@ dev.off()
 
 > Figura 19. Distribuzione dei valori della banda B8 (NIR) nel 2020.
 
-Soglia a 400 (unità nativa del raster, non riflettanza normalizzata): sotto è riflettanza troppo bassa per essere neve pulita, sopra sì.
+
+In questo caso non si usa un indice normalizzato ma la riflettanza della banda NIR: valori bassi indicano superfici scure o in ombra, che l'NDSI da solo può comunque classificare come neve se il rapporto verde/SWIR1 resta comunque alto. La distribuzione mostra un picco altissimo vicino a 0 (ombre, acqua scura, superfici molto assorbenti) e un secondo picco più basso e largo tra 1500 e 2000 (neve, ghiaccio, terreno chiaro), con una coda lunga che si esaurisce oltre i 4000. La soglia è stata impostata a 400: al di sotto è riflettanza troppo bassa per essere neve pulita, al di sopra sì.
 
 ```r
-soglia_nir <- 400 # soglia sperimentale verificata con outlines e metriche
+soglia_nir <- 400 # soglia verificata sperimentalmente tramite il confronto con gli outlines ufficiali e con il calcolo delle metriche
 
 # Matrice di riclassificazione: # NIR < 400 = 0; # NIR >= 400 = 1
 nir_matrix <- matrix(c(-Inf, soglia_nir, 0, soglia_nir, Inf, 1), ncol = 3, byrow = TRUE)
@@ -667,7 +668,9 @@ Stesso miglioramento del Metodo 2 sui falsi positivi costieri, ma compare un blo
 |---|---|---|---|---|---|---|---|
 | NDSI + NIR | 1815274 | 24293 | 54356 | 466969 | 96.67% | 89.57	% | 95.05% |
 
-[qui la lettura dei numeri, appena li mandi]
+> **Commento**
+>
+> Precision sale ancora, a 95.05%: il filtro NIR è il più aggressivo contro i falsi positivi. Ma Recall scende a 89.57% (contro il 96.49% di NDSI+NDWI): qui il filtro sta togliendo anche neve vera, non solo mare — è il blocco rosso di Figura 21. Il filtro funziona ma al prezzo di perdere una fetta di neve reale.
 
 ### Confronto tra i metodi ⚖️
 
