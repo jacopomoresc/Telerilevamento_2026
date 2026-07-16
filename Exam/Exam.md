@@ -1070,6 +1070,7 @@ Il risultato controintuitivo dell'aumento sull'intera area di studio è causato 
 
 La mappa delle transizioni conferma inoltre che la perdita, all'interno degli outlines, è concentrata ai **margini** del corpo glaciale (bordo rosso continuo in Figura 26) e non distribuita a chiazze sull'interno: un pattern coerente con un arretramento del fronte, non con rumore di classificazione casuale. Questo arretramento è in accordo, nella direzione, con il quadro di riscaldamento e perdita di massa documentato per le Svalbard in letteratura (Zagórski et al. 2023) [3] — pur trattandosi di due analisi diverse e non direttamente comparabili: la misura del tasso di arretramento del fronte tramite transetti e la variazione percentuale di superficie classificata come neve.
 
+<a name="limiti"></a>
 ## Limiti ⚠️
 
 - Le soglie (NDSI ≥ 0.4, NDWI < 0.7) sono fisse e validate solo sul 2020: applicarle al 2016 e al 2024 assume condizioni di illuminazione e acquisizione comparabili.
