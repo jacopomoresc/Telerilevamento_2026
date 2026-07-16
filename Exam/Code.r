@@ -1,5 +1,5 @@
-# Monitoraggio multitemporale della copertura nevosa alle Svalbard (2016-2020-2024)
-# PROGETTO D'ESAME - Telerilevamento Geo-Ecologico in R
+# Monitoraggio multitemporale della copertura nevosa alle Svalbard nel periodo 2016-2024
+# Progetto d'Esame - Telerilevamento Geo-Ecologico in R
 # Jacopo Moresco
 
 # Immagini Sentinel-2 di fine estate (late summer), quando la componente nevosa
@@ -20,8 +20,6 @@ library(imageRy)    # Visualizzazione immagini telerilevate
 library(viridis)    # Palette cromatiche per mappe
 library(ggplot2)    # Grafici finali
 library(patchwork)  # Affiancamento grafici
-library(ggridges)   # Distribuzioni degli indici
-library(reshape2)   # Riorganizzazione tabelle per ggplot
 
 # ------------------------------------------------------------
 # IMPORTAZIONE IMMAGINI
@@ -736,6 +734,5 @@ legend("bottomleft",
        cex = 0.8, bg = "white",  inset = c(0.085, 0.009), xpd = NA, bty = "o")
 
 dev.off()
-
 
 
