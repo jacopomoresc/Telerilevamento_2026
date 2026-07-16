@@ -7,7 +7,7 @@
 
 - [Abstract](#abstract-)
 - [1. Introduzione 📌](#1-introduzione-)
-  - [1.1 Area di studio 🛰️](#11-area-di-studio-)
+  - [1.1 Area di studio 🛰️](#area-di-studio)
   - [1.2 Obiettivo 🎯](#12-obiettivo-)
 - [2. Materiali e Metodi 🧪](#2-materiali-e-metodi-)
   - [2.1 Raccolta delle immagini 📂](#21-raccolta-delle-immagini-)
@@ -18,7 +18,7 @@
   - [3.1 Percentuali di copertura nevosa 📈](#31-percentuali-di-copertura-nevosa-)
   - [3.2 Mappa delle transizioni 2016-2024 🔄](#32-mappa-delle-transizioni-2016-2024-)
 - [4. Conclusioni 📝](#4-conclusioni-)
-  - [Limiti ⚠️](#limiti-)
+  - [Limiti ⚠️](#limiti)
   - [Sviluppi futuri 🚀](#sviluppi-futuri-)
 - [5. Fonti 📚](#5-fonti-)
 
