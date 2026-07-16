@@ -1000,12 +1000,16 @@ Nel pannello di destra questo blocco sparisce del tutto. Quello che resta è un 
 
 # 4. Conclusioni 📝
 
-L'obiettivo del progetto era stimare la variazione della copertura di neve nell'area di studio tra il 2016 e il 2024. Per farlo abbiamo usato la classificazione NDSI+NDWI - la migliore fra i tre metodi proposti in termini di accuracy, precision e recall. NDSI da solo sovrastima per confusione con acqua e ombre; NDWI corregge il problema dell'acqua senza intaccare la neve vera (Recall quasi invariata); il filtro NIR è più aggressivo ma toglie anche neve reale (Recall -7 punti); NDVI non ha effetto perché risolve un problema — la vegetazione — che nell'area di studio non esiste. NDSI+NDWI resta il compromesso migliore tra i quattro.
-C'è però da distinguere chiaramente dove viene applicata questa classificazione: 
-+ sull'intera area di studio si ottiene un risultato controintuivo: un aumento della copertura dal 2016 al 2024 del 2.13%(26.49% → 28.62%)
-+ analizzando solo l'area racchiusa dagli outlines uccifiali del NPI la stessa classificazione mostra invece una diminuzione della copertura del 4.35% (98.85% → 94.50%).
+L'obiettivo del progetto era stimare la variazione della copertura di neve nell'area di studio tra il 2016 e il 2024. Per farlo è stata usata la classificazione NDSI+NDWI, la migliore fra i tre metodi proposti in termini di Accuracy, Precision e Recall. Il solo NDSI sovrastima per confusione con acqua e ombre; l'NDWI corregge il problema dell'acqua senza intaccare la neve vera (Recall quasi invariata); il filtro NIR è più aggressivo ma toglie anche neve reale (Recall -7 punti); l'NDVI non ha effetto perché risolve un problema — la vegetazione — che nell'area di studio non esiste. NDSI+NDWI resta quindi il compromesso migliore tra i quattro.
 
-"Il risultato controintuitivo dell'aumento della copertura nell'intera area di studio è causato dall'interferenza spettrale della neve stagionale (o neve fresca meteorica). Come già spiegato neve rfesca e il ghiaccio condividono la medesima firma spettrale: un'elevatissima riflettanza nelle bande del visibile e un forte assorbimento nell'infrarosso a onde corte (SWIR). Per questo motivo, l'indice NDSI non è intrinsecamente in grado di distinguere tra il corpo glaciale vero e proprio e una nevicata recente. L'utilizzo degli outlines ufficiali (NPI) agisce proprio da maschera geomorfologica indispensabile per tagliare fuori le fluttuazioni meteorologiche esterne al perimetro e rivelare il vero trend glaciologico di arretramento.
+C'è però da distinguere chiaramente dove viene applicata questa classificazione:
+
++ sull'intera area di studio si ottiene un risultato controintuitivo: un aumento della copertura dal 2016 al 2024 del 2.13% (26.49% → 28.62%);
++ analizzando solo l'area racchiusa dagli outlines ufficiali del NPI, la stessa classificazione mostra invece una diminuzione della copertura del 4.35% (98.85% → 94.50%).
+
+Il risultato controintuitivo dell'aumento sull'intera area di studio è causato dall'interferenza spettrale della neve stagionale (o neve fresca meteorica). Come già spiegato, neve fresca e ghiaccio condividono la medesima firma spettrale: un'elevatissima riflettanza nel visibile e un forte assorbimento nell'infrarosso a onde corte (SWIR). Per questo motivo l'NDSI non è intrinsecamente in grado di distinguere il corpo glaciale vero e proprio da una nevicata recente. Gli outlines ufficiali (NPI) agiscono quindi da maschera geomorfologica indispensabile per tagliare fuori le fluttuazioni meteorologiche esterne al perimetro e rivelare il vero trend glaciologico di arretramento.
+
+La mappa delle transizioni conferma inoltre che la perdita, dentro gli outlines, è concentrata ai **margini** del corpo glaciale (bordo rosso continuo in Figura 26) e non distribuita a chiazze sull'interno: un pattern coerente con un arretramento del fronte, non con rumore di classificazione casuale. Questo arretramento è in accordo, nella direzione, con il quadro di riscaldamento e perdita di massa documentato per le Svalbard in letteratura (Zagórski et al. 2023 [7]) — pur trattandosi di due analisi diverse e non direttamente comparabili: la misura del tasso di arretramento del fronte tramite transetti e la variazione percentuale di superficie classificata come neve/ghiaccio.
 
 Inoltre la mappa delle transizioni conferma che la perdita, dentro gli outlines, è concentrata ai **margini** del corpo glaciale (bordo rosso continuo in Figura 26) e non distribuita a chiazze sull'interno: un pattern coerente con un arretramento del fronte, non con rumore di classificazione casuale. L'arretramento del fronte è perfettamente in accordo - nonostante si tratti di due metriche diverse non direttamente comparaili - con il quadro di riscaldamento e perdita di massa documentato per le Svalbard in letteratura (Zagórski et al. 2023 [7]). Non è un confronto quantitativo con quei dati: la loro misura è il tasso di arretramento del fronte su transetti, la nostra è la variazione percentuale di superficie classificata come neve/ghiaccio — due metriche diverse, non direttamente comparabili.
 
@@ -1018,6 +1022,25 @@ Inoltre la mappa delle transizioni conferma che la perdita, dentro gli outlines,
 
 Dopo i limiti vorrei concludere con una frase o qualcosa d'effetto, magari con un parametro tipo di implicazioni future o cosa mi potrei aspettare
 
+
+
+# 4. Conclusioni 📝
+
+
+
+
+
+
+
+
+
+## Limiti
+
+- Le soglie (NDSI ≥ 0.4, NDWI < 0.7) sono fisse e validate solo sul 2020: applicarle a 2016 e 2024 assume condizioni di illuminazione e acquisizione comparabili.
+- Gli outlines NPI sono fissi al 2020: il confronto misura la variazione della copertura *dentro un perimetro fisso*, non l'eventuale variazione del perimetro stesso.
+- NDSI+NDWI non rileva il ghiaccio coperto da detrito superficiale, che restituisce la firma spettrale della roccia.
+- La validazione quantitativa (Accuracy/Recall/Precision) è disponibile solo per il 2020; per il 2016 e il 2024 la qualità della classificazione è assunta, non verificata direttamente.
+- Il confronto usa tre epoche puntuali (composti mediani di agosto), non una serie continua: non è possibile garantire condizioni meteorologiche omogenee tra le diverse annate.
 # 5. Fonti 📚
 1. Hall, D.K., Riggs, G.A. (2011). Normalized-Difference Snow Index (NDSI). In: Singh, V.P., Singh, P., Haritashya, U.K. (eds) Encyclopedia of Snow, Ice and Glaciers. Encyclopedia of Earth Sciences Series. Springer, Dordrecht. https://doi.org/10.1007/978-90-481-2642-2_376
 IN FORSE 2. Keshri, A., Shukla, A., & Gupta, R. P. (2009). ASTER ratio indices for supraglacial terrain mapping. International Journal of Remote Sensing, 30(2), 519–524. https://doi.org/10.1080/01431160802385459
