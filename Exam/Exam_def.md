@@ -173,8 +173,8 @@ dev.off()
 </p>
 
 > Figura 3. Le cinque bande Sentinel-2 disponibili per il 2020.
-
-Le tre bande del visibile (B2, B3, B4) e la banda NIR mostrano lo stesso pattern spaziale: il corpo glaciale risulta nettamente più chiaro rispetto al terreno circostante in tutte e quattro. In B11 (SWIR1) il pattern si inverte completamente: il ghiacciaio diventa la zona più scura dell'immagine, mentre il terreno circostante resta su valori medio-alti.
+>
+> Le tre bande del visibile (B2, B3, B4) e la banda NIR mostrano lo stesso pattern spaziale: il corpo glaciale risulta nettamente più chiaro rispetto al terreno circostante in tutte e quattro. In B11 (SWIR1) il pattern si inverte completamente: il ghiacciaio diventa la zona più scura dell'immagine, mentre il terreno circostante resta su valori medio-alti.
 
 #### Bande del visibile: confronto dei tre anni 👁️
 Per favorire il confronto immediato sono state visualizzate prima le bande del visibile fra i tre periodi:
@@ -199,8 +199,8 @@ dev.off()
 </p>
 
 > Figura 4. Bande del visibile (B2, B3, B4) a confronto tra 2016, 2020 e 2024.
-
-Il pattern spaziale resta stabile nei tre anni: il corpo glaciale è nettamente più chiaro del terreno circostante in tutte le combinazioni banda/anno.
+>
+> Il pattern spaziale resta stabile nei tre anni: il corpo glaciale è nettamente più chiaro del terreno circostante in tutte le combinazioni banda/anno.
 
 #### Bande NIR e SWIR1: confronto dei tre anni 📡
 Successivamente sono state visualizzate la banda NIR e SWIR1 nelle tre annate:
@@ -222,8 +222,8 @@ dev.off()
 </p>
 
 > Figura 5. Bande B8 (NIR) e B11 (SWIR1) a confronto tra 2016, 2020 e 2024.
-
-In tutti e tre gli anni la banda NIR mostra il ghiacciaio come zona chiara, con un contrasto rispetto al terreno circostante simile a quello delle bande del visibile. La banda SWIR1 mostra il pattern opposto: il corpo glaciale è la zona più scura dell'immagine, mentre il terreno esposto attorno resta su valori medio-alti.
+>
+> In tutti e tre gli anni la banda NIR mostra il ghiacciaio come zona chiara, con un contrasto rispetto al terreno circostante simile a quello delle bande del visibile. La banda SWIR1 mostra il pattern opposto: il corpo glaciale è la zona più scura dell'immagine, mentre il terreno esposto attorno resta su valori medio-alti.
 
 ## 2.3 Indici spettrali 📐
 
@@ -261,8 +261,8 @@ dev.off()
 </p>
 
 > Figura 6. NDSI nei tre anni e relativa differenza (ΔNDSI, 2024-2016).
-
-Si nota come, nei tre periodi, l'indice non riesca a distinguere l'acqua dalla neve: entrambe assumono una tonalità di giallo acceso.
+>
+> Si nota come, nei tre periodi, l'indice non riesca a distinguere l'acqua dalla neve: entrambe assumono una tonalità di giallo acceso.
 
 Nel pannello ΔNDSI le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
 
@@ -294,8 +294,8 @@ dev.off()
 </p>
 
 > Figura 7. NDWI nei tre anni e relativa differenza (ΔNDWI, 2024-2016).
-
-L'indice separa il mare aperto del Recherchefjorden, attribuendogli valori prossimi a 1, dai corpi glaciali, che restano su valori più bassi. Nell'immagine del 2024 si nota una porzione di acqua in alto a sinistra con valori di NDWI più bassi di quelli che ci aspetteremmo. Confrontando le tre mappe per anno si osserva un progressivo schiarimento: sia il mare sia buona parte della superficie del ghiacciaio e del terreno circostante assumono valori di NDWI via via più alti dal 2016 al 2024.
+>
+> L'indice separa il mare aperto del Recherchefjorden, attribuendogli valori prossimi a 1, dai corpi glaciali, che restano su valori più bassi. Nell'immagine del 2024 si nota una porzione di acqua in alto a sinistra con valori di NDWI più bassi di quelli che ci aspetteremmo. Confrontando le tre mappe per anno si osserva un progressivo schiarimento: sia il mare sia buona parte della superficie del ghiacciaio e del terreno circostante assumono valori di NDWI via via più alti dal 2016 al 2024.
 
 Il pannello ΔNDWI resta però quasi ovunque su valori prossimi a 0, con una zona leggermente più chiara concentrata proprio sopra il corpo glaciale: il cambiamento osservato nelle mappe assolute è quindi diffuso ma di entità contenuta, e localizzato più sul ghiacciaio che sul mare.
 
@@ -327,8 +327,8 @@ dev.off()
 </p>
 
 > Figura 8. NDVI nei tre anni e relativa differenza (ΔNDVI, 2024-2016).
-
-I valori di NDVI più alti, vicini a 1, si concentrano nelle aree lontane dai ghiacciai, coerentemente con la presenza di vegetazione/tundra in quelle porzioni di terreno esposto.
+>
+> I valori di NDVI più alti, vicini a 1, si concentrano nelle aree lontane dai ghiacciai, coerentemente con la presenza di vegetazione/tundra in quelle porzioni di terreno esposto.
 
 Il pannello ΔNDVI 2024-2016 non mostra variazioni apprezzabili sulla maggior parte dell'area: i cambiamenti più marcati si concentrano quasi esclusivamente nell'acqua e in una piccola porzione in basso a destra. Per il resto, la vegetazione presente cambia molto poco tra gli otto anni, un risultato coerente con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), ma nell'area di studio non emerge un segnale di questo tipo, né un ruolo attivo nella classificazione.
 
@@ -351,10 +351,10 @@ dev.off()
 </p>
 
 > Figura 9. Confronto tra le variazioni 2024-2016 di NDSI, NDWI e NDVI.
-
-Il confronto affiancato mostra tre pattern ben distinti. Il ΔNDSI è vicino a 0 su gran parte dell'area, con valori negativi marcati (viola scuro) concentrati lungo il perimetro del corpo glaciale: la perdita di neve/ghiaccio si concentra ai margini, non è diffusa. Il ΔNDWI è anch'esso vicino a 0 quasi ovunque, con una zona leggermente più chiara (valori moderatamente positivi) proprio sopra il corpo glaciale: un cambiamento diffuso ma contenuto. Il ΔNDVI resta piatto su quasi tutta l'area, con variazioni marcate solo in due punti: una fascia gialla in alto (valori vicini a 1, coincidente con il mare) e una piccola macchia gialla in basso a destra.
-
-Questo conferma che NDSI e NDWI leggono fenomeni spazialmente distinti ma complementari – rispettivamente margini glaciali e superficie del ghiacciaio – mentre l'NDVI non mostra variazioni diffuse sulla vegetazione, restando un indicatore complementare piuttosto che un filtro operativo nella classificazione.
+>
+> Il confronto affiancato mostra tre pattern ben distinti. Il ΔNDSI è vicino a 0 su gran parte dell'area, con valori negativi marcati (viola scuro) concentrati lungo il perimetro del corpo glaciale: la perdita di neve/ghiaccio si concentra ai margini, non è diffusa. Il ΔNDWI è anch'esso vicino a 0 quasi ovunque, con una zona leggermente più chiara (valori moderatamente positivi) proprio sopra il corpo glaciale: un cambiamento diffuso ma contenuto. Il ΔNDVI resta piatto su quasi tutta l'area, con variazioni marcate solo in due punti: una fascia gialla in alto (valori vicini a 1, coincidente con il mare) e una piccola macchia gialla in basso a destra.
+>
+> Questo conferma che NDSI e NDWI leggono fenomeni spazialmente distinti ma complementari – rispettivamente margini glaciali e superficie del ghiacciaio – mentre l'NDVI non mostra variazioni diffuse sulla vegetazione, restando un indicatore complementare piuttosto che un filtro operativo nella classificazione.
 
 ## 2.4 Classificazione della copertura nevosa 🏔️
 
@@ -530,7 +530,7 @@ dev.off()
   <img src="Images/hist_ndsi_2020.png" width="500">
 </p>
 
-> Figura 10. Distribuzione dei valori di NDSI nel 2020.
+> Figura 10. Distribuzione dei valori di NDSI nel 2020. 
 >
 > L'NDSI sfrutta la firma spettrale tipica della neve: alta riflettanza nel verde, forte assorbimento nello SWIR. La distribuzione mostra due gruppi: uno largo tra -0.7 e 0.2 (superfici non innevate) e uno stretto vicino a 1 (superfici innevate). Ho scelto la soglia 0.4, sia da letteratura che verificata sperimentalmente: sotto indica terreno, vegetazione o ombra, sopra indica neve.
 
