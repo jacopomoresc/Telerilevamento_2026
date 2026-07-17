@@ -329,8 +329,8 @@ dev.off()
 > Figura 8. NDVI nei tre anni e relativa differenza (ΔNDVI, 2024-2016).
 >
 > I valori di NDVI più alti, vicini a 1, si concentrano nelle aree lontane dai ghiacciai, coerentemente con la presenza di vegetazione/tundra in quelle porzioni di terreno esposto.
-
-Il pannello ΔNDVI 2024-2016 non mostra variazioni apprezzabili sulla maggior parte dell'area: i cambiamenti più marcati si concentrano quasi esclusivamente nell'acqua e in una piccola porzione in basso a destra. Per il resto, la vegetazione presente cambia molto poco tra gli otto anni, un risultato coerente con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), ma nell'area di studio non emerge un segnale di questo tipo, né un ruolo attivo nella classificazione.
+>
+> Il pannello ΔNDVI 2024-2016 non mostra variazioni apprezzabili sulla maggior parte dell'area: i cambiamenti più marcati si concentrano quasi esclusivamente nell'acqua e in una piccola porzione in basso a destra. Per il resto, la vegetazione presente cambia molto poco tra gli otto anni, un risultato coerente con l'aspettativa: l'indice è stato incluso per verificare un eventuale **aumento della vegetazione** legato al riscaldamento artico (fenomeno noto come *arctic greening*), ma nell'area di studio non emerge un segnale di questo tipo, né un ruolo attivo nella classificazione.
 
 ### Confronto delle variazioni multitemporali 🔀
 
