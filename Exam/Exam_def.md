@@ -263,8 +263,8 @@ dev.off()
 > Figura 6. NDSI nei tre anni e relativa differenza (ΔNDSI, 2024-2016).
 >
 > Si nota come, nei tre periodi, l'indice non riesca a distinguere l'acqua dalla neve: entrambe assumono una tonalità di giallo acceso.
-
-Nel pannello ΔNDSI le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
+>
+> Nel pannello ΔNDSI le anomalie più marcate si concentrano lungo i **margini e i fronti dei ghiacciai**, suggerendo un segnale di cambiamento localizzato ai bordi piuttosto che una perdita uniforme sull'intero corpo glaciale.
 
 ### NDWI – Normalized Difference Water Index 🌊
 
